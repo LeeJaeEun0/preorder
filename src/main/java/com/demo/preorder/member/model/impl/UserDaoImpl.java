@@ -1,7 +1,9 @@
 package com.demo.preorder.member.model.impl;
 
+import com.demo.preorder.member.entity.EmailCertification;
 import com.demo.preorder.member.entity.User;
 import com.demo.preorder.member.model.UserDao;
+import com.demo.preorder.member.repository.EmailCertificationRepository;
 import com.demo.preorder.member.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,14 +15,13 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     private final UserRepository userRepository;
 
-    public UserDaoImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     @Override
     public boolean checkEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         return user.isPresent();
+    }
+    public UserDaoImpl(UserRepository userRepository, EmailCertificationRepository emailCertificationRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override

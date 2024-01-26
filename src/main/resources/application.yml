@@ -12,15 +12,11 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: preorder.project1@gmail.com
-    password: yrklrkzstrlxfkit
+    password: ucmn ngyz cwze zapc
     properties:
       mail:
         smtp:
           auth: true
-          starttls:
-            enable: true
+          starttls: # 추가 안하면 SMTPSendFailedException
+            enalble: true
             required: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
-    auth-code-expiration-millis: 1800000

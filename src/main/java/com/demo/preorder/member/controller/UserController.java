@@ -26,15 +26,14 @@ public class UserController {
     @PostMapping
     public ResponseEntity<?> sendEmail(@RequestBody UserDto userDto) {
         boolean is_email = userService.checkEmail(userDto);
-        if (!is_email) {
-            //userService.sendEmail(email);
+        if (is_email) {
+            return ResponseEntity.accepted().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 가입한 사용자 입니다");
         }
-
-
-        return ResponseEntity.accepted().build();
     }
 
-        @PostMapping("/data")
+    @PostMapping("/join")
     public ResponseEntity<?> createUser(@RequestBody UserDto userDto) {
         User user = userService.saveUser(userDto);
         return ResponseEntity.status(HttpStatus.OK).body(user);

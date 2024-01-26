@@ -4,14 +4,26 @@ services:
   web:
     image: nginx:latest
     ports:
-      - "8080:80"
+      - "80:80"
+    container_name: nginx
+#    depends_on:
+#      - backend
+
+#  backend:
+#    image: openjdk:latest
+#    container_name: backend
+#    depends_on:
+#      - web
+#      - db
 
   db:
     image: mysql:8.0
+    restart: unless-stopped
+    platform: linux/x86_64
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: 1
       MYSQL_DATABASE: preorder
-      MYSQL_USER: eje
+      MYSQL_USER: root
       MYSQL_PASSWORD: 1234
     ports:
       - "3306:3306"

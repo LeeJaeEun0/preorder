@@ -1,11 +1,13 @@
 package com.demo.preorder.member.model;
 
+import com.demo.preorder.member.entity.EmailCertification;
 import com.demo.preorder.member.entity.User;
 
 import java.util.Optional;
 
 public interface UserDao {
     boolean checkEmail(String email);
+    //void deleteEmailCertification(String email);
     User insertUser(User user);
     Optional<User> selectUser(Long userid);
     public User updateUser(Long userId, String name,String password, String image, String greeating) throws Exception;

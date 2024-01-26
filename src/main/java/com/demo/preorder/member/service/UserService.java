@@ -7,6 +7,8 @@ import com.demo.preorder.member.model.UserDto;
 public interface UserService {
 
     boolean checkEmail(UserDto userDto);
+
+
     UserDto getUser(Long userId);
 
     User saveUser(UserDto userDto);
