@@ -18,5 +18,8 @@ spring:
         smtp:
           auth: true
           starttls: # 추가 안하면 SMTPSendFailedException
-            enalble: true
-            required: true
+            enable: true
+
+
+  jwt:
+    secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa

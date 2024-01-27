@@ -1,6 +1,5 @@
 package com.demo.preorder.member.model.impl;
 
-import com.demo.preorder.member.entity.EmailCertification;
 import com.demo.preorder.member.entity.User;
 import com.demo.preorder.member.model.UserDao;
 import com.demo.preorder.member.repository.EmailCertificationRepository;
@@ -43,6 +42,7 @@ public class UserDaoImpl implements UserDao {
 
             user.setName(name);
             user.setPassword(password);
+            //user.setRole();
             user.setImage(image);
             user.setGreeting(greeating);
 

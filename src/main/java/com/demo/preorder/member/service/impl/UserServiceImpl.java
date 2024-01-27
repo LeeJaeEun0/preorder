@@ -1,16 +1,16 @@
 package com.demo.preorder.member.service.impl;
 
+import com.demo.preorder.cofig.PasswordEncoder;
 import com.demo.preorder.member.entity.EmailCertification;
 import com.demo.preorder.member.entity.User;
 import com.demo.preorder.member.model.EmailCertificationDao;
+import com.demo.preorder.member.model.EmailDto;
 import com.demo.preorder.member.model.UserDao;
 import com.demo.preorder.member.model.UserDto;
 import com.demo.preorder.member.provider.EmailProvider;
-import com.demo.preorder.member.repository.UserRepository;
 import com.demo.preorder.member.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService {
 
     private  final EmailProvider emailProvider;
     @Override
-    public boolean checkEmail(UserDto userDto) {
-        String email = userDto.getEmail();
+    public boolean checkEmail(EmailDto emailDTO) {
+        String email = emailDTO.getEmail();
 
         boolean isExistEmail = userDao.checkEmail(email);
         if(isExistEmail) return false;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         if(!isSuccessed) return false;
 
         EmailCertification emailCertification = new EmailCertification();
-        emailCertification.setEmail(userDto.getEmail());
+        emailCertification.setEmail(emailDTO.getEmail());
         emailCertification.setNumber(certificationNumber);
         emailCertificationDao.insertEmailCertification(emailCertification);
         return true;
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     public User saveUser(UserDto userDto) {
         User user = new User();
         user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setPassword(passwordEncoder.encrypt(userDto.getEmail(),userDto.getPassword()));
         user.setName(userDto.getName());
         user.setImage(userDto.getImage());
         user.setGreeting(user.getGreeting());

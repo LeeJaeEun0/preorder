@@ -1,9 +1,9 @@
 package com.demo.preorder.member.controller;
 
 import com.demo.preorder.member.entity.User;
+import com.demo.preorder.member.model.EmailDto;
 import com.demo.preorder.member.model.UserDto;
 import com.demo.preorder.member.service.UserService;
-import com.demo.preorder.member.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +24,8 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<?> sendEmail(@RequestBody UserDto userDto) {
-        boolean is_email = userService.checkEmail(userDto);
+    public ResponseEntity<?> sendEmail(@RequestBody EmailDto emailDTO) {
+        boolean is_email = userService.checkEmail(emailDTO);
         if (is_email) {
             return ResponseEntity.accepted().build();
         } else {

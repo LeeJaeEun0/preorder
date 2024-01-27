@@ -1,12 +1,12 @@
 package com.demo.preorder.member.service;
 
 import com.demo.preorder.member.entity.User;
-import com.demo.preorder.member.model.UserDao;
+import com.demo.preorder.member.model.EmailDto;
 import com.demo.preorder.member.model.UserDto;
 
 public interface UserService {
 
-    boolean checkEmail(UserDto userDto);
+    boolean checkEmail(EmailDto emailDto);
 
 
     UserDto getUser(Long userId);
