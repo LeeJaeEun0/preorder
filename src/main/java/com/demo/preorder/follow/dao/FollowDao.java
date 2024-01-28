@@ -1,4 +1,4 @@
-package com.demo.preorder.follow.model;
+package com.demo.preorder.follow.dao;
 
 import com.demo.preorder.follow.entity.Follow;
 

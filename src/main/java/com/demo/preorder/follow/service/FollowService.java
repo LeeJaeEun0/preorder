@@ -1,7 +1,7 @@
 package com.demo.preorder.follow.service;
 
 import com.demo.preorder.follow.entity.Follow;
-import com.demo.preorder.follow.model.FollowDto;
+import com.demo.preorder.follow.dto.FollowDto;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.demo.preorder.follow.model;
+package com.demo.preorder.follow.dto;
 
 import com.demo.preorder.member.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;

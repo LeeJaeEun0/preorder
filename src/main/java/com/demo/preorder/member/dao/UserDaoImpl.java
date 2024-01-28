@@ -1,8 +1,7 @@
-package com.demo.preorder.member.model.impl;
+package com.demo.preorder.member.dao;
 
 import com.demo.preorder.cofig.PasswordEncoder;
 import com.demo.preorder.member.entity.User;
-import com.demo.preorder.member.model.UserDao;
 import com.demo.preorder.member.repository.EmailCertificationRepository;
 import com.demo.preorder.member.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.demo.preorder.member.model;
+package com.demo.preorder.member.dao;
 
 import com.demo.preorder.member.entity.EmailCertification;
 

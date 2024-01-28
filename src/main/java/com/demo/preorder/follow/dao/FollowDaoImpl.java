@@ -1,9 +1,7 @@
-package com.demo.preorder.follow.model.impl;
+package com.demo.preorder.follow.dao;
 
 import com.demo.preorder.follow.entity.Follow;
-import com.demo.preorder.follow.model.FollowDao;
 import com.demo.preorder.follow.repository.FollowRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

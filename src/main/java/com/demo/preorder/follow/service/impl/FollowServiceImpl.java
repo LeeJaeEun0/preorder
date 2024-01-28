@@ -1,14 +1,14 @@
 package com.demo.preorder.follow.service.impl;
 
 import com.demo.preorder.follow.entity.Follow;
-import com.demo.preorder.follow.model.FollowDao;
-import com.demo.preorder.follow.model.FollowDto;
+import com.demo.preorder.follow.dao.FollowDao;
+import com.demo.preorder.follow.dto.FollowDto;
 import com.demo.preorder.follow.service.FollowService;
-import com.demo.preorder.member.model.UserDao;
+import com.demo.preorder.member.dao.UserDao;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 @Service
 public class FollowServiceImpl implements FollowService {
 

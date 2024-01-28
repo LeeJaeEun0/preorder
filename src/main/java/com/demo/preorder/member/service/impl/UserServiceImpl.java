@@ -1,9 +1,14 @@
 package com.demo.preorder.member.service.impl;
 
 import com.demo.preorder.cofig.PasswordEncoder;
+import com.demo.preorder.member.dao.EmailCertificationDao;
+import com.demo.preorder.member.dao.UserDao;
+import com.demo.preorder.member.dto.EmailDto;
+import com.demo.preorder.member.dto.PasswordDto;
+import com.demo.preorder.member.dto.ProfileDto;
+import com.demo.preorder.member.dto.UserDto;
 import com.demo.preorder.member.entity.EmailCertification;
 import com.demo.preorder.member.entity.User;
-import com.demo.preorder.member.model.*;
 import com.demo.preorder.member.provider.EmailProvider;
 import com.demo.preorder.member.service.UserService;
 import lombok.RequiredArgsConstructor;

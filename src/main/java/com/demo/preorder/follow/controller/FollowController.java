@@ -1,7 +1,7 @@
 package com.demo.preorder.follow.controller;
 
 import com.demo.preorder.follow.entity.Follow;
-import com.demo.preorder.follow.model.FollowDto;
+import com.demo.preorder.follow.dto.FollowDto;
 import com.demo.preorder.follow.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
