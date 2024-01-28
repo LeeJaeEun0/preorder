@@ -39,8 +39,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
-    @PutMapping
-    public ResponseEntity<?> updatePassword(@RequestBody Long userId,@RequestBody PasswordDto passwordDto) throws Exception {
+    @PutMapping("/password/{userId}")
+    public ResponseEntity<?> updatePassword(@PathVariable Long userId,@RequestBody PasswordDto passwordDto) throws Exception {
         User user = userService.changeUserPassword(userId,passwordDto);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
