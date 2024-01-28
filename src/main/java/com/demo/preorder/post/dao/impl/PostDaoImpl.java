@@ -43,23 +43,26 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public Post changePost(Long postId, String contents) {
+    public Post changePost(Long userId,Long postId, String contents) {
         Optional<Post> findPost = postRepository.findById(postId);
         if(findPost.isPresent()){
             Post post = findPost.get();
-            post.setContents(contents);
-            return postRepository.save(post);
+
+            if(post.getUserId().getId().equals(userId)) {
+                post.setContents(contents);
+                return postRepository.save(post);
+            }
         }
         return null;
     }
 
     @Override
-    public void deletePost(Long userID,Long postId) throws Exception {
+    public void deletePost(Long userId,Long postId) throws Exception {
         Optional<Post> deletepost = postRepository.findById(postId);
         if (deletepost.isPresent()) {
             Post post = deletepost.get();
 
-            if(post.getUserId().getId().equals(userID)) postRepository.delete(post);
+            if(post.getUserId().getId().equals(userId)) postRepository.delete(post);
             else{
                 throw new Exception();
             }

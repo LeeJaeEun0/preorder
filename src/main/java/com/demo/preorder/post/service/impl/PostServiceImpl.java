@@ -48,7 +48,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post changePost(Long userId,PostDto postDto) {
-        return postDao.changePost(userId, postDto.getContents());
+        return postDao.changePost(userId, postDto.getPostId(),postDto.getContents());
     }
 
     @Override

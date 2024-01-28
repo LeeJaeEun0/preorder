@@ -13,7 +13,7 @@ public interface PostDao {
 
     List<Post> searchPost(String searchWord);
 
-    Post changePost(Long PostId, String contents);
+    Post changePost(Long userId,Long PostId, String contents);
 
     void deletePost(Long userID,Long postId) throws Exception;
 
