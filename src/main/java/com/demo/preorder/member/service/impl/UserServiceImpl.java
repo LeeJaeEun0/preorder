@@ -3,10 +3,7 @@ package com.demo.preorder.member.service.impl;
 import com.demo.preorder.cofig.PasswordEncoder;
 import com.demo.preorder.member.entity.EmailCertification;
 import com.demo.preorder.member.entity.User;
-import com.demo.preorder.member.model.EmailCertificationDao;
-import com.demo.preorder.member.model.EmailDto;
-import com.demo.preorder.member.model.UserDao;
-import com.demo.preorder.member.model.UserDto;
+import com.demo.preorder.member.model.*;
 import com.demo.preorder.member.provider.EmailProvider;
 import com.demo.preorder.member.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +16,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
     private EmailCertificationDao emailCertificationDao;
@@ -60,13 +58,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto changeUserContent(Long userId, UserDto userDto) throws Exception {
-        return null;
+    public User changeUserProfile(Long userId, ProfileDto profileDto) throws Exception {
+        return userDao.updateUserProfile(userId,profileDto.getName(), profileDto.getImage(), profileDto.getGreeting());
     }
 
     @Override
-    public UserDto changeUserPassword(Long userId, UserDto userDto) throws Exception {
-        return null;
+    public User changeUserPassword(Long userId, PasswordDto passwordDto) throws Exception {
+        return userDao.updateUserPassword(userId, passwordDto.getOldPassword(), passwordDto.getNewPassword());
     }
 
     @Override

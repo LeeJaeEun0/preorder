@@ -1,5 +1,6 @@
 package com.demo.preorder.member.model.impl;
 
+import com.demo.preorder.cofig.PasswordEncoder;
 import com.demo.preorder.member.entity.User;
 import com.demo.preorder.member.model.UserDao;
 import com.demo.preorder.member.repository.EmailCertificationRepository;
@@ -14,6 +15,7 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     private final UserRepository userRepository;
 
+    private PasswordEncoder passwordEncoder;
     @Override
     public boolean checkEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
@@ -34,17 +36,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User updateUser(Long userId, String name,String password, String image, String greeating) throws Exception {
+    public User updateUserProfile(Long userId, String name, String image, String greeting) throws Exception {
         Optional<User> selectUser = userRepository.findById(userId);
         User updateUser;
         if (selectUser.isPresent()) {
             User user = selectUser.get();
 
             user.setName(name);
-            user.setPassword(password);
-            //user.setRole();
             user.setImage(image);
-            user.setGreeting(greeating);
+            user.setGreeting(greeting);
 
             updateUser = userRepository.save(user);
         } else {
@@ -54,12 +54,19 @@ public class UserDaoImpl implements UserDao {
 
     }
     @Override
-    public User updateUserPassword(Long userId, String password) throws Exception {
+    public User updateUserPassword(Long userId, String oldPassword,String newPassword) throws Exception {
         Optional<User> selectUser = userRepository.findById(userId);
         User updateUser;
         if (selectUser.isPresent()) {
+
             User user = selectUser.get();
-            user.setPassword(password);
+            String password = user.getPassword();
+
+            if (password.equals(passwordEncoder.encrypt(user.getEmail(),oldPassword))){
+                user.setPassword(passwordEncoder.encrypt(user.getEmail(), newPassword));
+            }else{
+                throw new Exception();
+            }
 
             updateUser = userRepository.save(user);
         } else {

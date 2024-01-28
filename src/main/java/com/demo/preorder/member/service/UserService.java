@@ -2,6 +2,8 @@ package com.demo.preorder.member.service;
 
 import com.demo.preorder.member.entity.User;
 import com.demo.preorder.member.model.EmailDto;
+import com.demo.preorder.member.model.PasswordDto;
+import com.demo.preorder.member.model.ProfileDto;
 import com.demo.preorder.member.model.UserDto;
 
 public interface UserService {
@@ -13,8 +15,8 @@ public interface UserService {
 
     User saveUser(UserDto userDto);
 
-    UserDto changeUserContent(Long userId, UserDto userDto) throws Exception;
+    User changeUserProfile(Long userId, ProfileDto profileDto) throws Exception;
 
-    UserDto changeUserPassword(Long userId, UserDto userDto) throws Exception;
+    User changeUserPassword(Long userId, PasswordDto passwordDto) throws Exception;
     void deleteUser(Long userId) throws Exception;
 }

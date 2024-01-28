@@ -2,28 +2,22 @@ package com.demo.preorder.member.controller;
 
 import com.demo.preorder.member.entity.User;
 import com.demo.preorder.member.model.EmailDto;
+import com.demo.preorder.member.model.PasswordDto;
+import com.demo.preorder.member.model.ProfileDto;
 import com.demo.preorder.member.model.UserDto;
 import com.demo.preorder.member.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    private final UserService userService;
+    private  UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
-
-    @PostMapping
+    @PostMapping("/email")
     public ResponseEntity<?> sendEmail(@RequestBody EmailDto emailDTO) {
         boolean is_email = userService.checkEmail(emailDTO);
         if (is_email) {
@@ -36,6 +30,18 @@ public class UserController {
     @PostMapping("/join")
     public ResponseEntity<?> createUser(@RequestBody UserDto userDto) {
         User user = userService.saveUser(userDto);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @PutMapping("/profile/{userId}")
+    public ResponseEntity<?> updateProfile(@PathVariable Long userId,@RequestBody ProfileDto profileDto) throws Exception {
+        User user = userService.changeUserProfile(userId,profileDto);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updatePassword(@RequestBody Long userId,@RequestBody PasswordDto passwordDto) throws Exception {
+        User user = userService.changeUserPassword(userId,passwordDto);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
