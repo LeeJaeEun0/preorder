@@ -1,6 +1,5 @@
 package com.demo.preorder.post.dao.impl;
 
-import com.demo.preorder.member.entity.User;
 import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.post.repository.PostRepository;
@@ -60,7 +59,7 @@ public class PostDaoImpl implements PostDao {
         if (deletepost.isPresent()) {
             Post post = deletepost.get();
 
-            if(post.getUserId().getId() == userID) postRepository.delete(post);
+            if(post.getUserId().getId().equals(userID)) postRepository.delete(post);
             else{
                 throw new Exception();
             }

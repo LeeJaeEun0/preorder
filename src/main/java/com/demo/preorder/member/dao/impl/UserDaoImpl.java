@@ -25,7 +25,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUser(Long userId) {
-//        if(userId == null) return null;
+
         Optional<User> user = userRepository.findById(userId);
         if(user.isPresent()){
             User user1 = user.get();
