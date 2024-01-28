@@ -1,6 +1,7 @@
-package com.demo.preorder.member.dao;
+package com.demo.preorder.member.dao.impl;
 
 import com.demo.preorder.cofig.PasswordEncoder;
+import com.demo.preorder.member.dao.UserDao;
 import com.demo.preorder.member.entity.User;
 import com.demo.preorder.member.repository.EmailCertificationRepository;
 import com.demo.preorder.member.repository.UserRepository;
