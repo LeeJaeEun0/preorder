@@ -6,23 +6,38 @@ import com.demo.preorder.member.model.UserDao;
 import com.demo.preorder.member.repository.EmailCertificationRepository;
 import com.demo.preorder.member.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import org.springframework.stereotype.Component;
 import java.util.Optional;
 
-@Service
+@Component
 public class UserDaoImpl implements UserDao {
     @Autowired
     private final UserRepository userRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+
+
+    public UserDaoImpl(UserRepository userRepository, EmailCertificationRepository emailCertificationRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public User findUser(Long userId) {
+//        if(userId == null) return null;
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isPresent()){
+            User user1 = user.get();
+            return user1;
+        }
+        return null;
+    }
+
     @Override
     public boolean checkEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         return user.isPresent();
-    }
-    public UserDaoImpl(UserRepository userRepository, EmailCertificationRepository emailCertificationRepository) {
-        this.userRepository = userRepository;
     }
 
     @Override

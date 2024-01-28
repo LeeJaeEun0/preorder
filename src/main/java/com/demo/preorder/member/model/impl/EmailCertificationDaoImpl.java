@@ -4,11 +4,11 @@ import com.demo.preorder.member.entity.EmailCertification;
 import com.demo.preorder.member.model.EmailCertificationDao;
 import com.demo.preorder.member.repository.EmailCertificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Service
+@Component
 public class EmailCertificationDaoImpl implements EmailCertificationDao {
     @Autowired
     private final EmailCertificationRepository emailCertificationRepository;

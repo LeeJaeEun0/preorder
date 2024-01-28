@@ -1,5 +1,6 @@
-package com.demo.preorder.member.entity;
+package com.demo.preorder.follow.entity;
 
+import com.demo.preorder.member.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,20 +16,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserLog {
+public class Follow {
     @Id
+    @Column(name="follow_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name="user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User userId;
 
-    @Column(name = "old_password", nullable = false)
-    private String oldPassword;
-
-    @Column(name = "new_password", nullable = false)
-    private String newPassword;
+    @ManyToOne
+    @JoinColumn(name = "following_id", referencedColumnName = "user_id")
+    private User followingId;
 
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -39,5 +39,4 @@ public class UserLog {
     public void setDate() {
         this.setCreatedDate(LocalDateTime.now());
     }
-
 }
