@@ -10,13 +10,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class EmailProvider {
     private  final JavaMailSender javaMailSender;
-
     private final  String SUBJECT = "[예약 구매] 인증 매일입니다.";
 
     public boolean sendCertificationMail(String email, String certificationNumber){
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
-            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
+            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
 
             String htmlContent = getCertificationMessage(certificationNumber);
 
@@ -36,7 +35,7 @@ public class EmailProvider {
     private String getCertificationMessage(String certificationNumber){
         String certificationMessage = "";
         certificationMessage += "<h1 style='text-align:center'>[예약 구매] 인증 메일</h1>";
-        certificationMessage += "<h3 style='text-align:center'>인증코드: <strong style='font-size: 32px; letter-spacing:8px;'>"+certificationNumber+"</strong></h1>";
+        certificationMessage += "<h3 style='text-align:center'>인증코드: <strong style='font-size: 32px; letter-spacing:8px;'>"+certificationNumber+"</strong></h3>";
         return certificationMessage;
     }
 
