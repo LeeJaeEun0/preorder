@@ -1,6 +1,6 @@
-package com.demo.preorder.member.repository;
+package com.demo.preorder.user.repository;
 
-import com.demo.preorder.member.entity.EmailCertification;
+import com.demo.preorder.user.entity.EmailCertification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

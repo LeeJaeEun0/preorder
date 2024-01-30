@@ -2,8 +2,8 @@ package com.demo.preorder.post.dao.impl;
 
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.repository.FollowRepository;
-import com.demo.preorder.member.entity.User;
-import com.demo.preorder.member.repository.UserRepository;
+import com.demo.preorder.user.entity.User;
+import com.demo.preorder.user.repository.UserRepository;
 import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
 import com.demo.preorder.newsfeed.repository.NewsfeedIFollowRepository;
 import com.demo.preorder.post.dao.GreatPostDao;

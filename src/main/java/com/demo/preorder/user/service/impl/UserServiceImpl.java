@@ -1,16 +1,16 @@
-package com.demo.preorder.member.service.impl;
+package com.demo.preorder.user.service.impl;
 
 import com.demo.preorder.cofig.PasswordEncoder;
-import com.demo.preorder.member.dao.EmailCertificationDao;
-import com.demo.preorder.member.dao.UserDao;
-import com.demo.preorder.member.dto.EmailDto;
-import com.demo.preorder.member.dto.PasswordDto;
-import com.demo.preorder.member.dto.ProfileDto;
-import com.demo.preorder.member.dto.UserDto;
-import com.demo.preorder.member.entity.EmailCertification;
-import com.demo.preorder.member.entity.User;
-import com.demo.preorder.member.provider.EmailProvider;
-import com.demo.preorder.member.service.UserService;
+import com.demo.preorder.user.dao.EmailCertificationDao;
+import com.demo.preorder.user.dao.UserDao;
+import com.demo.preorder.user.dto.EmailDto;
+import com.demo.preorder.user.dto.PasswordDto;
+import com.demo.preorder.user.dto.ProfileDto;
+import com.demo.preorder.user.dto.UserDto;
+import com.demo.preorder.user.entity.EmailCertification;
+import com.demo.preorder.user.entity.User;
+import com.demo.preorder.user.provider.EmailProvider;
+import com.demo.preorder.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

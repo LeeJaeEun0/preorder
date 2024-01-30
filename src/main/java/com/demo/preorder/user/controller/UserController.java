@@ -1,11 +1,11 @@
-package com.demo.preorder.member.controller;
+package com.demo.preorder.user.controller;
 
-import com.demo.preorder.member.entity.User;
-import com.demo.preorder.member.dto.EmailDto;
-import com.demo.preorder.member.dto.PasswordDto;
-import com.demo.preorder.member.dto.ProfileDto;
-import com.demo.preorder.member.dto.UserDto;
-import com.demo.preorder.member.service.UserService;
+import com.demo.preorder.user.entity.User;
+import com.demo.preorder.user.dto.EmailDto;
+import com.demo.preorder.user.dto.PasswordDto;
+import com.demo.preorder.user.dto.ProfileDto;
+import com.demo.preorder.user.dto.UserDto;
+import com.demo.preorder.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

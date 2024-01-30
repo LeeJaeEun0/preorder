@@ -1,6 +1,6 @@
-package com.demo.preorder.member.dao;
+package com.demo.preorder.user.dao;
 
-import com.demo.preorder.member.entity.User;
+import com.demo.preorder.user.entity.User;
 import java.util.Optional;
 
 public interface UserDao {

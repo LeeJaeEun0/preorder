@@ -1,8 +1,8 @@
-package com.demo.preorder.member.dao.impl;
+package com.demo.preorder.user.dao.impl;
 
-import com.demo.preorder.member.dao.EmailCertificationDao;
-import com.demo.preorder.member.entity.EmailCertification;
-import com.demo.preorder.member.repository.EmailCertificationRepository;
+import com.demo.preorder.user.dao.EmailCertificationDao;
+import com.demo.preorder.user.entity.EmailCertification;
+import com.demo.preorder.user.repository.EmailCertificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

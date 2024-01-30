@@ -1,4 +1,4 @@
-package com.demo.preorder.member.entity;
+package com.demo.preorder.user.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package com.demo.preorder.post.service.impl;
 
-import com.demo.preorder.member.dao.UserDao;
+import com.demo.preorder.user.dao.UserDao;
 import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.dto.PostDto;
 import com.demo.preorder.post.dto.SearchwordDto;

@@ -1,4 +1,4 @@
-package com.demo.preorder.member.entity;
+package com.demo.preorder.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;

@@ -1,6 +1,6 @@
-package com.demo.preorder.member.dao;
+package com.demo.preorder.user.dao;
 
-import com.demo.preorder.member.entity.EmailCertification;
+import com.demo.preorder.user.entity.EmailCertification;
 
 public interface EmailCertificationDao {
 

@@ -1,4 +1,4 @@
-package com.demo.preorder.member.provider;
+package com.demo.preorder.user.provider;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;

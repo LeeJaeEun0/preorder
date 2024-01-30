@@ -4,7 +4,7 @@ import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.dto.FollowDto;
 import com.demo.preorder.follow.service.FollowService;
-import com.demo.preorder.member.dao.UserDao;
+import com.demo.preorder.user.dao.UserDao;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

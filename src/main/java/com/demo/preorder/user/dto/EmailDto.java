@@ -1,4 +1,4 @@
-package com.demo.preorder.member.dto;
+package com.demo.preorder.user.dto;
 
 import lombok.Getter;
 import lombok.Setter;

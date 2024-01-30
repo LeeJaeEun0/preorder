@@ -1,10 +1,10 @@
-package com.demo.preorder.member.service;
+package com.demo.preorder.user.service;
 
-import com.demo.preorder.member.entity.User;
-import com.demo.preorder.member.dto.EmailDto;
-import com.demo.preorder.member.dto.PasswordDto;
-import com.demo.preorder.member.dto.ProfileDto;
-import com.demo.preorder.member.dto.UserDto;
+import com.demo.preorder.user.entity.User;
+import com.demo.preorder.user.dto.EmailDto;
+import com.demo.preorder.user.dto.PasswordDto;
+import com.demo.preorder.user.dto.ProfileDto;
+import com.demo.preorder.user.dto.UserDto;
 
 public interface UserService {
 

@@ -1,6 +1,6 @@
 package com.demo.preorder.newsfeed.entity;
 
-import com.demo.preorder.member.entity.User;
+import com.demo.preorder.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
