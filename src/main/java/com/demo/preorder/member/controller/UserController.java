@@ -23,7 +23,7 @@ public class UserController {
         if (is_email) {
             return ResponseEntity.accepted().build();
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 가입한 사용자 입니다");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일을 인증 할 수 없습니다");
         }
     }
 

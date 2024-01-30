@@ -5,8 +5,12 @@ import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.entity.GreatComment;
 import com.demo.preorder.comment.repository.CommentRepository;
 import com.demo.preorder.comment.repository.GreatCommentRepository;
+import com.demo.preorder.follow.entity.Follow;
+import com.demo.preorder.follow.repository.FollowRepository;
 import com.demo.preorder.member.entity.User;
 import com.demo.preorder.member.repository.UserRepository;
+import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
+import com.demo.preorder.newsfeed.repository.NewsfeedIFollowRepository;
 import com.demo.preorder.post.entity.GreatPost;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +26,16 @@ public class GreatCommentDaoImpl implements GreatCommentDao {
 
     private final CommentRepository commentRepository;
 
-    public GreatCommentDaoImpl(GreatCommentRepository greatCommentRepository, UserRepository userRepository, CommentRepository commentRepository) {
+    private final FollowRepository followRepository;
+
+    private final NewsfeedIFollowRepository newsfeedIFollowRepository;
+
+    public GreatCommentDaoImpl(GreatCommentRepository greatCommentRepository, UserRepository userRepository, CommentRepository commentRepository, FollowRepository followRepository, NewsfeedIFollowRepository newsfeedIFollowRepository) {
         this.greatCommentRepository = greatCommentRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
+        this.followRepository = followRepository;
+        this.newsfeedIFollowRepository = newsfeedIFollowRepository;
     }
 
 
@@ -40,7 +50,23 @@ public class GreatCommentDaoImpl implements GreatCommentDao {
 
         greatComment.setUserId(user);
         greatComment.setCommentId(comment);
-        return greatCommentRepository.save(greatComment);
+        GreatComment saved = greatCommentRepository.save(greatComment);
+        Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUserId().getId());
+
+        if (optionalFollowList.isPresent()) {
+            List<Follow> followList = optionalFollowList.get();
+
+            for (Follow follows : followList) {
+                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
+                newsfeedIFollow.setUserId(follows.getUserId());
+                newsfeedIFollow.setFollowingId(saved.getUserId());
+                newsfeedIFollow.setType("greatComment");
+                newsfeedIFollow.setTargetId(saved.getId());
+                newsfeedIFollowRepository.save(newsfeedIFollow);
+            }
+        }
+        return saved;
+
     }
 
     @Override

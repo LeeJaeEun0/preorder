@@ -1,8 +1,13 @@
 package com.demo.preorder.post.dao.impl;
 
+import com.demo.preorder.follow.entity.Follow;
+import com.demo.preorder.follow.repository.FollowRepository;
+import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
+import com.demo.preorder.newsfeed.repository.NewsfeedIFollowRepository;
 import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.post.repository.PostRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,13 +18,36 @@ public class PostDaoImpl implements PostDao {
 
     private final PostRepository postRepository;
 
-    public PostDaoImpl(PostRepository postRepository) {
+    private final FollowRepository followRepository;
+
+    private final NewsfeedIFollowRepository newsfeedIFollowRepository;
+
+    public PostDaoImpl(PostRepository postRepository, FollowRepository followRepository, NewsfeedIFollowRepository newsfeedIFollowRepository) {
         this.postRepository = postRepository;
+        this.followRepository = followRepository;
+        this.newsfeedIFollowRepository = newsfeedIFollowRepository;
     }
 
     @Override
+    @Transactional
     public Post savePost(Post post) {
-        return postRepository.save(post);
+        Post saved = postRepository.save(post);
+        Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUserId().getId());
+
+        if (optionalFollowList.isPresent()) {
+            List<Follow> followList = optionalFollowList.get();
+
+            for (Follow follows : followList) {
+                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
+                newsfeedIFollow.setUserId(follows.getUserId());
+                newsfeedIFollow.setFollowingId(saved.getUserId());
+                newsfeedIFollow.setType("post");
+                newsfeedIFollow.setTargetId(saved.getId());
+                newsfeedIFollowRepository.save(newsfeedIFollow);
+            }
+        }
+        return saved;
+
     }
 
     @Override

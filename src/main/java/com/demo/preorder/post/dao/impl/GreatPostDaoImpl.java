@@ -1,7 +1,11 @@
 package com.demo.preorder.post.dao.impl;
 
+import com.demo.preorder.follow.entity.Follow;
+import com.demo.preorder.follow.repository.FollowRepository;
 import com.demo.preorder.member.entity.User;
 import com.demo.preorder.member.repository.UserRepository;
+import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
+import com.demo.preorder.newsfeed.repository.NewsfeedIFollowRepository;
 import com.demo.preorder.post.dao.GreatPostDao;
 import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.post.entity.Post;
@@ -21,10 +25,15 @@ public class GreatPostDaoImpl implements GreatPostDao {
 
     private final PostRepository postRepository;
 
-    public GreatPostDaoImpl(GreatPostRepository greatPostRepository, UserRepository userRepository, PostRepository postRepository) {
+    private final FollowRepository followRepository;
+
+    private final NewsfeedIFollowRepository newsfeedIFollowRepository;
+    public GreatPostDaoImpl(GreatPostRepository greatPostRepository, UserRepository userRepository, PostRepository postRepository, FollowRepository followRepository, NewsfeedIFollowRepository newsfeedIFollowRepository) {
         this.greatPostRepository = greatPostRepository;
         this.userRepository = userRepository;
         this.postRepository = postRepository;
+        this.followRepository = followRepository;
+        this.newsfeedIFollowRepository = newsfeedIFollowRepository;
     }
 
     @Override
@@ -38,7 +47,23 @@ public class GreatPostDaoImpl implements GreatPostDao {
 
         greatPost.setUserId(user);
         greatPost.setPostId(post);
-        return greatPostRepository.save(greatPost);
+        GreatPost saved = greatPostRepository.save(greatPost);
+        Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUserId().getId());
+
+        if (optionalFollowList.isPresent()) {
+            List<Follow> followList = optionalFollowList.get();
+
+            for (Follow follows : followList) {
+                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
+                newsfeedIFollow.setUserId(follows.getUserId());
+                newsfeedIFollow.setFollowingId(saved.getUserId());
+                newsfeedIFollow.setType("greatPost");
+                newsfeedIFollow.setTargetId(saved.getId());
+                newsfeedIFollowRepository.save(newsfeedIFollow);
+            }
+        }
+        return saved;
+
     }
 
     @Override
