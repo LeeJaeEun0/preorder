@@ -5,8 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
+import com.demo.preorder.user.dto.UserLoginDto;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -23,13 +25,18 @@ public class User {
 
     private String password;
 
-    private String role;
 
     private String name;
 
     private String image;
 
     private String greeting;
+
+    private String refreshToken;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    private Set<UserRole> userRoles = new HashSet<>();
+
 
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -51,4 +58,24 @@ public class User {
     public void modifiedDate() {
         this.setLastmodifiedDate(LocalDateTime.now());
     }
+
+    @Builder
+    public User(String email, String password, String name){
+        this.email = email;
+        this.password = password;
+        this.name = name;
+    }
+
+    public void addRole(UserRole userRole){
+        userRoles.add(userRole);
+    }
+
+    public void updateRefreshToken(String refreshToken){
+        this.refreshToken = refreshToken;
+    }
+
+    public boolean verifyUser(UserLoginDto userLoginDto){
+        return this.email.equals(userLoginDto.getUserEmail()) && this.password.equals(userLoginDto.getUserPassword());
+    }
+
 }
