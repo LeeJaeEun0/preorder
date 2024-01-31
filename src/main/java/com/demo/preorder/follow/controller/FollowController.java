@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/followers")
+@RequestMapping("/api/followers")
 public class FollowController {
     @Autowired
     private FollowService followService;

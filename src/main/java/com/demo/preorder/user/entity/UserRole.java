@@ -15,6 +15,8 @@ public class UserRole {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Enumerated(value =EnumType.STRING)
     private Role role;
 
     @Builder

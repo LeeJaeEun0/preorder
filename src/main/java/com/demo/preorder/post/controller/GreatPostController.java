@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/greatPosts")
+@RequestMapping("/api/greatPosts")
 public class GreatPostController {
 
     private final GreatPostService greatPostService;

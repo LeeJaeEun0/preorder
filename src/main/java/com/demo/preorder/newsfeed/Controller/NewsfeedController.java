@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/newsfeeds")
+@RequestMapping("/api/newsfeeds")
 public class NewsfeedController {
     private final NewsfeedIFollowService newsfeedIFollowService;
 
