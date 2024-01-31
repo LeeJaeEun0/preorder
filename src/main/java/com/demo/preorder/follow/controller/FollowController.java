@@ -20,7 +20,7 @@ public class FollowController {
     public ResponseEntity<?> saveFollow(@RequestBody FollowDto followDto){
         FollowDto followDto1 = followService.saveFollow(followDto);
         if(followDto1 != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(followDto1);
+            return  ResponseEntity.status(HttpStatus.CREATED).body(followDto1);
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("팔로우 실패 했습니다");
         }

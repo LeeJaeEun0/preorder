@@ -27,7 +27,7 @@ public class CommentController {
     public ResponseEntity<?> saveComment(@PathVariable Long userId, @RequestBody CommentDto commentDto){
         Comment comment = commentService.saveComment(userId, commentDto);
         if(comment != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(comment);
+            return  ResponseEntity.status(HttpStatus.CREATED).body(comment);
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("댓글 작성에 실패했습니다.");
         }
@@ -36,7 +36,7 @@ public class CommentController {
     public ResponseEntity<?> insertComment(@PathVariable Long userId,@RequestBody CommentReplayDto commentReplayDto){
         Comment comment = commentService.insertComment(userId, commentReplayDto);
         if(comment != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(comment);
+            return  ResponseEntity.status(HttpStatus.CREATED).body(comment);
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("대댓글 작성에 실패했습니다.");
         }

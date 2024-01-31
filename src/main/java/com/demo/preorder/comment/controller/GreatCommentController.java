@@ -25,7 +25,7 @@ public class GreatCommentController {
     public ResponseEntity<?> saveGreatPost(@PathVariable Long userId, @RequestBody GreatCommentDto greatCommentDto){
         GreatComment greatComment =  greatCommentService.saveGreatComment(userId, greatCommentDto);
         if (greatComment != null) {
-            return  ResponseEntity.status(HttpStatus.OK).body(greatComment);
+            return  ResponseEntity.status(HttpStatus.CREATED).body(greatComment);
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("좋아요를 실패했습니다.");
         }

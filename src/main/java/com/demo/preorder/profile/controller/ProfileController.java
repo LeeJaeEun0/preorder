@@ -15,7 +15,7 @@ public class ProfileController {
     public ResponseEntity<?> saveProfile(@PathVariable Long userId, ProfileDto profileDto){
         Profile profile = profileService.saveProfile(userId, profileDto);
         if(profile != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(profile);
+            return  ResponseEntity.status(HttpStatus.CREATED).body(profile);
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("프로필 작성에 실패했습니다.");
         }

@@ -23,7 +23,7 @@ public class GreatPostController {
     public ResponseEntity<?> saveGreatPost(@PathVariable Long userId, @RequestBody GreatPostDto greatPostDto){
         GreatPost greatPost =  greatPostService.saveGreatPost(userId, greatPostDto);
         if (greatPost != null) {
-            return  ResponseEntity.status(HttpStatus.OK).body(greatPost);
+            return  ResponseEntity.status(HttpStatus.CREATED).body(greatPost);
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("좋아요를 실패했습니다.");
         }

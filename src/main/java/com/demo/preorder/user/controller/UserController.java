@@ -30,7 +30,7 @@ public class UserController {
     @PostMapping("/join")
     public ResponseEntity<?> createUser(@RequestBody UserDto userDto) {
         User user = userService.saveUser(userDto);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PutMapping("/profile/{userId}")

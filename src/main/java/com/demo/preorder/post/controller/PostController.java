@@ -22,7 +22,7 @@ public class PostController {
     public ResponseEntity<?> savePost(@PathVariable Long userId, @RequestBody PostDto postDto){
         Post post = postService.savePost(userId, postDto);
         if(post != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(post);
+            return  ResponseEntity.status(HttpStatus.CREATED).body(post);
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("포스트 작성에 실패했습니다.");
         }
