@@ -1,11 +1,11 @@
 version: '3'
 
 services:
-  web:
-    image: nginx:latest
-    ports:
-      - "80:80"
-    container_name: nginx
+#  web:
+#    image: nginx:latest
+#    ports:
+#      - "80:80"
+#    container_name: nginx
 #    depends_on:
 #      - backend
 
@@ -21,14 +21,18 @@ services:
     restart: unless-stopped
     platform: linux/x86_64
     environment:
-      MYSQL_ROOT_PASSWORD: 1
+      MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: preorder
-      MYSQL_USER: root
+      MYSQL_USER: eje
       MYSQL_PASSWORD: 1234
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 volumes:
   mysql_data:

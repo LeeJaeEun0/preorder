@@ -1,6 +1,7 @@
 package com.demo.preorder.user.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
+@Builder
+@AllArgsConstructor
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -19,9 +22,9 @@ public class UserRole {
     @Enumerated(value =EnumType.STRING)
     private Role role;
 
-    @Builder
-    public UserRole(User user ,Role role){
-        this.user = user;
-        this.role = role;
-    }
+//    @Builder
+//    public UserRole(User user ,Role role){
+//        this.user = user;
+//        this.role = role;
+//    }
 }
