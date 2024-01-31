@@ -26,13 +26,13 @@ services:
       MYSQL_USER: eje
       MYSQL_PASSWORD: 1234
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
   adminer:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - 8079:8080
 volumes:
   mysql_data:
