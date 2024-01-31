@@ -67,6 +67,7 @@ public class CommentDaoImpl implements CommentDao {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         if(optionalComment.isPresent()){
             Comment comment = optionalComment.get();
+            return comment;
         }
         return null;
     }
