@@ -51,15 +51,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User updateUserProfile(Long userId, String name, String image, String greeting) throws Exception {
+    public User updateUserProfile(Long userId, String name) throws Exception {
         Optional<User> selectUser = userRepository.findById(userId);
         User updateUser;
         if (selectUser.isPresent()) {
             User user = selectUser.get();
 
             user.setName(name);
-            user.setImage(image);
-            user.setGreeting(greeting);
 
             updateUser = userRepository.save(user);
         } else {

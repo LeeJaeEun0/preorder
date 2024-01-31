@@ -1,38 +1,35 @@
-package com.demo.preorder.user.entity;
+package com.demo.preorder.profile.entity;
 
+import com.demo.preorder.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import com.demo.preorder.user.dto.UserLoginDto;
+
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User {
+public class Profile {
     @Id
     @Column(name="user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User userId;
 
-    private String password;
+    private String image;
 
-
-    private String name;
-
-    private String refreshToken;
-
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    private Set<UserRole> userRoles = new HashSet<>();
-
+    private String greeting;
 
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -55,23 +52,5 @@ public class User {
         this.setLastmodifiedDate(LocalDateTime.now());
     }
 
-    @Builder
-    public User(String email, String password, String name){
-        this.email = email;
-        this.password = password;
-        this.name = name;
-    }
-
-    public void addRole(UserRole userRole){
-        userRoles.add(userRole);
-    }
-
-    public void updateRefreshToken(String refreshToken){
-        this.refreshToken = refreshToken;
-    }
-
-    public boolean verifyUser(UserLoginDto userLoginDto){
-        return this.email.equals(userLoginDto.getUserEmail()) && this.password.equals(userLoginDto.getUserPassword());
-    }
 
 }

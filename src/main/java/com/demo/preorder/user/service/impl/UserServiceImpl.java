@@ -57,14 +57,12 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encrypt(userDto.getEmail(),userDto.getPassword()));
         user.setName(userDto.getName());
-        user.setImage(userDto.getImage());
-        user.setGreeting(user.getGreeting());
         return userDao.insertUser(user);
     }
 
     @Override
     public User changeUserProfile(Long userId, ProfileDto profileDto) throws Exception {
-        return userDao.updateUserProfile(userId,profileDto.getName(), profileDto.getImage(), profileDto.getGreeting());
+        return userDao.updateUserProfile(userId,profileDto.getName());
     }
 
     @Override
