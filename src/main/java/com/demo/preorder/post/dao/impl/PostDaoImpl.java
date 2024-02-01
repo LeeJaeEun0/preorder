@@ -2,7 +2,9 @@ package com.demo.preorder.post.dao.impl;
 
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.repository.FollowRepository;
+import com.demo.preorder.newsfeed.entity.NewsfeedFollowedMe;
 import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
+import com.demo.preorder.newsfeed.repository.NewsfeedFollowedMeRepository;
 import com.demo.preorder.newsfeed.repository.NewsfeedIFollowRepository;
 import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.entity.Post;
@@ -22,10 +24,13 @@ public class PostDaoImpl implements PostDao {
 
     private final NewsfeedIFollowRepository newsfeedIFollowRepository;
 
-    public PostDaoImpl(PostRepository postRepository, FollowRepository followRepository, NewsfeedIFollowRepository newsfeedIFollowRepository) {
+    private final NewsfeedFollowedMeRepository newsfeedFollowedMeRepository;
+
+    public PostDaoImpl(PostRepository postRepository, FollowRepository followRepository, NewsfeedIFollowRepository newsfeedIFollowRepository, NewsfeedFollowedMeRepository newsfeedFollowedMeRepository) {
         this.postRepository = postRepository;
         this.followRepository = followRepository;
         this.newsfeedIFollowRepository = newsfeedIFollowRepository;
+        this.newsfeedFollowedMeRepository = newsfeedFollowedMeRepository;
     }
 
     @Override
@@ -34,6 +39,7 @@ public class PostDaoImpl implements PostDao {
         Post saved = postRepository.save(post);
         Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUserId().getId());
 
+        // 팔로우한 사람들에게 알림
         if (optionalFollowList.isPresent()) {
             List<Follow> followList = optionalFollowList.get();
 
@@ -44,6 +50,20 @@ public class PostDaoImpl implements PostDao {
                 newsfeedIFollow.setType("post");
                 newsfeedIFollow.setTargetId(saved.getId());
                 newsfeedIFollowRepository.save(newsfeedIFollow);
+            }
+        }
+        
+        // 내가 팔로우한 사람들에게 소식을 알림
+        Optional<List<Follow>>optionalFollowList2 = followRepository.findByUserIdId(saved.getUserId().getId());
+        if (optionalFollowList2.isPresent()) {
+            List<Follow> followList = optionalFollowList2.get();
+
+            for (Follow follows : followList) {
+                NewsfeedFollowedMe newsfeedFollowedMe = new NewsfeedFollowedMe();
+                newsfeedFollowedMe.setUserId(follows.getFollowingId());
+                newsfeedFollowedMe.setFollowerId(saved.getUserId());
+                newsfeedFollowedMe.setTargetId(saved.getId());
+                newsfeedFollowedMeRepository.save(newsfeedFollowedMe);
             }
         }
         return saved;
