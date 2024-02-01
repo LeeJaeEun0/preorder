@@ -17,6 +17,6 @@ public class NewsfeedIFollowDaoImpl implements NewsfeedIFollowDao {
 
     @Override
     public List<NewsfeedIFollow> newsfeedIFollow(Long userId) {
-        return newsfeedIFollowRepository.findByUserIdIdOrderByIdDesc(userId);
+        return newsfeedIFollowRepository.findByUserIdIdOrderByCreatedDateDesc(userId);
     }
 }

@@ -2,6 +2,9 @@ package com.demo.preorder.post.dao.impl;
 
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.repository.FollowRepository;
+import com.demo.preorder.newsfeed.entity.NewsfeedFollowedMe;
+import com.demo.preorder.newsfeed.entity.NewsfeedMyNews;
+import com.demo.preorder.newsfeed.repository.NewsfeedMyNewsRepository;
 import com.demo.preorder.user.entity.User;
 import com.demo.preorder.user.repository.UserRepository;
 import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
@@ -28,12 +31,15 @@ public class GreatPostDaoImpl implements GreatPostDao {
     private final FollowRepository followRepository;
 
     private final NewsfeedIFollowRepository newsfeedIFollowRepository;
-    public GreatPostDaoImpl(GreatPostRepository greatPostRepository, UserRepository userRepository, PostRepository postRepository, FollowRepository followRepository, NewsfeedIFollowRepository newsfeedIFollowRepository) {
+
+    private final NewsfeedMyNewsRepository newsfeedMyNewsRepository;
+    public GreatPostDaoImpl(GreatPostRepository greatPostRepository, UserRepository userRepository, PostRepository postRepository, FollowRepository followRepository, NewsfeedIFollowRepository newsfeedIFollowRepository, NewsfeedMyNewsRepository newsfeedMyNewsRepository) {
         this.greatPostRepository = greatPostRepository;
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.followRepository = followRepository;
         this.newsfeedIFollowRepository = newsfeedIFollowRepository;
+        this.newsfeedMyNewsRepository = newsfeedMyNewsRepository;
     }
 
     @Override
@@ -62,6 +68,15 @@ public class GreatPostDaoImpl implements GreatPostDao {
                 newsfeedIFollowRepository.save(newsfeedIFollow);
             }
         }
+
+        // 포스트를 작성한 사람에게 좋아요 알림
+        NewsfeedMyNews newsfeedFollowedMe = new NewsfeedMyNews();
+        newsfeedFollowedMe.setUserId(post.getUserId());
+        newsfeedFollowedMe.setWriterId(saved.getUserId());
+        newsfeedFollowedMe.setType("great");
+        newsfeedFollowedMe.setPostId(post.getId());
+        newsfeedMyNewsRepository.save(newsfeedFollowedMe);
+
         return saved;
 
     }
