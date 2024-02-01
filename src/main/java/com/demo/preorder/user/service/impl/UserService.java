@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,8 @@ public class UserService {
                 .role(Role.USER)
                 .user(user)
                 .build();
+        if(user.getUserRoles() == null)
+            user.setUserRoles(new HashSet<>());
         user.addRole(role);
         userRoleRepository.save(role);
         return new UserResponseDto(user);
