@@ -7,8 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProfileDto {
-    private User userId;
-
     private String image;
 
     private String greeting;

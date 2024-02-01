@@ -37,6 +37,8 @@ public class PostDaoImpl implements PostDao {
     @Transactional
     public Post savePost(Post post) {
         Post saved = postRepository.save(post);
+        System.out.println("dao");
+        System.out.println(saved.getContents());
         Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUserId().getId());
 
         // 팔로우한 사람들에게 알림

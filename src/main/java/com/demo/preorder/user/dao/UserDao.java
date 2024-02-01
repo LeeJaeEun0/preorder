@@ -7,7 +7,7 @@ public interface UserDao {
     User findUser(Long userId);
     boolean checkEmail(String email);
     //void deleteEmailCertification(String email);
-    User insertUser(User user);
+    Long findUserId(String email);
     Optional<User> selectUser(Long userid);
     public User updateUserProfile(Long userId, String name) throws Exception;
     User updateUserPassword(Long userId, String oldPassword, String newPassword) throws Exception;

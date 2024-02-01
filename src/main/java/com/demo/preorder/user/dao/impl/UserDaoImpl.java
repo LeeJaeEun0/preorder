@@ -41,8 +41,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User insertUser(User user){
-        return userRepository.save(user);
+    public Long findUserId(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if(optionalUser!=null){
+            User user = optionalUser.get();
+            return user.getId();
+        }
+
+        return null;
     }
 
     @Override
@@ -75,8 +81,8 @@ public class UserDaoImpl implements UserDao {
             User user = selectUser.get();
             String password = user.getPassword();
 
-            if (password.equals(passwordEncoder.encrypt(user.getEmail(),oldPassword))){
-                user.setPassword(passwordEncoder.encrypt(user.getEmail(), newPassword));
+            if (password.equals(oldPassword)){
+                user.setPassword(newPassword);
             }else{
                 throw new Exception();
             }

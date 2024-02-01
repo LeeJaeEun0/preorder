@@ -3,11 +3,13 @@ package com.demo.preorder.post.controller;
 import com.demo.preorder.post.dto.GreatPostDto;
 import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.post.service.GreatPostService;
+import com.demo.preorder.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/greatPosts")
@@ -15,13 +17,19 @@ public class GreatPostController {
 
     private final GreatPostService greatPostService;
 
-    public GreatPostController(GreatPostService greatPostService) {
+    private final UserService userService;
+
+    public GreatPostController(GreatPostService greatPostService, UserService userService) {
         this.greatPostService = greatPostService;
+        this.userService = userService;
     }
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<?> saveGreatPost(@PathVariable Long userId, @RequestBody GreatPostDto greatPostDto){
+    @PostMapping
+    public ResponseEntity<?> saveGreatPost(@RequestHeader Map<String, String> httpHeaders,
+                                           @RequestBody GreatPostDto greatPostDto){
+        Long userId = userService.findUserId(httpHeaders);
         GreatPost greatPost =  greatPostService.saveGreatPost(userId, greatPostDto);
+
         if (greatPost != null) {
             return  ResponseEntity.status(HttpStatus.CREATED).body(greatPost);
         }else {
@@ -29,8 +37,8 @@ public class GreatPostController {
         }
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> greatPostList(@PathVariable Long userId, @RequestBody GreatPostDto greatPostDto){
+    @GetMapping
+    public ResponseEntity<?> greatPostList( @RequestBody GreatPostDto greatPostDto){
         List<GreatPost> greatPostList =  greatPostService.greatPostList(greatPostDto);
         if (greatPostList != null) {
             return  ResponseEntity.status(HttpStatus.OK).body(greatPostList);
@@ -39,9 +47,11 @@ public class GreatPostController {
         }
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteGreatPost(@PathVariable Long userId, @RequestBody GreatPostDto greatPostDto){
-        greatPostService.deleteGreatPost(userId,greatPostDto);;
+    @DeleteMapping
+    public ResponseEntity<?> deleteGreatPost(@RequestHeader Map<String, String> httpHeaders,
+                                             @RequestBody GreatPostDto greatPostDto){
+        Long userId = userService.findUserId(httpHeaders);
+        greatPostService.deleteGreatPost(userId,greatPostDto);
         return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 

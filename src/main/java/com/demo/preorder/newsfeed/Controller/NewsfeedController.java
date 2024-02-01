@@ -6,17 +6,16 @@ import com.demo.preorder.newsfeed.entity.NewsfeedMyNews;
 import com.demo.preorder.newsfeed.service.NewsfeedFollowedMeService;
 import com.demo.preorder.newsfeed.service.NewsfeedIFollowService;
 import com.demo.preorder.newsfeed.service.NewsfeedMyNewsService;
+import com.demo.preorder.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/newsfeeds")
+@RequestMapping("/newsfeeds")
 public class NewsfeedController {
     private final NewsfeedIFollowService newsfeedIFollowService;
 
@@ -24,14 +23,17 @@ public class NewsfeedController {
 
     private final NewsfeedMyNewsService newsfeedMyNewsService;
 
-    public NewsfeedController(NewsfeedIFollowService newsfeedIFollowService, NewsfeedFollowedMeService newsfeedFollowedMeService, NewsfeedMyNewsService newsfeedMyNewsService) {
+    private final UserService userService;
+    public NewsfeedController(NewsfeedIFollowService newsfeedIFollowService, NewsfeedFollowedMeService newsfeedFollowedMeService, NewsfeedMyNewsService newsfeedMyNewsService, UserService userService) {
         this.newsfeedIFollowService = newsfeedIFollowService;
         this.newsfeedFollowedMeService = newsfeedFollowedMeService;
         this.newsfeedMyNewsService = newsfeedMyNewsService;
+        this.userService = userService;
     }
 
-    @GetMapping("/ifollow/{userId}")
-    public ResponseEntity<?> selectNewsfeedIFollow(@PathVariable Long userId){
+    @GetMapping("/ifollow")
+    public ResponseEntity<?> selectNewsfeedIFollow(@RequestHeader Map<String, String> httpHeaders){
+        Long userId = userService.findUserId(httpHeaders);
         List<NewsfeedIFollow> newsfeedIFollowList = newsfeedIFollowService.newsfeedIFollow(userId);
         if (newsfeedIFollowList != null) {
             return ResponseEntity.accepted().body(newsfeedIFollowList);
@@ -40,8 +42,9 @@ public class NewsfeedController {
         }
     }
 
-    @GetMapping("/followed/{userId}")
-    public ResponseEntity<?> selectNewsfeedFollowedMe(@PathVariable Long userId){
+    @GetMapping("/followed")
+    public ResponseEntity<?> selectNewsfeedFollowedMe(@RequestHeader Map<String, String> httpHeaders){
+        Long userId = userService.findUserId(httpHeaders);
         List<NewsfeedFollowedMe> newsfeedFollowedMeList = newsfeedFollowedMeService.newsfeedFollowedMe(userId);
         if (newsfeedFollowedMeList != null) {
             return ResponseEntity.accepted().body(newsfeedFollowedMeList);
@@ -50,8 +53,9 @@ public class NewsfeedController {
         }
     }
 
-    @GetMapping("/mynews/{userId}")
-    public ResponseEntity<?> selectNewsfeedMyNews(@PathVariable Long userId){
+    @GetMapping("/mynews")
+    public ResponseEntity<?> selectNewsfeedMyNews(@RequestHeader Map<String, String> httpHeaders){
+        Long userId = userService.findUserId(httpHeaders);
         List<NewsfeedMyNews> newsfeedFollowedMeList = newsfeedMyNewsService.newsfeedMyNews(userId);
         if (newsfeedFollowedMeList != null) {
             return ResponseEntity.accepted().body(newsfeedFollowedMeList);

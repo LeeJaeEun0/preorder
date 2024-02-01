@@ -21,22 +21,20 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public FollowDto saveFollow(FollowDto followDto) {
+    public FollowDto saveFollow(Long userId,FollowDto followDto) {
         Follow follow = new Follow();
-        if (followDto.getUserId() ==null)
-            return null;
         if (followDto.getFollowingId() ==null)
             return null;
 
-        follow.setUserId(userDao.findUser(followDto.getUserId()));
+        follow.setUserId(userDao.findUser(userId));
         follow.setFollowingId(userDao.findUser(followDto.getFollowingId()));
         followDao.insertFollow(follow);
         return followDto;
     }
 
     @Override
-    public void deleteFollow(FollowDto followDto) throws Exception {
-        followDao.deleteFollow(followDto.getUserId(), followDto.getFollowingId());
+    public void deleteFollow(Long userId,FollowDto followDto) throws Exception {
+        followDao.deleteFollow(userId, followDto.getFollowingId());
     }
 
     // 나를 팔로우한 사람
@@ -47,7 +45,7 @@ public class FollowServiceImpl implements FollowService {
 
     // 내가 팔로우한 사람
     @Override
-    public List<Follow> peopleIFollow(FollowDto followDto) {
-        return followDao.peopleIfollow(followDto.getUserId());
+    public List<Follow> peopleIFollow(Long userId) {
+        return followDao.peopleIfollow(userId);
     }
 }

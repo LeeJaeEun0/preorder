@@ -9,20 +9,20 @@ import com.demo.preorder.user.dto.ProfileDto;
 import com.demo.preorder.user.dto.UserDto;
 import com.demo.preorder.user.entity.EmailCertification;
 import com.demo.preorder.user.entity.User;
+import com.demo.preorder.user.jwt.JwtUtils;
 import com.demo.preorder.user.provider.EmailProvider;
 import com.demo.preorder.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
-
-    private final PasswordEncoder passwordEncoder;
-
 
     @Autowired
     private EmailCertificationDao emailCertificationDao;
@@ -52,12 +52,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveUser(UserDto userDto) {
-        User user = new User();
-        user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encrypt(userDto.getEmail(),userDto.getPassword()));
-        user.setName(userDto.getName());
-        return userDao.insertUser(user);
+    public Long findUserId(Map<String, String> httpHeaders) {
+        String jwtToken = httpHeaders.get("authorization");
+        String email = JwtUtils.initJwtPayload(jwtToken);
+
+        return userDao.findUserId(email);
     }
 
     @Override

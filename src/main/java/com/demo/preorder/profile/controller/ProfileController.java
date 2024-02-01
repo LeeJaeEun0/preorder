@@ -3,16 +3,32 @@ package com.demo.preorder.profile.controller;
 import com.demo.preorder.profile.dto.ProfileDto;
 import com.demo.preorder.profile.entity.Profile;
 import com.demo.preorder.profile.service.ProfileService;
+import com.demo.preorder.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping("/api/profiles")
+@RequestMapping("/profiles")
 public class ProfileController {
-    private ProfileService profileService;
-    @PostMapping("/{userId}")
-    public ResponseEntity<?> saveProfile(@PathVariable Long userId, ProfileDto profileDto){
+    @Autowired
+    private final ProfileService profileService;
+
+    @Autowired
+    private final UserService userService;
+
+    public ProfileController(ProfileService profileService, UserService userService) {
+        this.profileService = profileService;
+        this.userService = userService;
+    }
+
+    @PostMapping
+    public ResponseEntity<?> saveProfile(@RequestHeader Map<String, String> httpHeaders,
+                                         @RequestBody ProfileDto profileDto){
+        Long userId = userService.findUserId(httpHeaders);
         Profile profile = profileService.saveProfile(userId, profileDto);
         if(profile != null){
             return  ResponseEntity.status(HttpStatus.CREATED).body(profile);
@@ -21,8 +37,10 @@ public class ProfileController {
         }
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<?> updateProfile(@PathVariable Long userId, ProfileDto profileDto){
+    @PutMapping
+    public ResponseEntity<?> updateProfile(@RequestHeader Map<String, String> httpHeaders,
+                                           @RequestBody ProfileDto profileDto){
+        Long userId = userService.findUserId(httpHeaders);
         Profile profile = profileService.updateProfile(userId, profileDto);
         if(profile != null){
             return  ResponseEntity.status(HttpStatus.OK).body(profile);

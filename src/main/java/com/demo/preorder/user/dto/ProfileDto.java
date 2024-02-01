@@ -7,6 +7,4 @@ import lombok.Setter;
 @Setter
 public class ProfileDto {
     private String name;
-    private String image;
-    private String greeting;
 }

@@ -6,7 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FollowDto {
-    private Long userId;
-
     private Long followingId;
 }

@@ -1,6 +1,7 @@
 package com.demo.preorder.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -30,6 +31,7 @@ public class User {
 
     private String refreshToken;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<UserRole> userRoles = new HashSet<>();
 

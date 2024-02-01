@@ -11,11 +11,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
     @Autowired
-    private  UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/email")
     public ResponseEntity<?> sendEmail(@RequestBody EmailDto emailDTO) {
@@ -27,20 +33,19 @@ public class UserController {
         }
     }
 
-    @PostMapping("/join")
-    public ResponseEntity<?> createUser(@RequestBody UserDto userDto) {
-        User user = userService.saveUser(userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
-    }
-
-    @PutMapping("/profile/{userId}")
-    public ResponseEntity<?> updateProfile(@PathVariable Long userId,@RequestBody ProfileDto profileDto) throws Exception {
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateProfile(@RequestHeader Map<String, String> httpHeaders,
+                                           @RequestBody ProfileDto profileDto) throws Exception {
+        Map<String, String> httpHeader = httpHeaders;
+        Long userId = userService.findUserId(httpHeader);
         User user = userService.changeUserProfile(userId,profileDto);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
-    @PutMapping("/password/{userId}")
-    public ResponseEntity<?> updatePassword(@PathVariable Long userId,@RequestBody PasswordDto passwordDto) throws Exception {
+    @PutMapping("/password")
+    public ResponseEntity<?> updatePassword(@RequestHeader Map<String, String> httpHeaders,
+                                            @RequestBody PasswordDto passwordDto) throws Exception {
+        Long userId = userService.findUserId(httpHeaders);
         User user = userService.changeUserPassword(userId,passwordDto);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }

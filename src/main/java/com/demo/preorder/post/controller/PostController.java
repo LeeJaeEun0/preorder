@@ -4,23 +4,44 @@ import com.demo.preorder.post.dto.PostDto;
 import com.demo.preorder.post.dto.SearchwordDto;
 import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.post.service.PostService;
+import com.demo.preorder.user.repository.UserRepository;
+import com.demo.preorder.user.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
 
     @Autowired
-    private PostService postService;
+    private final PostService postService;
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<?> savePost(@PathVariable Long userId, @RequestBody PostDto postDto){
+    @Autowired
+    private final UserService userService;
+
+    @Autowired
+    private final UserRepository userRepository;
+
+    public PostController(PostService postService, UserService userService, UserRepository userRepository) {
+        this.postService = postService;
+        this.userService = userService;
+        this.userRepository = userRepository;
+    }
+
+    @PostMapping
+    public ResponseEntity<?> savePost(@RequestHeader Map<String, String> httpHeaders,
+                                      @RequestBody PostDto postDto){
+        log.info("info log = {}",postDto.getContents());
+        Long userId = userService.findUserId(httpHeaders);
         Post post = postService.savePost(userId, postDto);
+
         if(post != null){
             return  ResponseEntity.status(HttpStatus.CREATED).body(post);
         }else {
@@ -49,8 +70,15 @@ public class PostController {
         return  ResponseEntity.status(HttpStatus.OK).body(postList);
 
     }
-    @PutMapping("/{userId}")
-    public ResponseEntity<?> changePost(@PathVariable Long userId, @RequestBody PostDto postDto){
+    @PutMapping
+    public ResponseEntity<?> changePost(@RequestHeader Map<String, String> httpHeaders,
+                                        @RequestBody PostDto postDto){
+
+        Long userId = userService.findUserId(httpHeaders);
+        log.info("info log = {}",userId);
+        log.info("info log = {}",postDto.getPostId());
+        log.info("info log = {}",postDto.getContents());
+
         Post post = postService.changePost(userId, postDto);
         if(post != null){
             return  ResponseEntity.status(HttpStatus.OK).body(post);
@@ -58,8 +86,10 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("포스트 수정에 실패했습니다.");
         }
     }
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deletePost(@PathVariable Long userId, @RequestBody PostDto postDto) throws Exception {
+    @DeleteMapping
+    public ResponseEntity<?> deletePost(@RequestHeader Map<String, String> httpHeaders,
+                                        @RequestBody PostDto postDto) throws Exception {
+        Long userId = userService.findUserId(httpHeaders);
         postService.deletePost(userId, postDto);
         return null;
 
