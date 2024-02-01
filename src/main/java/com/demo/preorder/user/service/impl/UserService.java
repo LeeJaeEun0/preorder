@@ -31,6 +31,7 @@ public class UserService {
 
     private final ObjectMapper objectMapper;
 
+
     @Transactional
     public UserResponseDto registerUser(UserRegisterDto userRegisterDto){
         User user = userRepository.save(userRegisterDto.toEntity());
@@ -108,4 +109,5 @@ public class UserService {
         userRoleRepository.save(userRole);
         return true;
     }
+
 }
