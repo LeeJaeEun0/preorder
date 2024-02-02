@@ -20,7 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
-    @Autowired
+
     private final CommentService commentService;
 
     private final UserService userService;

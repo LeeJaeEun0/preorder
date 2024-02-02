@@ -21,11 +21,10 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserDao userDao;
 
-    @Autowired
-    private EmailCertificationDao emailCertificationDao;
+    private final UserDao userDao;
+
+    private final EmailCertificationDao emailCertificationDao;
 
     private  final EmailProvider emailProvider;
     @Override

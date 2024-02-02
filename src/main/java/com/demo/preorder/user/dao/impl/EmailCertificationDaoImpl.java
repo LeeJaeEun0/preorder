@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Component
 public class EmailCertificationDaoImpl implements EmailCertificationDao {
-    @Autowired
+
     private final EmailCertificationRepository emailCertificationRepository;
 
     public EmailCertificationDaoImpl(EmailCertificationRepository emailCertificationRepository) {

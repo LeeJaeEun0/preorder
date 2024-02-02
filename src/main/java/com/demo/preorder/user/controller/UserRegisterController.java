@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user")
 public class UserRegisterController {
+
     private final UserService userService;
 
     @PostMapping("/register")

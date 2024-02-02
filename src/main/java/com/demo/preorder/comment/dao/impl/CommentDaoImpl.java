@@ -19,7 +19,6 @@ import java.util.Optional;
 @Component
 public class CommentDaoImpl implements CommentDao {
 
-
     private final CommentRepository commentRepository;
 
     private final FollowRepository followRepository;

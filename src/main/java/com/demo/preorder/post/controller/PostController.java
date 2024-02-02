@@ -19,20 +19,16 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
-
-    @Autowired
+    
     private final PostService postService;
 
-    @Autowired
     private final UserService userService;
 
-    @Autowired
-    private final UserRepository userRepository;
 
-    public PostController(PostService postService, UserService userService, UserRepository userRepository) {
+    public PostController(PostService postService, UserService userService) {
         this.postService = postService;
         this.userService = userService;
-        this.userRepository = userRepository;
+
     }
 
     @PostMapping

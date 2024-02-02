@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @Component
 public class UserDaoImpl implements UserDao {
-    @Autowired
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -43,7 +42,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Long findUserId(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
-        if(optionalUser!=null){
+        if(optionalUser.isPresent()){
             User user = optionalUser.get();
             return user.getId();
         }

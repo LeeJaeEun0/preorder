@@ -15,7 +15,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/followers")
 public class FollowController {
-    @Autowired
     private final FollowService followService;
 
     private final UserService userService;

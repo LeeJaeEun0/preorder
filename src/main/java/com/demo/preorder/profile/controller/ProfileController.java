@@ -14,10 +14,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/profiles")
 public class ProfileController {
-    @Autowired
+
     private final ProfileService profileService;
 
-    @Autowired
     private final UserService userService;
 
     public ProfileController(ProfileService profileService, UserService userService) {
