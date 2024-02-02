@@ -11,12 +11,14 @@ import com.demo.preorder.newsfeed.repository.NewsfeedIFollowRepository;
 import com.demo.preorder.newsfeed.repository.NewsfeedMyNewsRepository;
 import com.demo.preorder.post.repository.PostRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class CommentDaoImpl implements CommentDao {
 
     private final CommentRepository commentRepository;
@@ -26,13 +28,6 @@ public class CommentDaoImpl implements CommentDao {
     private final NewsfeedIFollowRepository newsfeedIFollowRepository;
 
     private final NewsfeedMyNewsRepository newsfeedMyNewsRepository;
-
-    public CommentDaoImpl(CommentRepository commentRepository, PostRepository postRepository, FollowRepository followRepository, NewsfeedIFollowRepository newsfeedIFollowRepository, NewsfeedMyNewsRepository newsfeedMyNewsRepository) {
-        this.commentRepository = commentRepository;
-        this.followRepository = followRepository;
-        this.newsfeedIFollowRepository = newsfeedIFollowRepository;
-        this.newsfeedMyNewsRepository = newsfeedMyNewsRepository;
-    }
 
     @Override
     @Transactional

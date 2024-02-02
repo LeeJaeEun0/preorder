@@ -4,18 +4,16 @@ import com.demo.preorder.comment.dao.GreatCommentDao;
 import com.demo.preorder.comment.dto.GreatCommentDto;
 import com.demo.preorder.comment.entity.GreatComment;
 import com.demo.preorder.comment.service.GreatCommentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class GreatCommentServiceImpl implements GreatCommentService {
 
     private final GreatCommentDao greatCommentDao;
-
-    public GreatCommentServiceImpl(GreatCommentDao greatCommentDao) {
-        this.greatCommentDao = greatCommentDao;
-    }
 
     @Override
     public GreatComment saveGreatComment(Long userId, GreatCommentDto greatCommentDto) {

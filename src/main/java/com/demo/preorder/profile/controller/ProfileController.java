@@ -4,6 +4,7 @@ import com.demo.preorder.profile.dto.ProfileDto;
 import com.demo.preorder.profile.entity.Profile;
 import com.demo.preorder.profile.service.ProfileService;
 import com.demo.preorder.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,16 +14,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/profiles")
+@RequiredArgsConstructor
 public class ProfileController {
 
     private final ProfileService profileService;
 
     private final UserService userService;
-
-    public ProfileController(ProfileService profileService, UserService userService) {
-        this.profileService = profileService;
-        this.userService = userService;
-    }
 
     @PostMapping
     public ResponseEntity<?> saveProfile(@RequestHeader Map<String, String> httpHeaders,

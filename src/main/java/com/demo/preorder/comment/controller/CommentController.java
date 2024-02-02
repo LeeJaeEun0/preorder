@@ -7,6 +7,7 @@ import com.demo.preorder.comment.dto.CommentUpdateDto;
 import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.service.CommentService;
 import com.demo.preorder.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,15 +20,12 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/api/comments")
+@RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
 
     private final UserService userService;
-    public CommentController(CommentService commentService, UserService userService) {
-        this.commentService = commentService;
-        this.userService = userService;
-    }
 
     @PostMapping("/comment")
     public ResponseEntity<?> saveComment(@RequestHeader Map<String, String> httpHeaders,

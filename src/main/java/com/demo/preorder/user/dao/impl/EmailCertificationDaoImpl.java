@@ -3,20 +3,17 @@ package com.demo.preorder.user.dao.impl;
 import com.demo.preorder.user.dao.EmailCertificationDao;
 import com.demo.preorder.user.entity.EmailCertification;
 import com.demo.preorder.user.repository.EmailCertificationRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class EmailCertificationDaoImpl implements EmailCertificationDao {
 
     private final EmailCertificationRepository emailCertificationRepository;
-
-    public EmailCertificationDaoImpl(EmailCertificationRepository emailCertificationRepository) {
-        this.emailCertificationRepository = emailCertificationRepository;
-    }
-
 
     @Override
     public EmailCertification insertEmailCertification(EmailCertification emailCertification) {

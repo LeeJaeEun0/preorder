@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequiredArgsConstructor
+
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserRegisterController {
 
     private final UserService userService;

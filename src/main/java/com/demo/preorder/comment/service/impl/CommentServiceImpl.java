@@ -11,23 +11,19 @@ import com.demo.preorder.user.dao.UserDao;
 import com.demo.preorder.user.entity.User;
 import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.entity.Post;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
    private final PostDao postDao;
 
    private final UserDao userDao;
 
    private final CommentDao commentDao;
-
-    public CommentServiceImpl(PostDao postDao, UserDao userDao, CommentDao commentDao) {
-        this.postDao = postDao;
-        this.userDao = userDao;
-        this.commentDao = commentDao;
-    }
 
     @Override
     public Comment saveComment(Long userId,CommentDto commentDto) {

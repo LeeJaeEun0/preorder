@@ -6,6 +6,7 @@ import com.demo.preorder.user.dto.PasswordDto;
 import com.demo.preorder.user.dto.ProfileDto;
 import com.demo.preorder.user.dto.UserDto;
 import com.demo.preorder.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +16,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping("/email")
     public ResponseEntity<?> sendEmail(@RequestBody EmailDto emailDTO) {

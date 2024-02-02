@@ -11,12 +11,14 @@ import com.demo.preorder.user.entity.User;
 import com.demo.preorder.user.repository.UserRepository;
 import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
 import com.demo.preorder.newsfeed.repository.NewsfeedIFollowRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class GreatCommentDaoImpl implements GreatCommentDao {
 
     private final GreatCommentRepository greatCommentRepository;
@@ -28,15 +30,6 @@ public class GreatCommentDaoImpl implements GreatCommentDao {
     private final FollowRepository followRepository;
 
     private final NewsfeedIFollowRepository newsfeedIFollowRepository;
-
-    public GreatCommentDaoImpl(GreatCommentRepository greatCommentRepository, UserRepository userRepository, CommentRepository commentRepository, FollowRepository followRepository, NewsfeedIFollowRepository newsfeedIFollowRepository) {
-        this.greatCommentRepository = greatCommentRepository;
-        this.userRepository = userRepository;
-        this.commentRepository = commentRepository;
-        this.followRepository = followRepository;
-        this.newsfeedIFollowRepository = newsfeedIFollowRepository;
-    }
-
 
     @Override
     public GreatComment saveGreatComment(Long userId, Long commentId) {

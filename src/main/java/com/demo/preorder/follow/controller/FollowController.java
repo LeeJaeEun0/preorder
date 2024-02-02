@@ -4,6 +4,7 @@ import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.dto.FollowDto;
 import com.demo.preorder.follow.service.FollowService;
 import com.demo.preorder.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +15,11 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/followers")
+@RequiredArgsConstructor
 public class FollowController {
     private final FollowService followService;
 
     private final UserService userService;
-
-    public FollowController(FollowService followService, UserService userService) {
-        this.followService = followService;
-        this.userService = userService;
-    }
 
     @PostMapping
     public ResponseEntity<?> saveFollow(@RequestHeader Map<String, String> httpHeaders,

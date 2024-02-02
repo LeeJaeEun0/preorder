@@ -10,12 +10,14 @@ import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.post.repository.PostRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class PostDaoImpl implements PostDao {
 
     private final PostRepository postRepository;
@@ -25,13 +27,6 @@ public class PostDaoImpl implements PostDao {
     private final NewsfeedIFollowRepository newsfeedIFollowRepository;
 
     private final NewsfeedFollowedMeRepository newsfeedFollowedMeRepository;
-
-    public PostDaoImpl(PostRepository postRepository, FollowRepository followRepository, NewsfeedIFollowRepository newsfeedIFollowRepository, NewsfeedFollowedMeRepository newsfeedFollowedMeRepository) {
-        this.postRepository = postRepository;
-        this.followRepository = followRepository;
-        this.newsfeedIFollowRepository = newsfeedIFollowRepository;
-        this.newsfeedFollowedMeRepository = newsfeedFollowedMeRepository;
-    }
 
     @Override
     @Transactional

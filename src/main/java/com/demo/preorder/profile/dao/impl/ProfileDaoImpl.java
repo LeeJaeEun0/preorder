@@ -4,16 +4,14 @@ import com.demo.preorder.profile.dao.ProfileDao;
 import com.demo.preorder.profile.entity.Profile;
 import com.demo.preorder.profile.repository.ProfileRepository;
 import com.demo.preorder.user.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ProfileDaoImpl implements ProfileDao {
 
     private final ProfileRepository profileRepository;
-
-    public ProfileDaoImpl(ProfileRepository profileRepository) {
-        this.profileRepository = profileRepository;
-    }
 
     @Override
     public Profile saveProfile(Profile profile) {

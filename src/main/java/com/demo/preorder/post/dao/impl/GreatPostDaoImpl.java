@@ -14,12 +14,14 @@ import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.post.repository.GreatPostRepository;
 import com.demo.preorder.post.repository.PostRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class GreatPostDaoImpl implements GreatPostDao {
 
     private final GreatPostRepository greatPostRepository;
@@ -33,14 +35,6 @@ public class GreatPostDaoImpl implements GreatPostDao {
     private final NewsfeedIFollowRepository newsfeedIFollowRepository;
 
     private final NewsfeedMyNewsRepository newsfeedMyNewsRepository;
-    public GreatPostDaoImpl(GreatPostRepository greatPostRepository, UserRepository userRepository, PostRepository postRepository, FollowRepository followRepository, NewsfeedIFollowRepository newsfeedIFollowRepository, NewsfeedMyNewsRepository newsfeedMyNewsRepository) {
-        this.greatPostRepository = greatPostRepository;
-        this.userRepository = userRepository;
-        this.postRepository = postRepository;
-        this.followRepository = followRepository;
-        this.newsfeedIFollowRepository = newsfeedIFollowRepository;
-        this.newsfeedMyNewsRepository = newsfeedMyNewsRepository;
-    }
 
     @Override
     public GreatPost saveGreatPost(Long userId, Long postId) {

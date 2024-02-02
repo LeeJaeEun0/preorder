@@ -6,6 +6,7 @@ import com.demo.preorder.comment.service.GreatCommentService;
 import com.demo.preorder.post.dto.GreatPostDto;
 import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +16,11 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/greatComment")
+@RequiredArgsConstructor
 public class GreatCommentController {
     private final GreatCommentService greatCommentService;
 
     private final UserService userService;
-    public GreatCommentController(GreatCommentService greatCommentService, UserService userService) {
-        this.greatCommentService = greatCommentService;
-        this.userService = userService;
-    }
 
     @PostMapping
     public ResponseEntity<?> saveGreatPost(@RequestHeader Map<String, String> httpHeaders,

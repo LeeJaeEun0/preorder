@@ -7,6 +7,7 @@ import com.demo.preorder.newsfeed.service.NewsfeedFollowedMeService;
 import com.demo.preorder.newsfeed.service.NewsfeedIFollowService;
 import com.demo.preorder.newsfeed.service.NewsfeedMyNewsService;
 import com.demo.preorder.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,9 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/newsfeeds")
+@RequiredArgsConstructor
 public class NewsfeedController {
+
     private final NewsfeedIFollowService newsfeedIFollowService;
 
     private final NewsfeedFollowedMeService newsfeedFollowedMeService;
@@ -24,12 +27,6 @@ public class NewsfeedController {
     private final NewsfeedMyNewsService newsfeedMyNewsService;
 
     private final UserService userService;
-    public NewsfeedController(NewsfeedIFollowService newsfeedIFollowService, NewsfeedFollowedMeService newsfeedFollowedMeService, NewsfeedMyNewsService newsfeedMyNewsService, UserService userService) {
-        this.newsfeedIFollowService = newsfeedIFollowService;
-        this.newsfeedFollowedMeService = newsfeedFollowedMeService;
-        this.newsfeedMyNewsService = newsfeedMyNewsService;
-        this.userService = userService;
-    }
 
     @GetMapping("/ifollow")
     public ResponseEntity<?> selectNewsfeedIFollow(@RequestHeader Map<String, String> httpHeaders){

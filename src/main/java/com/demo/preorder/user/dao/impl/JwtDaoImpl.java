@@ -3,18 +3,16 @@ package com.demo.preorder.user.dao.impl;
 import com.demo.preorder.user.dao.JwtDao;
 import com.demo.preorder.user.entity.Jwt;
 import com.demo.preorder.user.repository.JwtRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class JwtDaoImpl implements JwtDao {
 
     private final JwtRepository jwtRepository;
-
-    public JwtDaoImpl(JwtRepository jwtRepository) {
-        this.jwtRepository = jwtRepository;
-    }
 
     @Override
     public void logout(String accessToken) {

@@ -6,21 +6,18 @@ import com.demo.preorder.follow.repository.FollowRepository;
 import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
 import com.demo.preorder.newsfeed.repository.NewsfeedIFollowRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class FollowDaoImpl implements FollowDao {
    private final FollowRepository followRepository;
 
    private final NewsfeedIFollowRepository newsfeedIFollowRepository;
-
-    public FollowDaoImpl(FollowRepository followRepository, NewsfeedIFollowRepository newsfeedIFollowRepository) {
-        this.followRepository = followRepository;
-        this.newsfeedIFollowRepository = newsfeedIFollowRepository;
-    }
 
     @Override
     @Transactional

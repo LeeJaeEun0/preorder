@@ -5,20 +5,18 @@ import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.dto.FollowDto;
 import com.demo.preorder.follow.service.FollowService;
 import com.demo.preorder.user.dao.UserDao;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class FollowServiceImpl implements FollowService {
 
     private final FollowDao followDao;
 
     private final UserDao userDao;
-    public FollowServiceImpl(FollowDao followDao, UserDao userDao) {
-        this.followDao = followDao;
-        this.userDao = userDao;
-    }
 
     @Override
     public FollowDto saveFollow(Long userId,FollowDto followDto) {

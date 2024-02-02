@@ -7,17 +7,14 @@ import com.demo.preorder.profile.entity.Profile;
 import com.demo.preorder.profile.service.ProfileService;
 import com.demo.preorder.user.dao.UserDao;
 import com.demo.preorder.user.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
     private final ProfileDao profileDao;
     private final UserDao userDao;
-
-    public ProfileServiceImpl(ProfileDao profileDao, UserDao userDao) {
-        this.profileDao = profileDao;
-        this.userDao = userDao;
-    }
 
     @Override
     public Profile saveProfile(Long userId, ProfileDto profileDto) {

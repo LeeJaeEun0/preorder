@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@RequiredArgsConstructor
+
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;

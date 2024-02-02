@@ -5,18 +5,17 @@ import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.dto.GreatPostDto;
 import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.post.service.GreatPostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class GreatPostServiceImpl implements GreatPostService {
-    private final GreatPostDao greatPostDao;
 
-    public GreatPostServiceImpl(PostDao postDao, GreatPostDao greatPostDao) {
-        this.greatPostDao = greatPostDao;
-    }
+    private final GreatPostDao greatPostDao;
 
     @Override
     public GreatPost saveGreatPost(Long userId, GreatPostDto greatPostDto) {

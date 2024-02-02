@@ -5,22 +5,15 @@ import com.demo.preorder.user.dao.UserDao;
 import com.demo.preorder.user.entity.User;
 import com.demo.preorder.user.repository.EmailCertificationRepository;
 import com.demo.preorder.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class UserDaoImpl implements UserDao {
     private final UserRepository userRepository;
-
-    private final PasswordEncoder passwordEncoder;
-
-
-
-    public UserDaoImpl(UserRepository userRepository, EmailCertificationRepository emailCertificationRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public User findUser(Long userId) {
