@@ -6,10 +6,11 @@ import com.demo.preorder.user.entity.User;
 import com.demo.preorder.user.repository.EmailCertificationRepository;
 import com.demo.preorder.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.Optional;
-
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserDaoImpl implements UserDao {
@@ -29,7 +30,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public boolean checkEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
-        return user.isPresent();
+        log.info("info log = {}",user);
+        if(user.isPresent())
+            return true;
+        else
+            return false;
     }
 
     @Override

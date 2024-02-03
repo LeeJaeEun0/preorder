@@ -2,10 +2,11 @@ package com.demo.preorder.user.provider;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class EmailProvider {
@@ -22,7 +23,8 @@ public class EmailProvider {
             messageHelper.setTo(email);
             messageHelper.setSubject(SUBJECT);
             messageHelper.setText(htmlContent, true);
-
+            log.info("info log = emailProvider");
+            log.info("info log = {}", messageHelper.getMimeMessage());
             javaMailSender.send(message);
         }catch(Exception exception){
             exception.printStackTrace();
