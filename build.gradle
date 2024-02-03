@@ -41,6 +41,77 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
+// 하위 모든 프로젝트 공통 세팅
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	group = 'com.demo'
+	version = '0.0.1-SNAPSHOT'
+
+	sourceCompatibility = '17'
+	targetCompatibility = '17'
+	compileJava.options.encoding = 'UTF-8'
+
+	repositories {
+		mavenCentral()
+	}
+
+	// 하위 모듈에서 공통으로 사용하는 세팅 추가
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+		implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+		implementation "com.auth0:java-jwt:3.16.0"
+		implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+		runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+		runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+		implementation 'org.apache.commons:commons-lang3:3.12.0'
+
+		compileOnly 'org.projectlombok:lombok'
+		runtimeOnly 'com.mysql:mysql-connector-j'
+		annotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testImplementation 'org.springframework.security:spring-security-test'
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+}
+
+project(':ActivityService') {
+
+	bootJar { enabled = true }
+	jar { enabled = false }
+
+	dependencies {
+		implementation project(':UserService')
+	}
+}
+
+project(':NewsFeedService') {
+	bootJar { enabled = true }
+	jar { enabled = false }
+
+	dependencies {
+		implementation project(':UserService')
+	}
+}
+
+project(':UserService') {
+	bootJar { enabled = false }
+	jar { enabled = true }
+
+	dependencies {
+
+	}
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
