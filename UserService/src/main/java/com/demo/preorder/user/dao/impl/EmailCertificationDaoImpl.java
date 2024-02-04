@@ -4,9 +4,11 @@ import com.demo.preorder.user.dao.EmailCertificationDao;
 import com.demo.preorder.user.entity.EmailCertification;
 import com.demo.preorder.user.repository.EmailCertificationRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -22,17 +24,18 @@ public class EmailCertificationDaoImpl implements EmailCertificationDao {
 
     @Override
     public boolean emailCertification(String email, String number) {
-        Optional<EmailCertification> emailCertification = emailCertificationRepository.findByEmail(email);
-        if(emailCertification.isPresent())
-        {
-            EmailCertification certification = emailCertification.get();
-            String emailAddress = certification.getEmail();
-            String certificationNumber = certification.getNumber();
+        Pageable pageable = PageRequest.of(0, 1); // 첫 번째 페이지, 최대 1개의 결과
+        List<EmailCertification> results = emailCertificationRepository.findLatestByEmail(email, pageable);
+        EmailCertification latestEntity = null;
+        if (!results.isEmpty()) {
+            latestEntity = results.get(0); // 첫 번째 요소가 검색 조건에 맞는 가장 최근의 엔티티
+            String emailAddress = latestEntity.getEmail();
+            String certificationNumber = latestEntity.getNumber();
             if (emailAddress.equals(email) && certificationNumber.equals(number)) return true;
             else return false;
-        }else{
+        }else
             return false;
-        }
+
     }
 
 }

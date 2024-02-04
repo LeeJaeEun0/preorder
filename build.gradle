@@ -62,8 +62,7 @@ subprojects {
 	dependencies {
 		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 		implementation 'org.springframework.boot:spring-boot-starter-web'
-		implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
-		implementation 'org.springframework.boot:spring-boot-starter-mail'
+		implementation 'org.springframework.boot:spring-boot-starter-mail:3.1.2'
 
 		implementation "com.auth0:java-jwt:3.16.0"
 		implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'

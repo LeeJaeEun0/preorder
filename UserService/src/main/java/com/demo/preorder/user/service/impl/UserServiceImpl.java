@@ -13,11 +13,13 @@ import com.demo.preorder.user.jwt.JwtUtils;
 import com.demo.preorder.user.provider.EmailProvider;
 import com.demo.preorder.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -29,21 +31,29 @@ public class UserServiceImpl implements UserService {
     private  final EmailProvider emailProvider;
     @Override
     public boolean checkEmail(EmailDto emailDTO) {
+        log.info("info log : emailService");
         String email = emailDTO.getEmail();
-
+        log.info("info log = {}",email);
         boolean isExistEmail = userDao.checkEmail(email);
         if(isExistEmail) return false;
 
+        log.info("info log = {}", isExistEmail);
+
         String certificationNumber = emailProvider.getCertificationNumber();
+        log.info("info log = {}",certificationNumber);
         boolean isSuccessed = emailProvider.sendCertificationMail(email, certificationNumber);
+        log.info("info log = {}",isSuccessed);
         if(!isSuccessed) return false;
 
         EmailCertification emailCertification = new EmailCertification();
         emailCertification.setEmail(emailDTO.getEmail());
         emailCertification.setNumber(certificationNumber);
+        log.info("info log = {}",emailCertification.getEmail());
+        log.info("info log = {}",emailCertification.getNumber());
         emailCertificationDao.insertEmailCertification(emailCertification);
         return true;
     }
+
 
     @Override
     public UserDto getUser(Long userId) {
