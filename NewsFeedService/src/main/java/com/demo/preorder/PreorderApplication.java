@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PreorderApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PreorderApplication.class, args);
+		SpringApplication.run(UserServiceApplication.class, args);
 	}
 
 }

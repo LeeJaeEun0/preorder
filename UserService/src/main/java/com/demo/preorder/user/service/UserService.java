@@ -12,9 +12,9 @@ public interface UserService {
 
     boolean checkEmail(EmailDto emailDto);
 
-    UserDto getUser(Long userId);
+    User getUser(Long userId);
 
-    User findUserId(Map<String, String> httpHeaders);
+    Long findUserId(Map<String, String> httpHeaders);
 
     User changeUserProfile(Long userId, ProfileDto profileDto) throws Exception;
 
