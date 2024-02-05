@@ -82,34 +82,6 @@ subprojects {
 	}
 }
 
-project(':ActivityService') {
-
-	bootJar { enabled = true }
-	jar { enabled = false }
-
-	dependencies {
-		implementation project(':UserService')
-	}
-}
-
-project(':NewsFeedService') {
-	bootJar { enabled = true }
-	jar { enabled = false }
-
-	dependencies {
-		implementation project(':UserService')
-	}
-}
-
-project(':UserService') {
-	bootJar { enabled = false }
-	jar { enabled = true }
-
-	dependencies {
-
-	}
-}
-
 tasks.named('test') {
 	useJUnitPlatform()
 }

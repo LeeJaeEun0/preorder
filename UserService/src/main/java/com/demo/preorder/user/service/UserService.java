@@ -12,7 +12,7 @@ public interface UserService {
 
     boolean checkEmail(EmailDto emailDto);
 
-    UserDto getUser(Long userId);
+    User getUser(Long userId);
 
     Long findUserId(Map<String, String> httpHeaders);
 
