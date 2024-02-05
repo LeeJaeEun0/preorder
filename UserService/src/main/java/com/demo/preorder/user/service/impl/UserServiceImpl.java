@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long findUserId(Map<String, String> httpHeaders) {
+    public User findUserId(Map<String, String> httpHeaders) {
         String jwtToken = httpHeaders.get("authorization");
         String email = JwtUtils.initJwtPayload(jwtToken);
 

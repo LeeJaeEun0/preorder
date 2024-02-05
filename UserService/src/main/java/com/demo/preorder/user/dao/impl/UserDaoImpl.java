@@ -18,10 +18,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findUser(Long userId) {
 
-        Optional<User> user = userRepository.findById(userId);
-        if(user.isPresent()){
-            User user1 = user.get();
-            return user1;
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            return user;
         }
         return null;
     }
@@ -33,11 +33,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Long findUserId(String email) {
+    public User findUserId(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if(optionalUser.isPresent()){
             User user = optionalUser.get();
-            return user.getId();
+            return user;
         }
 
         return null;

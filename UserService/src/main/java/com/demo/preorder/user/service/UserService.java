@@ -14,7 +14,7 @@ public interface UserService {
 
     UserDto getUser(Long userId);
 
-    Long findUserId(Map<String, String> httpHeaders);
+    User findUserId(Map<String, String> httpHeaders);
 
     User changeUserProfile(Long userId, ProfileDto profileDto) throws Exception;
 
