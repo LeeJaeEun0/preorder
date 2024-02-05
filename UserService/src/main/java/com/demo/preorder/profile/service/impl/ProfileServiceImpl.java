@@ -1,6 +1,5 @@
 package com.demo.preorder.profile.service.impl;
 
-import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.profile.dao.ProfileDao;
 import com.demo.preorder.profile.dto.ProfileDto;
 import com.demo.preorder.profile.entity.Profile;
