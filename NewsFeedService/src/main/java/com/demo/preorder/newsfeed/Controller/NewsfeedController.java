@@ -1,6 +1,6 @@
 package com.demo.preorder.newsfeed.Controller;
 
-import com.demo.preorder.service.NewsfeedClient;
+import com.demo.preorder.client.service.NewsfeedClient;
 import com.demo.preorder.newsfeed.entity.NewsfeedFollower;
 import com.demo.preorder.newsfeed.entity.NewsfeedFollowing;
 import com.demo.preorder.newsfeed.entity.NewsfeedMyNews;

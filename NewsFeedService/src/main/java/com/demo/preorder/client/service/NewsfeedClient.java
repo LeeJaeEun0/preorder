@@ -1,4 +1,4 @@
-package com.demo.preorder.service;
+package com.demo.preorder.client.service;
 
 import com.demo.preorder.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
