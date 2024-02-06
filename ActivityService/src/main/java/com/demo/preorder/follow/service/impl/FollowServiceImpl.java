@@ -1,10 +1,11 @@
 package com.demo.preorder.follow.service.impl;
 
+import com.demo.preorder.client.service.ActivityClient;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.dto.FollowDto;
 import com.demo.preorder.follow.service.FollowService;
-import com.demo.preorder.user.dao.UserDao;
+import com.demo.preorder.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,7 @@ import java.util.List;
 public class FollowServiceImpl implements FollowService {
 
     private final FollowDao followDao;
-
-    private final UserDao userDao;
+    private final ActivityClient activityClient;
 
     @Override
     public FollowDto saveFollow(Long userId,FollowDto followDto) {
@@ -24,8 +24,8 @@ public class FollowServiceImpl implements FollowService {
         if (followDto.getFollowingId() ==null)
             return null;
 
-        follow.setUserId(userDao.findUser(userId));
-        follow.setFollowingId(userDao.findUser(followDto.getFollowingId()));
+        follow.setUserId(activityClient.findUser(userId));
+        follow.setFollowingId(activityClient.findUser(followDto.getFollowingId()));
         followDao.insertFollow(follow);
         return followDto;
     }

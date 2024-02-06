@@ -1,5 +1,6 @@
 package com.demo.preorder.comment.service.impl;
 
+import com.demo.preorder.client.service.ActivityClient;
 import com.demo.preorder.comment.dao.CommentDao;
 import com.demo.preorder.comment.dto.CommentDeleteDto;
 import com.demo.preorder.comment.dto.CommentDto;
@@ -7,7 +8,6 @@ import com.demo.preorder.comment.dto.CommentReplayDto;
 import com.demo.preorder.comment.dto.CommentUpdateDto;
 import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.service.CommentService;
-import com.demo.preorder.user.dao.UserDao;
 import com.demo.preorder.user.entity.User;
 import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.entity.Post;
@@ -21,14 +21,14 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
    private final PostDao postDao;
 
-   private final UserDao userDao;
+   private final ActivityClient activityClient;
 
    private final CommentDao commentDao;
 
     @Override
     public Comment saveComment(Long userId,CommentDto commentDto) {
         Comment comment = new Comment();
-        User user = userDao.findUser(userId);
+        User user = activityClient.findUser(userId);
         Post post = postDao.selectPost(commentDto.getPostId());
         if(user == null || post == null) return null;
         comment.setPostId(post);
@@ -43,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment insertComment(Long userId, CommentReplayDto commentReplayDto) {
         Comment comment = new Comment();
-        User user = userDao.findUser(userId);
+        User user = activityClient.findUser(userId);
         Post post = postDao.selectPost(commentReplayDto.getPostId());
         if(user == null || post == null) return null;
         comment.setPostId(post);

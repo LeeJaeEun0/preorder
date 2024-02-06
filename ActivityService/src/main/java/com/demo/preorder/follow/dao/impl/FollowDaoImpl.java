@@ -3,8 +3,6 @@ package com.demo.preorder.follow.dao.impl;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.repository.FollowRepository;
-import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
-import com.demo.preorder.newsfeed.repository.NewsfeedIFollowRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,8 +15,6 @@ import java.util.Optional;
 public class FollowDaoImpl implements FollowDao {
    private final FollowRepository followRepository;
 
-   private final NewsfeedIFollowRepository newsfeedIFollowRepository;
-
     @Override
     @Transactional
     public Follow insertFollow(Follow follow) {
@@ -26,18 +22,18 @@ public class FollowDaoImpl implements FollowDao {
 
         Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUserId().getId());
 
-        if (optionalFollowList.isPresent()) {
-            List<Follow> followList = optionalFollowList.get();
-
-            for (Follow follows : followList) {
-                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
-                newsfeedIFollow.setUserId(follows.getUserId());
-                newsfeedIFollow.setFollowingId(follow.getUserId());
-                newsfeedIFollow.setType("follow");
-                newsfeedIFollow.setTargetId(saved.getId());
-                newsfeedIFollowRepository.save(newsfeedIFollow);
-            }
-        }
+//        if (optionalFollowList.isPresent()) {
+//            List<Follow> followList = optionalFollowList.get();
+//
+//            for (Follow follows : followList) {
+//                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
+//                newsfeedIFollow.setUserId(follows.getUserId());
+//                newsfeedIFollow.setFollowingId(follow.getUserId());
+//                newsfeedIFollow.setType("follow");
+//                newsfeedIFollow.setTargetId(saved.getId());
+//                newsfeedIFollowRepository.save(newsfeedIFollow);
+//            }
+//        }
         return saved;
     }
 

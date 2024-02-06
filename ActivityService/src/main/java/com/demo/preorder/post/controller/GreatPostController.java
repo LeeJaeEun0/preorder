@@ -1,9 +1,10 @@
 package com.demo.preorder.post.controller;
 
+import com.demo.preorder.client.service.ActivityClient;
 import com.demo.preorder.post.dto.GreatPostDto;
 import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.post.service.GreatPostService;
-import com.demo.preorder.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,21 +14,16 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/greatPosts")
+@RequiredArgsConstructor
 public class GreatPostController {
 
     private final GreatPostService greatPostService;
 
-    private final UserService userService;
-
-    public GreatPostController(GreatPostService greatPostService, UserService userService) {
-        this.greatPostService = greatPostService;
-        this.userService = userService;
-    }
-
+    private final ActivityClient activityClient;
     @PostMapping
     public ResponseEntity<?> saveGreatPost(@RequestHeader Map<String, String> httpHeaders,
                                            @RequestBody GreatPostDto greatPostDto){
-        Long userId = userService.findUserId(httpHeaders);
+        Long userId = activityClient.findUserId(httpHeaders);
         GreatPost greatPost =  greatPostService.saveGreatPost(userId, greatPostDto);
 
         if (greatPost != null) {
@@ -50,7 +46,7 @@ public class GreatPostController {
     @DeleteMapping
     public ResponseEntity<?> deleteGreatPost(@RequestHeader Map<String, String> httpHeaders,
                                              @RequestBody GreatPostDto greatPostDto){
-        Long userId = userService.findUserId(httpHeaders);
+        Long userId = activityClient.findUserId(httpHeaders);
         greatPostService.deleteGreatPost(userId,greatPostDto);
         return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
