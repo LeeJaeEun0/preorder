@@ -1,10 +1,10 @@
 package com.demo.preorder.newsfeed.Controller;
 
-import com.demo.preorder.newsfeed.entity.NewsfeedFollowedMe;
-import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
+import com.demo.preorder.newsfeed.entity.NewsfeedFollower;
+import com.demo.preorder.newsfeed.entity.NewsfeedFollowing;
 import com.demo.preorder.newsfeed.entity.NewsfeedMyNews;
-import com.demo.preorder.newsfeed.service.NewsfeedFollowedMeService;
-import com.demo.preorder.newsfeed.service.NewsfeedIFollowService;
+import com.demo.preorder.newsfeed.service.NewsfeedFollowerService;
+import com.demo.preorder.newsfeed.service.NewsfeedFollowingService;
 import com.demo.preorder.newsfeed.service.NewsfeedMyNewsService;
 import com.demo.preorder.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +20,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class NewsfeedController {
 
-    private final NewsfeedIFollowService newsfeedIFollowService;
+    private final NewsfeedFollowingService newsfeedFollowingService;
 
-    private final NewsfeedFollowedMeService newsfeedFollowedMeService;
+    private final NewsfeedFollowerService newsfeedFollowerService;
 
     private final NewsfeedMyNewsService newsfeedMyNewsService;
 
@@ -31,9 +31,9 @@ public class NewsfeedController {
     @GetMapping("/ifollow")
     public ResponseEntity<?> selectNewsfeedIFollow(@RequestHeader Map<String, String> httpHeaders){
         Long userId = userService.findUserId(httpHeaders);
-        List<NewsfeedIFollow> newsfeedIFollowList = newsfeedIFollowService.newsfeedIFollow(userId);
-        if (newsfeedIFollowList != null) {
-            return ResponseEntity.accepted().body(newsfeedIFollowList);
+        List<NewsfeedFollowing> newsfeedFollowingList = newsfeedFollowingService.newsfeedFollowing(userId);
+        if (newsfeedFollowingList != null) {
+            return ResponseEntity.accepted().body(newsfeedFollowingList);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("뉴스피드를 조회할 수 없습니다");
         }
@@ -42,9 +42,9 @@ public class NewsfeedController {
     @GetMapping("/followed")
     public ResponseEntity<?> selectNewsfeedFollowedMe(@RequestHeader Map<String, String> httpHeaders){
         Long userId = userService.findUserId(httpHeaders);
-        List<NewsfeedFollowedMe> newsfeedFollowedMeList = newsfeedFollowedMeService.newsfeedFollowedMe(userId);
-        if (newsfeedFollowedMeList != null) {
-            return ResponseEntity.accepted().body(newsfeedFollowedMeList);
+        List<NewsfeedFollower> newsfeedFollowerList = newsfeedFollowerService.newsfeedFollower(userId);
+        if (newsfeedFollowerList != null) {
+            return ResponseEntity.accepted().body(newsfeedFollowerList);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("뉴스피드를 조회할 수 없습니다");
         }

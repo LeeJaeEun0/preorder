@@ -1,7 +1,7 @@
 package com.demo.preorder.newsfeed.dao.impl;
 
-import com.demo.preorder.newsfeed.dao.NewsfeedIFollowDao;
-import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
+import com.demo.preorder.newsfeed.dao.NewsfeedFollowingDao;
+import com.demo.preorder.newsfeed.entity.NewsfeedFollowing;
 import com.demo.preorder.newsfeed.repository.NewsfeedIFollowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,11 +10,11 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class NewsfeedIFollowDaoImpl implements NewsfeedIFollowDao {
+public class NewsfeedFollowingDaoImpl implements NewsfeedFollowingDao {
     private final NewsfeedIFollowRepository newsfeedIFollowRepository;
 
     @Override
-    public List<NewsfeedIFollow> newsfeedIFollow(Long userId) {
+    public List<NewsfeedFollowing> newsfeedFollowing(Long userId) {
         return newsfeedIFollowRepository.findByUserIdIdOrderByCreatedDateDesc(userId);
     }
 }

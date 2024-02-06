@@ -1,6 +1,5 @@
 package com.demo.preorder.newsfeed.service;
 
-import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
 import com.demo.preorder.newsfeed.entity.NewsfeedMyNews;
 
 import java.util.List;

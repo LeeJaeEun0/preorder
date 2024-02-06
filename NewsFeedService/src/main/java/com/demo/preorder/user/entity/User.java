@@ -1,6 +1,5 @@
 package com.demo.preorder.user.entity;
 
-import com.demo.preorder.user.dto.UserLoginDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

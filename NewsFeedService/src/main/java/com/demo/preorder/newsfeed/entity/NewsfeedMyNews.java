@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 public class NewsfeedMyNews {
     @Id
-    @Column(name="newsfeed_i_follow_id")
+    @Column(name="newsfeed_my_news_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

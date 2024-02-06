@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NewsfeedFollowedMe {
+public class NewsfeedFollowing {
     @Id
-    @Column(name="newsfeed_i_follow_id")
+    @Column(name="newsfeed_following_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -27,8 +27,10 @@ public class NewsfeedFollowedMe {
     private User userId;
 
     @ManyToOne
-    @JoinColumn(name = "follower_id", referencedColumnName = "user_id")
-    private User followerId;
+    @JoinColumn(name = "following_id", referencedColumnName = "user_id")
+    private User followingId;
+
+    private String type;
 
     private Long targetId;
 
