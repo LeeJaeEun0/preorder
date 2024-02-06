@@ -28,7 +28,7 @@ public class NewsfeedController {
 
     private final UserService userService;
 
-    @GetMapping("/ifollow")
+    @GetMapping("/following")
     public ResponseEntity<?> selectNewsfeedIFollow(@RequestHeader Map<String, String> httpHeaders){
         Long userId = userService.findUserId(httpHeaders);
         List<NewsfeedFollowing> newsfeedFollowingList = newsfeedFollowingService.newsfeedFollowing(userId);
@@ -39,7 +39,7 @@ public class NewsfeedController {
         }
     }
 
-    @GetMapping("/followed")
+    @GetMapping("/follower")
     public ResponseEntity<?> selectNewsfeedFollowedMe(@RequestHeader Map<String, String> httpHeaders){
         Long userId = userService.findUserId(httpHeaders);
         List<NewsfeedFollower> newsfeedFollowerList = newsfeedFollowerService.newsfeedFollower(userId);

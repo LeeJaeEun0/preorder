@@ -28,7 +28,7 @@ public class RestTemplateController {
 
     private NewsfeedMyNewsService newsfeedMyNewsService;
 
-    @PostMapping("/follow")
+    @PostMapping("/following")
     public ResponseEntity<?> createNewsfeedFollowing(@RequestBody NewsfeedFollowingDto newsfeedFollowingDto){
         NewsfeedFollowing newsfeedFollowing = newsfeedFollowingService.saveNewsfeedFollowing(newsfeedFollowingDto);
         if(newsfeedFollowing != null){
@@ -38,7 +38,7 @@ public class RestTemplateController {
         }
     }
 
-    @PostMapping("/following")
+    @PostMapping("/follower")
     public ResponseEntity<?> createNewsfeedFollower(@RequestBody NewsfeedFollowerDto newsfeedFollowerDto){
         NewsfeedFollower newsfeedFollower = newsfeedFollowerService.saveNewsfeedFollower(newsfeedFollowerDto);
         if(newsfeedFollower != null){
