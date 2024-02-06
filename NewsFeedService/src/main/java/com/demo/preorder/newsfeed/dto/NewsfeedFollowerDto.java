@@ -8,4 +8,8 @@ import lombok.Setter;
 @Setter
 public class NewsfeedFollowerDto {
     private User userId;
+
+    private User followerId;
+
+    private Long targetId;
 }

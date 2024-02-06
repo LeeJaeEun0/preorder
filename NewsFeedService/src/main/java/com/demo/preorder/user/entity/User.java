@@ -60,23 +60,4 @@ public class User {
         this.setLastmodifiedDate(LocalDateTime.now());
     }
 
-    @Builder
-    public User(String email, String password, String name){
-        this.email = email;
-        this.password = password;
-        this.name = name;
-    }
-
-    public void addRole(UserRole userRole){
-        userRoles.add(userRole);
-    }
-
-    public void updateRefreshToken(String refreshToken){
-        this.refreshToken = refreshToken;
-    }
-
-    public boolean verifyUser(UserLoginDto userLoginDto){
-        return this.email.equals(userLoginDto.getUserEmail()) && this.password.equals(userLoginDto.getUserPassword());
-    }
-
 }

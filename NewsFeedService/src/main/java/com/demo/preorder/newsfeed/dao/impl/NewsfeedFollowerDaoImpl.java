@@ -15,6 +15,11 @@ public class NewsfeedFollowerDaoImpl implements NewsfeedFollowerDao {
     private final NewsfeedFollowedMeRepository newsfeedFollowedMeRepository;
 
     @Override
+    public NewsfeedFollower saveNewsfeedFollower(NewsfeedFollower newsfeedFollower) {
+        return newsfeedFollowedMeRepository.save(newsfeedFollower);
+    }
+
+    @Override
     public List<NewsfeedFollower> newsfeedFollower(Long userId) {
         return newsfeedFollowedMeRepository.findByUserIdIdOrderByCreatedDateDesc(userId);
     }

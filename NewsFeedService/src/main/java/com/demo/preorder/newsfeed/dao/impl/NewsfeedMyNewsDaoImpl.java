@@ -15,6 +15,11 @@ public class NewsfeedMyNewsDaoImpl implements NewsfeedMyNewsDao {
     private final NewsfeedMyNewsRepository newsfeedMyNewsRepository;
 
     @Override
+    public NewsfeedMyNews saveNewsfeedMyNews(NewsfeedMyNews newsfeedMyNews) {
+        return newsfeedMyNewsRepository.save(newsfeedMyNews);
+    }
+
+    @Override
     public List<NewsfeedMyNews> newsfeedMyNews(Long userId) {
         return newsfeedMyNewsRepository.findByUserIdIdOrderByCreatedDateDesc(userId);
     }

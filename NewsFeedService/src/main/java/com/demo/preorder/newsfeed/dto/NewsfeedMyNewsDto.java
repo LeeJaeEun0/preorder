@@ -8,4 +8,10 @@ import lombok.Setter;
 @Getter
 public class NewsfeedMyNewsDto {
     private User userId;
+
+    private User writerId;
+
+    private String type;
+
+    private Long PostId;
 }

@@ -14,6 +14,11 @@ public class NewsfeedFollowingDaoImpl implements NewsfeedFollowingDao {
     private final NewsfeedIFollowRepository newsfeedIFollowRepository;
 
     @Override
+    public NewsfeedFollowing saveNewsfeedFollowing(NewsfeedFollowing newsfeedFollowing) {
+        return newsfeedIFollowRepository.save(newsfeedFollowing);
+    }
+
+    @Override
     public List<NewsfeedFollowing> newsfeedFollowing(Long userId) {
         return newsfeedIFollowRepository.findByUserIdIdOrderByCreatedDateDesc(userId);
     }
