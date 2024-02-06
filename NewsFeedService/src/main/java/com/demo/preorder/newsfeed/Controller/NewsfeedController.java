@@ -1,12 +1,12 @@
 package com.demo.preorder.newsfeed.Controller;
 
+import com.demo.preorder.service.NewsfeedClient;
 import com.demo.preorder.newsfeed.entity.NewsfeedFollower;
 import com.demo.preorder.newsfeed.entity.NewsfeedFollowing;
 import com.demo.preorder.newsfeed.entity.NewsfeedMyNews;
 import com.demo.preorder.newsfeed.service.NewsfeedFollowerService;
 import com.demo.preorder.newsfeed.service.NewsfeedFollowingService;
 import com.demo.preorder.newsfeed.service.NewsfeedMyNewsService;
-import com.demo.preorder.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +26,11 @@ public class NewsfeedController {
 
     private final NewsfeedMyNewsService newsfeedMyNewsService;
 
-    private final UserService userService;
+    private final NewsfeedClient newsfeedClient;
 
     @GetMapping("/following")
     public ResponseEntity<?> selectNewsfeedIFollow(@RequestHeader Map<String, String> httpHeaders){
-        Long userId = userService.findUserId(httpHeaders);
+        Long userId = newsfeedClient.findUserId(httpHeaders);
         List<NewsfeedFollowing> newsfeedFollowingList = newsfeedFollowingService.newsfeedFollowing(userId);
         if (newsfeedFollowingList != null) {
             return ResponseEntity.accepted().body(newsfeedFollowingList);
@@ -41,7 +41,7 @@ public class NewsfeedController {
 
     @GetMapping("/follower")
     public ResponseEntity<?> selectNewsfeedFollowedMe(@RequestHeader Map<String, String> httpHeaders){
-        Long userId = userService.findUserId(httpHeaders);
+        Long userId = newsfeedClient.findUserId(httpHeaders);
         List<NewsfeedFollower> newsfeedFollowerList = newsfeedFollowerService.newsfeedFollower(userId);
         if (newsfeedFollowerList != null) {
             return ResponseEntity.accepted().body(newsfeedFollowerList);
@@ -52,7 +52,7 @@ public class NewsfeedController {
 
     @GetMapping("/mynews")
     public ResponseEntity<?> selectNewsfeedMyNews(@RequestHeader Map<String, String> httpHeaders){
-        Long userId = userService.findUserId(httpHeaders);
+        Long userId = newsfeedClient.findUserId(httpHeaders);
         List<NewsfeedMyNews> newsfeedFollowedMeList = newsfeedMyNewsService.newsfeedMyNews(userId);
         if (newsfeedFollowedMeList != null) {
             return ResponseEntity.accepted().body(newsfeedFollowedMeList);

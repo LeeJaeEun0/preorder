@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +30,6 @@ public class User {
 
     private String password;
 
-
     private String name;
 
     private String refreshToken;
@@ -42,22 +42,22 @@ public class User {
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @Column(name = "created_date", nullable = true, insertable = true, updatable = false)
-    private LocalDateTime createdDate;
+    private LocalDate createdDate;
 
     @LastModifiedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @Column(name = "lastmodified_date", nullable = true, insertable = true, updatable = true)
-    private LocalDateTime lastmodifiedDate;
+    private LocalDate lastmodifiedDate;
 
     @PrePersist
     public void setDate() {
-        this.setCreatedDate(LocalDateTime.now());
-        this.setLastmodifiedDate(LocalDateTime.now());
+        this.setCreatedDate(LocalDate.now());
+        this.setLastmodifiedDate(LocalDate.now());
     }
 
     @PreUpdate
     public void modifiedDate() {
-        this.setLastmodifiedDate(LocalDateTime.now());
+        this.setLastmodifiedDate(LocalDate.now());
     }
 
 }
