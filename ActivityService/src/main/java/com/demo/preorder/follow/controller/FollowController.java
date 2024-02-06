@@ -41,15 +41,15 @@ public class FollowController {
         return  null;
     }
     @GetMapping("/follower")
-    public ResponseEntity<List<Follow>> whoFollowedMe(@RequestBody FollowDto followDto){
-        List<Follow> follows = followService.whoFollowedMe(followDto);
+    public ResponseEntity<List<Follow>> findFollower(@RequestBody FollowDto followDto){
+        List<Follow> follows = followService.findFollower(followDto);
         return  ResponseEntity.status(HttpStatus.OK).body(follows);
     }
     @GetMapping("/following")
-    public ResponseEntity<List<Follow>> peopleIFollow(@RequestHeader Map<String, String> httpHeaders,
+    public ResponseEntity<List<Follow>> findFollowing(@RequestHeader Map<String, String> httpHeaders,
                                                       @RequestBody FollowDto followDto){
         Long userId = activityClient.findUserId(httpHeaders);
-        List<Follow> follows = followService.peopleIFollow(userId);
+        List<Follow> follows = followService.findFollowing(userId);
         return  ResponseEntity.status(HttpStatus.OK).body(follows);
     }
 }

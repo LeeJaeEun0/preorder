@@ -50,22 +50,22 @@ public class FollowDaoImpl implements FollowDao {
 
     // 나를 팔로우한 사람
     @Override
-    public List<Follow> whofollowedMe(Long followingId) {
-        Optional<List<Follow>> followme = followRepository.findByFollowingIdId(followingId);
-        if(followme.isPresent()){
-            List<Follow> followMeList = followme.get();
-            return followMeList;
+    public List<Follow> findFollower(Long followingId) {
+        Optional<List<Follow>> follower = followRepository.findByFollowingIdId(followingId);
+        if(follower.isPresent()){
+            List<Follow> followerList = follower.get();
+            return followerList ;
         }
         return null;
     }
 
     // 내가 팔로우한 사람
     @Override
-    public List<Follow> peopleIfollow(Long userId) {
-        Optional<List<Follow>> iFollow = followRepository.findByUserIdId(userId);
-        if(iFollow.isPresent()){
-            List<Follow> iFollowList = iFollow.get();
-            return iFollowList;
+    public List<Follow> findFollowing(Long userId) {
+        Optional<List<Follow>> following = followRepository.findByUserIdId(userId);
+        if(following .isPresent()){
+            List<Follow> followingList = following .get();
+            return followingList;
         }
         return null;
     }

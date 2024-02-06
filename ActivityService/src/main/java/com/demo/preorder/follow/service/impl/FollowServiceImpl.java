@@ -37,13 +37,13 @@ public class FollowServiceImpl implements FollowService {
 
     // 나를 팔로우한 사람
     @Override
-    public List<Follow> whoFollowedMe(FollowDto followDto) {
-        return followDao.whofollowedMe(followDto.getFollowingId());
+    public List<Follow> findFollower(FollowDto followDto) {
+        return followDao.findFollower(followDto.getFollowingId());
     }
 
     // 내가 팔로우한 사람
     @Override
-    public List<Follow> peopleIFollow(Long userId) {
-        return followDao.peopleIfollow(userId);
+    public List<Follow> findFollowing(Long userId) {
+        return followDao.findFollowing(userId);
     }
 }
