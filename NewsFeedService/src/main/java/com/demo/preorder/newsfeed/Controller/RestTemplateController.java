@@ -1,14 +1,11 @@
 package com.demo.preorder.newsfeed.Controller;
 
-import com.demo.preorder.newsfeed.dto.NewsfeedFollowerDto;
-import com.demo.preorder.newsfeed.dto.NewsfeedFollowingDto;
+import com.demo.preorder.newsfeed.dto.NewsfeedDto;
 import com.demo.preorder.newsfeed.dto.NewsfeedMyNewsDto;
-import com.demo.preorder.newsfeed.entity.NewsfeedFollower;
-import com.demo.preorder.newsfeed.entity.NewsfeedFollowing;
+import com.demo.preorder.newsfeed.entity.Newsfeed;
 import com.demo.preorder.newsfeed.entity.NewsfeedMyNews;
-import com.demo.preorder.newsfeed.service.NewsfeedFollowerService;
-import com.demo.preorder.newsfeed.service.NewsfeedFollowingService;
 import com.demo.preorder.newsfeed.service.NewsfeedMyNewsService;
+import com.demo.preorder.newsfeed.service.NewsfeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,27 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RestTemplateController {
 
-    private NewsfeedFollowerService newsfeedFollowerService;
+    private final NewsfeedService newsfeedService;
 
-    private NewsfeedFollowingService newsfeedFollowingService;
+    private final NewsfeedMyNewsService newsfeedMyNewsService;
 
-    private NewsfeedMyNewsService newsfeedMyNewsService;
-
-    @PostMapping("/following")
-    public ResponseEntity<?> createNewsfeedFollowing(@RequestBody NewsfeedFollowingDto newsfeedFollowingDto){
-        NewsfeedFollowing newsfeedFollowing = newsfeedFollowingService.saveNewsfeedFollowing(newsfeedFollowingDto);
-        if(newsfeedFollowing != null){
-            return  ResponseEntity.status(HttpStatus.CREATED).body(newsfeedFollowing);
-        }else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("뉴스피드 작성에 실패했습니다.");
-        }
-    }
-
-    @PostMapping("/follower")
-    public ResponseEntity<?> createNewsfeedFollower(@RequestBody NewsfeedFollowerDto newsfeedFollowerDto){
-        NewsfeedFollower newsfeedFollower = newsfeedFollowerService.saveNewsfeedFollower(newsfeedFollowerDto);
-        if(newsfeedFollower != null){
-            return  ResponseEntity.status(HttpStatus.CREATED).body(newsfeedFollower);
+    @PostMapping
+    public ResponseEntity<?> createNewsfeed(@RequestBody NewsfeedDto newsfeedDto){
+        Newsfeed newsfeed = newsfeedService.saveNewsfeed(newsfeedDto);
+        if(newsfeed != null){
+            return  ResponseEntity.status(HttpStatus.CREATED).body(newsfeed);
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("뉴스피드 작성에 실패했습니다.");
         }

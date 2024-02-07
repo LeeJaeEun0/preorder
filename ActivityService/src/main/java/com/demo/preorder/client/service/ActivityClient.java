@@ -1,9 +1,12 @@
 package com.demo.preorder.client.service;
 
+import com.demo.preorder.client.dto.NewsfeedClientDto;
+import com.demo.preorder.client.dto.NewsfeedMyNewsClientDto;
 import com.demo.preorder.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -70,5 +73,63 @@ public class ActivityClient {
         log.info("info log = {}",responseEntity);
         // User 객체 반환
         return responseEntity.getBody();
+    }
+
+    public String saveNewsfeed(NewsfeedClientDto newsfeedClientDto) {
+        // URI 생성
+        URI uri = UriComponentsBuilder
+                .fromUriString("http://localhost:8082")
+                .path("/api/internal/newsfeeds")
+                .encode()
+                .build()
+                .toUri();
+
+        // RequestEntity를 POST 요청으로 구성하고, newsfeedFollowerClientDto를 본문에 포함
+        RequestEntity<NewsfeedClientDto> requestEntity = RequestEntity
+                .post(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(newsfeedClientDto);
+
+        // exchange 메서드를 사용하여 요청 보내기
+        ResponseEntity<String> responseEntity = restTemplate.exchange(
+                requestEntity, String.class);
+
+        // 상태 코드에 따른 처리
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            // 성공적인 응답 처리, JSON 문자열 그대로 반환
+            return responseEntity.getBody();
+        } else {
+            // 클라이언트 에러 처리, 에러 메시지 반환
+            return responseEntity.getBody(); // 에러 메시지가 문자열이라고 가정
+        }
+    }
+
+    public String saveNewsfeedMyNews(NewsfeedMyNewsClientDto newsfeedMyNewsClientDto) {
+        // URI 생성
+        URI uri = UriComponentsBuilder
+                .fromUriString("http://localhost:8082")
+                .path("/api/internal/newsfeeds/following")
+                .encode()
+                .build()
+                .toUri();
+
+        // RequestEntity를 POST 요청으로 구성하고, newsfeedFollowingClientDto를 본문에 포함
+        RequestEntity<NewsfeedMyNewsClientDto> requestEntity = RequestEntity
+                .post(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(newsfeedMyNewsClientDto);
+
+        // exchange 메서드를 사용하여 요청 보내기
+        ResponseEntity<String> responseEntity = restTemplate.exchange(
+                requestEntity, String.class);
+
+        // 상태 코드에 따른 처리
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            // 성공적인 응답 처리, JSON 문자열 그대로 반환
+            return responseEntity.getBody();
+        } else {
+            // 클라이언트 에러 처리, 에러 메시지 반환
+            return responseEntity.getBody(); // 에러 메시지가 문자열이라고 가정
+        }
     }
 }

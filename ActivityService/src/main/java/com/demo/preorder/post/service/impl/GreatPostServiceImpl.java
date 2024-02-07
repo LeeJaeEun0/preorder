@@ -1,25 +1,57 @@
 package com.demo.preorder.post.service.impl;
 
+import com.demo.preorder.client.dto.NewsfeedClientDto;
+import com.demo.preorder.client.service.ActivityClient;
+import com.demo.preorder.follow.dao.FollowDao;
+import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.post.dao.GreatPostDao;
-import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.dto.GreatPostDto;
 import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.post.service.GreatPostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GreatPostServiceImpl implements GreatPostService {
 
     private final GreatPostDao greatPostDao;
+    private final ActivityClient activityClient;
 
+    private final FollowDao followDao;
     @Override
     public GreatPost saveGreatPost(Long userId, GreatPostDto greatPostDto) {
-        return greatPostDao.saveGreatPost(userId, greatPostDto.getPostId());
+        GreatPost saved = greatPostDao.saveGreatPost(userId, greatPostDto.getPostId());
+
+        // 내가 팔로우한 사람 찾아서 newsfeed
+        List<Follow> followList = followDao.findFollowing(saved.getUserId().getId());
+
+        if (followList!= null) {
+
+            for (Follow follows : followList) {
+                NewsfeedClientDto newsfeedClientDto = new NewsfeedClientDto();
+                newsfeedClientDto.setUserId(follows.getFollowingId());
+                newsfeedClientDto.setSenderId(saved.getUserId());
+                newsfeedClientDto.setType("great_post");
+                newsfeedClientDto.setTargetId(saved.getId());
+
+                try {
+                    // 외부 서비스 호출
+                    String result = activityClient.saveNewsfeed(newsfeedClientDto);
+                    log.info("Info log: Following - userID={} result={}", follows.getUserId(), result);
+                } catch (Exception e) {
+                    // 오류 발생 시 처리
+                    log.error("Error saving following for userID={}: {}", follows.getUserId(), e.getMessage(), e);
+                    // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+                }
+            }
+        }
+        return saved;
     }
 
     @Override
