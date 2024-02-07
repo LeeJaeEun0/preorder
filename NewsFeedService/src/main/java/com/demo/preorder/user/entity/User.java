@@ -3,10 +3,12 @@ package com.demo.preorder.user.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import com.demo.preorder.user.dto.UserLoginDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,7 +29,6 @@ public class User {
     private String email;
 
     private String password;
-
 
     private String name;
 
@@ -57,25 +58,6 @@ public class User {
     @PreUpdate
     public void modifiedDate() {
         this.setLastmodifiedDate(LocalDate.now());
-    }
-
-    @Builder
-    public User(String email, String password, String name){
-        this.email = email;
-        this.password = password;
-        this.name = name;
-    }
-
-    public void addRole(UserRole userRole){
-        userRoles.add(userRole);
-    }
-
-    public void updateRefreshToken(String refreshToken){
-        this.refreshToken = refreshToken;
-    }
-
-    public boolean verifyUser(UserLoginDto userLoginDto){
-        return this.email.equals(userLoginDto.getUserEmail()) && this.password.equals(userLoginDto.getUserPassword());
     }
 
 }

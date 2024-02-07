@@ -1,4 +1,4 @@
-package com.demo.preorder.newsfeed.dto;
+package com.demo.preorder.client.dto;
 
 import com.demo.preorder.user.entity.User;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class NewsfeedMyNewsDto {
+public class NewsfeedMyNewsClientDto {
     private User userId;
 
     private User writerId;

@@ -1,22 +1,25 @@
 package com.demo.preorder.follow.service.impl;
 
+import com.demo.preorder.client.dto.NewsfeedClientDto;
+import com.demo.preorder.client.service.ActivityClient;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.dto.FollowDto;
 import com.demo.preorder.follow.service.FollowService;
-import com.demo.preorder.user.dao.UserDao;
+import com.demo.preorder.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FollowServiceImpl implements FollowService {
 
     private final FollowDao followDao;
-
-    private final UserDao userDao;
+    private final ActivityClient activityClient;
 
     @Override
     public FollowDto saveFollow(Long userId,FollowDto followDto) {
@@ -24,9 +27,32 @@ public class FollowServiceImpl implements FollowService {
         if (followDto.getFollowingId() ==null)
             return null;
 
-        follow.setUserId(userDao.findUser(userId));
-        follow.setFollowingId(userDao.findUser(followDto.getFollowingId()));
-        followDao.insertFollow(follow);
+        follow.setUserId(activityClient.findUser(userId));
+        follow.setFollowingId(activityClient.findUser(followDto.getFollowingId()));
+        Follow saved = followDao.insertFollow(follow);
+        // 내가 팔로우한 사람 찾아서 newsfeed
+        List<Follow> followList = followDao.findFollowing(saved.getUserId().getId());
+
+        if (followList!= null) {
+
+            for (Follow follows : followList) {
+                NewsfeedClientDto newsfeedClientDto = new NewsfeedClientDto();
+                newsfeedClientDto.setUserId(follows.getFollowingId());
+                newsfeedClientDto.setSenderId(saved.getUserId());
+                newsfeedClientDto.setType("follow");
+                newsfeedClientDto.setTargetId(saved.getId());
+
+                try {
+                    // 외부 서비스 호출
+                    String result = activityClient.saveNewsfeed(newsfeedClientDto);
+                    log.info("Info log: Following - userID={} result={}", follows.getUserId(), result);
+                } catch (Exception e) {
+                    // 오류 발생 시 처리
+                    log.error("Error saving following for userID={}: {}", follows.getUserId(), e.getMessage(), e);
+                    // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+                }
+            }
+        }
         return followDto;
     }
 
@@ -37,13 +63,13 @@ public class FollowServiceImpl implements FollowService {
 
     // 나를 팔로우한 사람
     @Override
-    public List<Follow> whoFollowedMe(FollowDto followDto) {
-        return followDao.whofollowedMe(followDto.getFollowingId());
+    public List<Follow> findFollower(FollowDto followDto) {
+        return followDao.findFollower(followDto.getFollowingId());
     }
 
     // 내가 팔로우한 사람
     @Override
-    public List<Follow> peopleIFollow(Long userId) {
-        return followDao.peopleIfollow(userId);
+    public List<Follow> findFollowing(Long userId) {
+        return followDao.findFollowing(userId);
     }
 }

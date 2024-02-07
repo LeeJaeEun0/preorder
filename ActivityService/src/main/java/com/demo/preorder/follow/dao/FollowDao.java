@@ -9,8 +9,8 @@ public interface FollowDao {
 
     void deleteFollow(Long userId, Long followingId) throws Exception;
 
-    List<Follow> whofollowedMe(Long followingId);
+    List<Follow> findFollower(Long followingId);
 
-    List<Follow> peopleIfollow(Long userId);
+    List<Follow> findFollowing(Long userId);
 
 }

@@ -1,17 +1,17 @@
-package com.demo.preorder.newsfeed.dto;
+package com.demo.preorder.client.dto;
 
 import com.demo.preorder.user.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class NewsfeedMyNewsDto {
+@Setter
+public class NewsfeedClientDto {
     private User userId;
 
-    private User writerId;
+    private User senderId;
 
     private String type;
 
-    private Long PostId;
+    private Long targetId;
 }

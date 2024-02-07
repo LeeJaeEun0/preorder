@@ -12,6 +12,7 @@ import com.demo.preorder.user.repository.UserRoleRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -49,6 +50,8 @@ public class UserService {
     public UserVerifyResponseDto verifyUser(UserLoginDto userLoginDto){
         Optional<User> optionalUser = userRepository.findByEmail(userLoginDto.getUserEmail());
         User user = optionalUser.get();
+        log.info("info log userLoginDto = {}", userLoginDto.getUserPassword());
+        log.info("info log user = {}", user.getPassword());
         if(user == null)
             return UserVerifyResponseDto.builder()
                     .isValid(false)

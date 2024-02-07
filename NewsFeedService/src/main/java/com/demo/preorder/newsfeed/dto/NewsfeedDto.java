@@ -6,6 +6,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class NewsfeedFollowedMeDto {
+public class NewsfeedDto {
+
     private User userId;
+
+    private User senderId;
+
+    private String type;
+
+    private Long targetId;
 }

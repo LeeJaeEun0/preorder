@@ -1,9 +1,9 @@
 package com.demo.preorder.follow.controller;
 
+import com.demo.preorder.client.service.ActivityClient;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.dto.FollowDto;
 import com.demo.preorder.follow.service.FollowService;
-import com.demo.preorder.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,12 +19,12 @@ import java.util.Map;
 public class FollowController {
     private final FollowService followService;
 
-    private final UserService userService;
+    private final ActivityClient activityClient;
 
     @PostMapping
     public ResponseEntity<?> saveFollow(@RequestHeader Map<String, String> httpHeaders,
                                         @RequestBody FollowDto followDto){
-        Long userId = userService.findUserId(httpHeaders);
+        Long userId = activityClient.findUserId(httpHeaders);
         FollowDto followDto1 = followService.saveFollow(userId,followDto);
         if(followDto1 != null){
             return  ResponseEntity.status(HttpStatus.CREATED).body(followDto1);
@@ -36,20 +36,20 @@ public class FollowController {
     @DeleteMapping
     public ResponseEntity<Follow> deleteFollow(@RequestHeader Map<String, String> httpHeaders,
                                                @RequestBody FollowDto followDto) throws Exception {
-        Long userId = userService.findUserId(httpHeaders);
+        Long userId = activityClient.findUserId(httpHeaders);
         followService.deleteFollow(userId,followDto);
         return  null;
     }
-    @GetMapping("/followedme")
-    public ResponseEntity<List<Follow>> whoFollowedMe(@RequestBody FollowDto followDto){
-        List<Follow> follows = followService.whoFollowedMe(followDto);
+    @GetMapping("/follower")
+    public ResponseEntity<List<Follow>> findFollower(@RequestBody FollowDto followDto){
+        List<Follow> follows = followService.findFollower(followDto);
         return  ResponseEntity.status(HttpStatus.OK).body(follows);
     }
-    @GetMapping("/iFollow")
-    public ResponseEntity<List<Follow>> peopleIFollow(@RequestHeader Map<String, String> httpHeaders,
+    @GetMapping("/following")
+    public ResponseEntity<List<Follow>> findFollowing(@RequestHeader Map<String, String> httpHeaders,
                                                       @RequestBody FollowDto followDto){
-        Long userId = userService.findUserId(httpHeaders);
-        List<Follow> follows = followService.peopleIFollow(userId);
+        Long userId = activityClient.findUserId(httpHeaders);
+        List<Follow> follows = followService.findFollowing(userId);
         return  ResponseEntity.status(HttpStatus.OK).body(follows);
     }
 }

@@ -1,5 +1,6 @@
 package com.demo.preorder.comment.dao.impl;
 
+import com.demo.preorder.client.service.ActivityClient;
 import com.demo.preorder.comment.dao.GreatCommentDao;
 import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.entity.GreatComment;
@@ -8,9 +9,6 @@ import com.demo.preorder.comment.repository.GreatCommentRepository;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.repository.FollowRepository;
 import com.demo.preorder.user.entity.User;
-import com.demo.preorder.user.repository.UserRepository;
-import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
-import com.demo.preorder.newsfeed.repository.NewsfeedIFollowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,21 +21,17 @@ public class GreatCommentDaoImpl implements GreatCommentDao {
 
     private final GreatCommentRepository greatCommentRepository;
 
-    private final UserRepository userRepository;
-
     private final CommentRepository commentRepository;
 
     private final FollowRepository followRepository;
 
-    private final NewsfeedIFollowRepository newsfeedIFollowRepository;
-
+    private final ActivityClient activityClient;
     @Override
     public GreatComment saveGreatComment(Long userId, Long commentId) {
         GreatComment greatComment = new GreatComment();
-        Optional<User> optionalUser = userRepository.findById(userId);
+        User user = activityClient.findUser(userId);
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
-        if(optionalUser==null || optionalComment==null) return null;
-        User user = optionalUser.get();
+        if(user==null || optionalComment==null) return null;
         Comment comment = optionalComment.get();
 
         greatComment.setUserId(user);
@@ -45,18 +39,18 @@ public class GreatCommentDaoImpl implements GreatCommentDao {
         GreatComment saved = greatCommentRepository.save(greatComment);
         Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUserId().getId());
 
-        if (optionalFollowList.isPresent()) {
-            List<Follow> followList = optionalFollowList.get();
-
-            for (Follow follows : followList) {
-                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
-                newsfeedIFollow.setUserId(follows.getUserId());
-                newsfeedIFollow.setFollowingId(saved.getUserId());
-                newsfeedIFollow.setType("greatComment");
-                newsfeedIFollow.setTargetId(saved.getId());
-                newsfeedIFollowRepository.save(newsfeedIFollow);
-            }
-        }
+//        if (optionalFollowList.isPresent()) {
+//            List<Follow> followList = optionalFollowList.get();
+//
+//            for (Follow follows : followList) {
+//                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
+//                newsfeedIFollow.setUserId(follows.getUserId());
+//                newsfeedIFollow.setFollowingId(saved.getUserId());
+//                newsfeedIFollow.setType("greatComment");
+//                newsfeedIFollow.setTargetId(saved.getId());
+//                newsfeedIFollowRepository.save(newsfeedIFollow);
+//            }
+//        }
         return saved;
 
     }

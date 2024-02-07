@@ -10,8 +10,8 @@ public interface FollowService {
 
     void deleteFollow(Long userId, FollowDto followDto) throws Exception;
 
-    List<Follow> whoFollowedMe (FollowDto followDto);
+    List<Follow> findFollower (FollowDto followDto);
 
-    List<Follow> peopleIFollow(Long userId);
+    List<Follow> findFollowing(Long userId);
 
 }

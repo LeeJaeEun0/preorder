@@ -1,11 +1,11 @@
 package com.demo.preorder.post.controller;
 
+import com.demo.preorder.client.service.ActivityClient;
 import com.demo.preorder.post.dto.PostDto;
 import com.demo.preorder.post.dto.SearchwordDto;
 import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.post.service.PostService;
-import com.demo.preorder.user.repository.UserRepository;
-import com.demo.preorder.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,24 +18,18 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/api/posts")
+@RequiredArgsConstructor
 public class PostController {
     
     private final PostService postService;
 
-    private final UserService userService;
-
-
-    public PostController(PostService postService, UserService userService) {
-        this.postService = postService;
-        this.userService = userService;
-
-    }
+    private final ActivityClient activityClient;
 
     @PostMapping
     public ResponseEntity<?> savePost(@RequestHeader Map<String, String> httpHeaders,
                                       @RequestBody PostDto postDto){
         log.info("info log = {}",postDto.getContents());
-        Long userId = userService.findUserId(httpHeaders);
+        Long userId = activityClient.findUserId(httpHeaders);
         Post post = postService.savePost(userId, postDto);
 
         if(post != null){
@@ -70,7 +64,7 @@ public class PostController {
     public ResponseEntity<?> changePost(@RequestHeader Map<String, String> httpHeaders,
                                         @RequestBody PostDto postDto){
 
-        Long userId = userService.findUserId(httpHeaders);
+        Long userId = activityClient.findUserId(httpHeaders);
         log.info("info log = {}",userId);
         log.info("info log = {}",postDto.getPostId());
         log.info("info log = {}",postDto.getContents());
@@ -85,7 +79,7 @@ public class PostController {
     @DeleteMapping
     public ResponseEntity<?> deletePost(@RequestHeader Map<String, String> httpHeaders,
                                         @RequestBody PostDto postDto) throws Exception {
-        Long userId = userService.findUserId(httpHeaders);
+        Long userId = activityClient.findUserId(httpHeaders);
         postService.deletePost(userId, postDto);
         return null;
 

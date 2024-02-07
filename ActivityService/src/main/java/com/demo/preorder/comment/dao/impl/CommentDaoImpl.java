@@ -5,10 +5,6 @@ import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.repository.CommentRepository;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.repository.FollowRepository;
-import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
-import com.demo.preorder.newsfeed.entity.NewsfeedMyNews;
-import com.demo.preorder.newsfeed.repository.NewsfeedIFollowRepository;
-import com.demo.preorder.newsfeed.repository.NewsfeedMyNewsRepository;
 import com.demo.preorder.post.repository.PostRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,36 +21,32 @@ public class CommentDaoImpl implements CommentDao {
 
     private final FollowRepository followRepository;
 
-    private final NewsfeedIFollowRepository newsfeedIFollowRepository;
-
-    private final NewsfeedMyNewsRepository newsfeedMyNewsRepository;
-
     @Override
     @Transactional
     public Comment saveComment(Comment comment) {
         Comment saved = commentRepository.save(comment);
         Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUseId().getId());
 
-        if (optionalFollowList.isPresent()) {
-            List<Follow> followList = optionalFollowList.get();
-
-            for (Follow follows : followList) {
-                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
-                newsfeedIFollow.setUserId(follows.getUserId());
-                newsfeedIFollow.setFollowingId(saved.getUseId());
-                newsfeedIFollow.setType("comment");
-                newsfeedIFollow.setTargetId(saved.getId());
-                newsfeedIFollowRepository.save(newsfeedIFollow);
-            }
-        }
-
-        // 포스트를 작성한 사람에게 좋아요 알림
-        NewsfeedMyNews newsfeedFollowedMe = new NewsfeedMyNews();
-        newsfeedFollowedMe.setUserId(saved.getPostId().getUserId());
-        newsfeedFollowedMe.setWriterId(saved.getUseId());
-        newsfeedFollowedMe.setType("comment");
-        newsfeedFollowedMe.setPostId(saved.getId());
-        newsfeedMyNewsRepository.save(newsfeedFollowedMe);
+//        if (optionalFollowList.isPresent()) {
+//            List<Follow> followList = optionalFollowList.get();
+//
+//            for (Follow follows : followList) {
+//                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
+//                newsfeedIFollow.setUserId(follows.getUserId());
+//                newsfeedIFollow.setFollowingId(saved.getUseId());
+//                newsfeedIFollow.setType("comment");
+//                newsfeedIFollow.setTargetId(saved.getId());
+//                newsfeedIFollowRepository.save(newsfeedIFollow);
+//            }
+//        }
+//
+//        // 포스트를 작성한 사람에게 댓글 알림
+//        NewsfeedMyNews newsfeedFollowedMe = new NewsfeedMyNews();
+//        newsfeedFollowedMe.setUserId(saved.getPostId().getUserId());
+//        newsfeedFollowedMe.setWriterId(saved.getUseId());
+//        newsfeedFollowedMe.setType("comment");
+//        newsfeedFollowedMe.setPostId(saved.getId());
+//        newsfeedMyNewsRepository.save(newsfeedFollowedMe);
         return saved;
     }
 

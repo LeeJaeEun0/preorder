@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     public Long findUserId(Map<String, String> httpHeaders) {
         String jwtToken = httpHeaders.get("authorization");
         String email = JwtUtils.initJwtPayload(jwtToken);
-
+        log.info("info log = {}",userDao.findUserId(email));
         return userDao.findUserId(email);
     }
 

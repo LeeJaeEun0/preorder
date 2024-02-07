@@ -10,15 +10,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
-
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NewsfeedIFollow {
+public class Newsfeed {
     @Id
-    @Column(name="newsfeed_i_follow_id")
+    @Column(name="newsfeed_following_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -27,8 +26,8 @@ public class NewsfeedIFollow {
     private User userId;
 
     @ManyToOne
-    @JoinColumn(name = "following_id", referencedColumnName = "user_id")
-    private User followingId;
+    @JoinColumn(name = "sender_id", referencedColumnName = "user_id")
+    private User senderId;
 
     private String type;
 

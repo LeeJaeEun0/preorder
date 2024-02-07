@@ -2,10 +2,6 @@ package com.demo.preorder.post.dao.impl;
 
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.repository.FollowRepository;
-import com.demo.preorder.newsfeed.entity.NewsfeedFollowedMe;
-import com.demo.preorder.newsfeed.entity.NewsfeedIFollow;
-import com.demo.preorder.newsfeed.repository.NewsfeedFollowedMeRepository;
-import com.demo.preorder.newsfeed.repository.NewsfeedIFollowRepository;
 import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.post.repository.PostRepository;
@@ -24,46 +20,10 @@ public class PostDaoImpl implements PostDao {
 
     private final FollowRepository followRepository;
 
-    private final NewsfeedIFollowRepository newsfeedIFollowRepository;
-
-    private final NewsfeedFollowedMeRepository newsfeedFollowedMeRepository;
-
     @Override
     @Transactional
     public Post savePost(Post post) {
-        Post saved = postRepository.save(post);
-        System.out.println("dao");
-        System.out.println(saved.getContents());
-        Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUserId().getId());
-
-        // 팔로우한 사람들에게 알림
-        if (optionalFollowList.isPresent()) {
-            List<Follow> followList = optionalFollowList.get();
-
-            for (Follow follows : followList) {
-                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
-                newsfeedIFollow.setUserId(follows.getUserId());
-                newsfeedIFollow.setFollowingId(saved.getUserId());
-                newsfeedIFollow.setType("post");
-                newsfeedIFollow.setTargetId(saved.getId());
-                newsfeedIFollowRepository.save(newsfeedIFollow);
-            }
-        }
-        
-        // 내가 팔로우한 사람들에게 소식을 알림
-        Optional<List<Follow>>optionalFollowList2 = followRepository.findByUserIdId(saved.getUserId().getId());
-        if (optionalFollowList2.isPresent()) {
-            List<Follow> followList = optionalFollowList2.get();
-
-            for (Follow follows : followList) {
-                NewsfeedFollowedMe newsfeedFollowedMe = new NewsfeedFollowedMe();
-                newsfeedFollowedMe.setUserId(follows.getFollowingId());
-                newsfeedFollowedMe.setFollowerId(saved.getUserId());
-                newsfeedFollowedMe.setTargetId(saved.getId());
-                newsfeedFollowedMeRepository.save(newsfeedFollowedMe);
-            }
-        }
-        return saved;
+        return  postRepository.save(post);
 
     }
 
