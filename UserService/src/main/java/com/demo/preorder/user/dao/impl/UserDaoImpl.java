@@ -15,6 +15,8 @@ import java.util.Optional;
 public class UserDaoImpl implements UserDao {
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public User findUser(Long userId) {
 
@@ -73,8 +75,8 @@ public class UserDaoImpl implements UserDao {
             User user = selectUser.get();
             String password = user.getPassword();
 
-            if (password.equals(oldPassword)){
-                user.setPassword(newPassword);
+            if (password.equals(passwordEncoder.encrypt(user.getEmail(),oldPassword))){
+                user.setPassword(passwordEncoder.encrypt(user.getEmail(),newPassword));
             }else{
                 throw new Exception();
             }

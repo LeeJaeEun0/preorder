@@ -1,5 +1,6 @@
 package com.demo.preorder.user.service.impl;
 
+import com.demo.preorder.cofig.PasswordEncoder;
 import com.demo.preorder.filter.VerifyUserFilter;
 import com.demo.preorder.user.dto.UserLoginDto;
 import com.demo.preorder.user.dto.UserRegisterDto;
@@ -32,27 +33,37 @@ public class UserService {
 
     private final ObjectMapper objectMapper;
 
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserResponseDto registerUser(UserRegisterDto userRegisterDto){
-        User user = userRepository.save(userRegisterDto.toEntity());
+
+        String encryptedPassword = passwordEncoder.encrypt(userRegisterDto.getUserEmail(), userRegisterDto.getPassword());
+
+        User user = User.builder()
+                .name(userRegisterDto.getUsername())
+                .email(userRegisterDto.getUserEmail())
+                .password(encryptedPassword)
+                .build();
+
+        User saveduser = userRepository.save(user);
         UserRole role = UserRole.builder()
                 .role(Role.USER)
-                .user(user)
+                .user(saveduser)
                 .build();
-        if(user.getUserRoles() == null)
-            user.setUserRoles(new HashSet<>());
-        user.addRole(role);
+        if(saveduser.getUserRoles() == null)
+            saveduser.setUserRoles(new HashSet<>());
+        saveduser.addRole(role);
         userRoleRepository.save(role);
-        return new UserResponseDto(user);
+        return new UserResponseDto(saveduser);
     }
 
     public UserVerifyResponseDto verifyUser(UserLoginDto userLoginDto){
         Optional<User> optionalUser = userRepository.findByEmail(userLoginDto.getUserEmail());
         User user = optionalUser.get();
-        log.info("info log userLoginDto = {}", userLoginDto.getUserPassword());
-        log.info("info log user = {}", user.getPassword());
-        if(user == null)
+        log.info("info log userLoginDto = {}", userLoginDto.getUserEmail());
+        log.info("info log user = {}", user.getEmail());
+        if(user == null || !user.getPassword().equals(passwordEncoder.encrypt(userLoginDto.getUserEmail(),userLoginDto.getUserPassword())))
             return UserVerifyResponseDto.builder()
                     .isValid(false)
                     .build();
