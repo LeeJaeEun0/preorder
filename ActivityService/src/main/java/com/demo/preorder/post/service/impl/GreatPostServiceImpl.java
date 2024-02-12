@@ -28,7 +28,6 @@ public class GreatPostServiceImpl implements GreatPostService {
     public GreatPost saveGreatPost(Long userId, GreatPostDto greatPostDto) {
         GreatPost saved = greatPostDao.saveGreatPost(userId, greatPostDto.getPostId());
 
-        // 내가 팔로우한 사람 찾아서 newsfeed
         List<Follow> followList = followDao.findFollowing(saved.getUserId().getId());
 
         if (followList!= null) {
@@ -47,6 +46,29 @@ public class GreatPostServiceImpl implements GreatPostService {
                 } catch (Exception e) {
                     // 오류 발생 시 처리
                     log.error("Error saving following for userID={}: {}", follows.getUserId(), e.getMessage(), e);
+                    // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+                }
+            }
+        }
+
+        List<Follow> followList2 = followDao.findFollower(saved.getUserId().getId());
+
+        if (followList!= null) {
+
+            for (Follow follows : followList2) {
+                NewsfeedClientDto newsfeedClientDto = new NewsfeedClientDto();
+                newsfeedClientDto.setUserId(follows.getUserId());
+                newsfeedClientDto.setSenderId(saved.getUserId());
+                newsfeedClientDto.setType("great_post");
+                newsfeedClientDto.setTargetId(saved.getId());
+
+                try {
+                    // 외부 서비스 호출
+                    String result = activityClient.saveNewsfeed(newsfeedClientDto);
+                    log.info("Info log: Follower - userID={} result={}", follows.getUserId(), result);
+                } catch (Exception e) {
+                    // 오류 발생 시 처리
+                    log.error("Error saving follower for userID={}: {}", follows.getUserId(), e.getMessage(), e);
                     // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
                 }
             }

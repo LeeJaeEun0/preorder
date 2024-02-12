@@ -64,7 +64,7 @@ public class FollowDaoImpl implements FollowDao {
     public List<Follow> findFollowing(Long userId) {
         Optional<List<Follow>> following = followRepository.findByUserIdId(userId);
         if(following .isPresent()){
-            List<Follow> followingList = following .get();
+            List<Follow> followingList = following.get();
             return followingList;
         }
         return null;

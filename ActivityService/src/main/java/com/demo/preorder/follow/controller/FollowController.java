@@ -46,8 +46,7 @@ public class FollowController {
         return  ResponseEntity.status(HttpStatus.OK).body(follows);
     }
     @GetMapping("/following")
-    public ResponseEntity<List<Follow>> findFollowing(@RequestHeader Map<String, String> httpHeaders,
-                                                      @RequestBody FollowDto followDto){
+    public ResponseEntity<List<Follow>> findFollowing(@RequestHeader Map<String, String> httpHeaders){
         Long userId = activityClient.findUserId(httpHeaders);
         List<Follow> follows = followService.findFollowing(userId);
         return  ResponseEntity.status(HttpStatus.OK).body(follows);
