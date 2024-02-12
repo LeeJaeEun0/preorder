@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/profiles")
+@RequestMapping("/api/profiles")
 @RequiredArgsConstructor
 public class ProfileController {
 
@@ -23,7 +25,7 @@ public class ProfileController {
 
     @PostMapping
     public ResponseEntity<?> saveProfile(@RequestHeader Map<String, String> httpHeaders,
-                                         @RequestBody ProfileDto profileDto){
+                                         @ModelAttribute ProfileDto profileDto) throws IOException {
         Long userId = userService.findUserId(httpHeaders);
         Profile profile = profileService.saveProfile(userId, profileDto);
         if(profile != null){
@@ -35,7 +37,7 @@ public class ProfileController {
 
     @PutMapping
     public ResponseEntity<?> updateProfile(@RequestHeader Map<String, String> httpHeaders,
-                                           @RequestBody ProfileDto profileDto){
+                                           @ModelAttribute ProfileDto profileDto) throws IOException {
         Long userId = userService.findUserId(httpHeaders);
         Profile profile = profileService.updateProfile(userId, profileDto);
         if(profile != null){
