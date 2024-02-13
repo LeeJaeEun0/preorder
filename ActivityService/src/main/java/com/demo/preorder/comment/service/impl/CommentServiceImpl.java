@@ -1,6 +1,7 @@
 package com.demo.preorder.comment.service.impl;
 
 import com.demo.preorder.client.dto.NewsfeedClientDto;
+import com.demo.preorder.client.dto.NewsfeedMyNewsClientDto;
 import com.demo.preorder.client.service.ActivityClient;
 import com.demo.preorder.comment.dao.CommentDao;
 import com.demo.preorder.comment.dto.CommentDeleteDto;
@@ -91,6 +92,23 @@ public class CommentServiceImpl implements CommentService {
                 }
             }
         }
+
+        NewsfeedMyNewsClientDto newsfeedMyNewsClientDto = new NewsfeedMyNewsClientDto();
+        newsfeedMyNewsClientDto.setUserId(saved.getPostId().getUserId());
+        newsfeedMyNewsClientDto.setWriterId(saved.getUseId());
+        newsfeedMyNewsClientDto.setPostId(saved.getPostId().getId());
+        newsfeedMyNewsClientDto.setType("comment");
+        try {
+            // 외부 서비스 호출
+            String result = activityClient.saveNewsfeedMyNews(newsfeedMyNewsClientDto);
+            log.info("Info log: newsfeedMyNews - userID={} result={}", newsfeedMyNewsClientDto.getUserId(), result);
+        } catch (Exception e) {
+            // 오류 발생 시 처리
+            log.error("Error saving follower for userID={}: {}", newsfeedMyNewsClientDto.getUserId(), e.getMessage(), e);
+            // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+        }
+
+
 
         return saved;
     }

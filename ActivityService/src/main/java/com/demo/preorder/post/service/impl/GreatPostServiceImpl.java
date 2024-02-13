@@ -1,6 +1,7 @@
 package com.demo.preorder.post.service.impl;
 
 import com.demo.preorder.client.dto.NewsfeedClientDto;
+import com.demo.preorder.client.dto.NewsfeedMyNewsClientDto;
 import com.demo.preorder.client.service.ActivityClient;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
@@ -72,6 +73,21 @@ public class GreatPostServiceImpl implements GreatPostService {
                     // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
                 }
             }
+        }
+
+        NewsfeedMyNewsClientDto newsfeedMyNewsClientDto = new NewsfeedMyNewsClientDto();
+        newsfeedMyNewsClientDto.setUserId(saved.getPostId().getUserId());
+        newsfeedMyNewsClientDto.setWriterId(saved.getUserId());
+        newsfeedMyNewsClientDto.setPostId(saved.getPostId().getId());
+        newsfeedMyNewsClientDto.setType("great_post");
+        try {
+            // 외부 서비스 호출
+            String result = activityClient.saveNewsfeedMyNews(newsfeedMyNewsClientDto);
+            log.info("Info log: newsfeedMyNews - userID={} result={}", newsfeedMyNewsClientDto.getUserId(), result);
+        } catch (Exception e) {
+            // 오류 발생 시 처리
+            log.error("Error saving follower for userID={}: {}", newsfeedMyNewsClientDto.getUserId(), e.getMessage(), e);
+            // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
         }
         return saved;
     }

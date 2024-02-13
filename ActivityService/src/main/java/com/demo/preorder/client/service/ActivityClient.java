@@ -108,7 +108,7 @@ public class ActivityClient {
         // URI 생성
         URI uri = UriComponentsBuilder
                 .fromUriString("http://localhost:8082")
-                .path("/api/internal/newsfeeds/following")
+                .path("/api/internal/newsfeeds/myNews")
                 .encode()
                 .build()
                 .toUri();
