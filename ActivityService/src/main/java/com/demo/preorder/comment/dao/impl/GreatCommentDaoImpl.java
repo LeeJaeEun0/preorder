@@ -1,6 +1,6 @@
 package com.demo.preorder.comment.dao.impl;
 
-import com.demo.preorder.client.service.ActivityClient;
+import com.demo.preorder.client.service.ActivityRestTemplateClient;
 import com.demo.preorder.comment.dao.GreatCommentDao;
 import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.entity.GreatComment;
@@ -25,11 +25,11 @@ public class GreatCommentDaoImpl implements GreatCommentDao {
 
     private final FollowRepository followRepository;
 
-    private final ActivityClient activityClient;
+    private final ActivityRestTemplateClient activityRestTemplateClient;
     @Override
     public GreatComment saveGreatComment(Long userId, Long commentId) {
         GreatComment greatComment = new GreatComment();
-        User user = activityClient.findUser(userId);
+        User user = activityRestTemplateClient.findUser(userId);
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         if(user==null || optionalComment==null) return null;
         Comment comment = optionalComment.get();

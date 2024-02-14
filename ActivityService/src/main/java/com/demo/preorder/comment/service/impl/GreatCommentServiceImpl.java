@@ -1,7 +1,7 @@
 package com.demo.preorder.comment.service.impl;
 
 import com.demo.preorder.client.dto.NewsfeedClientDto;
-import com.demo.preorder.client.service.ActivityClient;
+import com.demo.preorder.client.service.NewsfeedServiceClient;
 import com.demo.preorder.comment.dao.GreatCommentDao;
 import com.demo.preorder.comment.dto.GreatCommentDto;
 import com.demo.preorder.comment.entity.GreatComment;
@@ -10,6 +10,7 @@ import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class GreatCommentServiceImpl implements GreatCommentService {
 
     private final GreatCommentDao greatCommentDao;
 
-    private final ActivityClient activityClient;
+    private final NewsfeedServiceClient newsfeedServiceClient;
 
     private final FollowDao followDao;
     @Override
@@ -41,7 +42,8 @@ public class GreatCommentServiceImpl implements GreatCommentService {
 
                 try {
                     // 외부 서비스 호출
-                    String result = activityClient.saveNewsfeed(newsfeedClientDto);
+                    ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
+                    String result = stringResponseEntity.getBody();
                     log.info("Info log: Following - userID={} result={}", follows.getUserId(), result);
                 } catch (Exception e) {
                     // 오류 발생 시 처리
@@ -64,7 +66,8 @@ public class GreatCommentServiceImpl implements GreatCommentService {
 
                 try {
                     // 외부 서비스 호출
-                    String result = activityClient.saveNewsfeed(newsfeedClientDto);
+                    ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
+                    String result = stringResponseEntity.getBody();
                     log.info("Info log: Follower - userID={} result={}", follows.getUserId(), result);
                 } catch (Exception e) {
                     // 오류 발생 시 처리

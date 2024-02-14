@@ -2,7 +2,8 @@ package com.demo.preorder.comment.service.impl;
 
 import com.demo.preorder.client.dto.NewsfeedClientDto;
 import com.demo.preorder.client.dto.NewsfeedMyNewsClientDto;
-import com.demo.preorder.client.service.ActivityClient;
+import com.demo.preorder.client.service.NewsfeedServiceClient;
+import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.comment.dao.CommentDao;
 import com.demo.preorder.comment.dto.CommentDeleteDto;
 import com.demo.preorder.comment.dto.CommentDto;
@@ -17,6 +18,7 @@ import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.entity.Post;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +28,10 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
    private final PostDao postDao;
 
-   private final ActivityClient activityClient;
+   //private final ActivityRestTemplateClient activityRestTemplateClient;
+   private final NewsfeedServiceClient newsfeedServiceClient;
+
+   private final UserServiceClient userServiceClient;
 
    private final CommentDao commentDao;
 
@@ -35,7 +40,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment saveComment(Long userId,CommentDto commentDto) {
         Comment comment = new Comment();
-        User user = activityClient.findUser(userId);
+        ResponseEntity<User> userResponseEntity = userServiceClient.findUser(userId);
+        User user = userResponseEntity.getBody();
         Post post = postDao.selectPost(commentDto.getPostId());
         if(user == null || post == null) return null;
         comment.setPostId(post);
@@ -60,7 +66,8 @@ public class CommentServiceImpl implements CommentService {
 
                 try {
                     // 외부 서비스 호출
-                    String result = activityClient.saveNewsfeed(newsfeedClientDto);
+                    ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
+                    String result = stringResponseEntity.getBody();
                     log.info("Info log: Following - userID={} result={}", follows.getUserId(), result);
                 } catch (Exception e) {
                     // 오류 발생 시 처리
@@ -83,7 +90,8 @@ public class CommentServiceImpl implements CommentService {
 
                 try {
                     // 외부 서비스 호출
-                    String result = activityClient.saveNewsfeed(newsfeedClientDto);
+                    ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
+                    String result = stringResponseEntity.getBody();
                     log.info("Info log: Follower - userID={} result={}", follows.getUserId(), result);
                 } catch (Exception e) {
                     // 오류 발생 시 처리
@@ -100,7 +108,8 @@ public class CommentServiceImpl implements CommentService {
         newsfeedMyNewsClientDto.setType("comment");
         try {
             // 외부 서비스 호출
-            String result = activityClient.saveNewsfeedMyNews(newsfeedMyNewsClientDto);
+            ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeedMyNews(newsfeedMyNewsClientDto);
+            String result = stringResponseEntity.getBody();
             log.info("Info log: newsfeedMyNews - userID={} result={}", newsfeedMyNewsClientDto.getUserId(), result);
         } catch (Exception e) {
             // 오류 발생 시 처리
@@ -116,7 +125,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment insertComment(Long userId, CommentReplayDto commentReplayDto) {
         Comment comment = new Comment();
-        User user = activityClient.findUser(userId);
+        ResponseEntity<User> userResponseEntity = userServiceClient.findUser(userId);
+        User user = userResponseEntity.getBody();
         Post post = postDao.selectPost(commentReplayDto.getPostId());
         if(user == null || post == null) return null;
         comment.setPostId(post);

@@ -1,6 +1,6 @@
 package com.demo.preorder.newsfeed.Controller;
 
-import com.demo.preorder.client.service.NewsfeedClient;
+import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.newsfeed.entity.Newsfeed;
 import com.demo.preorder.newsfeed.entity.NewsfeedMyNews;
 import com.demo.preorder.newsfeed.service.NewsfeedMyNewsService;
@@ -22,11 +22,12 @@ public class NewsfeedController {
 
     private final NewsfeedMyNewsService newsfeedMyNewsService;
 
-    private final NewsfeedClient newsfeedClient;
+    private final UserServiceClient userServiceClient;
 
     @GetMapping
     public ResponseEntity<?> selectNewsfeed(@RequestHeader Map<String, String> httpHeaders){
-        Long userId = newsfeedClient.findUserId(httpHeaders);
+        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+        Long userId = responseEntity.getBody();
         List<Newsfeed> newsfeedList = newsfeedService.findNewsfeed(userId);
         if (newsfeedList != null) {
             return ResponseEntity.accepted().body(newsfeedList);
@@ -37,7 +38,8 @@ public class NewsfeedController {
 
     @GetMapping("/mynews")
     public ResponseEntity<?> selectNewsfeedMyNews(@RequestHeader Map<String, String> httpHeaders){
-        Long userId = newsfeedClient.findUserId(httpHeaders);
+        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+        Long userId = responseEntity.getBody();
         List<NewsfeedMyNews> newsfeedFollowedMeList = newsfeedMyNewsService.newsfeedMyNews(userId);
         if (newsfeedFollowedMeList != null) {
             return ResponseEntity.accepted().body(newsfeedFollowedMeList);

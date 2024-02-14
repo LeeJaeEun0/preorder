@@ -2,7 +2,7 @@ package com.demo.preorder.post.service.impl;
 
 import com.demo.preorder.client.dto.NewsfeedClientDto;
 import com.demo.preorder.client.dto.NewsfeedMyNewsClientDto;
-import com.demo.preorder.client.service.ActivityClient;
+import com.demo.preorder.client.service.NewsfeedServiceClient;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.post.dao.GreatPostDao;
@@ -11,6 +11,7 @@ import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.post.service.GreatPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +23,8 @@ import java.util.List;
 public class GreatPostServiceImpl implements GreatPostService {
 
     private final GreatPostDao greatPostDao;
-    private final ActivityClient activityClient;
+
+    private final NewsfeedServiceClient newsfeedServiceClient;
 
     private final FollowDao followDao;
     @Override
@@ -42,7 +44,8 @@ public class GreatPostServiceImpl implements GreatPostService {
 
                 try {
                     // 외부 서비스 호출
-                    String result = activityClient.saveNewsfeed(newsfeedClientDto);
+                    ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
+                    String result = stringResponseEntity.getBody();
                     log.info("Info log: Following - userID={} result={}", follows.getUserId(), result);
                 } catch (Exception e) {
                     // 오류 발생 시 처리
@@ -65,7 +68,8 @@ public class GreatPostServiceImpl implements GreatPostService {
 
                 try {
                     // 외부 서비스 호출
-                    String result = activityClient.saveNewsfeed(newsfeedClientDto);
+                    ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
+                    String result = stringResponseEntity.getBody();
                     log.info("Info log: Follower - userID={} result={}", follows.getUserId(), result);
                 } catch (Exception e) {
                     // 오류 발생 시 처리
@@ -82,7 +86,8 @@ public class GreatPostServiceImpl implements GreatPostService {
         newsfeedMyNewsClientDto.setType("great_post");
         try {
             // 외부 서비스 호출
-            String result = activityClient.saveNewsfeedMyNews(newsfeedMyNewsClientDto);
+            ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeedMyNews(newsfeedMyNewsClientDto);
+            String result = stringResponseEntity.getBody();
             log.info("Info log: newsfeedMyNews - userID={} result={}", newsfeedMyNewsClientDto.getUserId(), result);
         } catch (Exception e) {
             // 오류 발생 시 처리

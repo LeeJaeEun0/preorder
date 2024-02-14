@@ -1,7 +1,8 @@
 package com.demo.preorder.post.service.impl;
 
 import com.demo.preorder.client.dto.NewsfeedClientDto;
-import com.demo.preorder.client.service.ActivityClient;
+import com.demo.preorder.client.service.NewsfeedServiceClient;
+import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.post.dao.PostDao;
@@ -9,8 +10,10 @@ import com.demo.preorder.post.dto.PostDto;
 import com.demo.preorder.post.dto.SearchwordDto;
 import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.post.service.PostService;
+import com.demo.preorder.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,17 +24,21 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
     private final PostDao postDao;
 
-    private final ActivityClient activityClient;
+    private final NewsfeedServiceClient newsfeedServiceClient;
+
+    private final UserServiceClient userServiceClient;
 
     private final FollowDao followDao;
 
     @Override
     public Post savePost(Long userId,PostDto postDto) {
         Post post = new Post();
-        if(activityClient.findUser(userId) == null)
+        ResponseEntity<User> userResponseEntity = userServiceClient.findUser(userId);
+        User user = userResponseEntity.getBody();
+        if(user == null)
             return null;
 
-        post.setUserId(activityClient.findUser(userId));
+        post.setUserId(user);
         post.setContents(postDto.getContents());
         Post saved = postDao.savePost(post);
 
@@ -48,7 +55,8 @@ public class PostServiceImpl implements PostService {
 
                 try {
                     // 외부 서비스 호출
-                    String result = activityClient.saveNewsfeed(newsfeedClientDto);
+                    ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
+                    String result = stringResponseEntity.getBody();
                     log.info("Info log: Following - userID={} result={}", follows.getUserId(), result);
                 } catch (Exception e) {
                     // 오류 발생 시 처리
@@ -71,7 +79,8 @@ public class PostServiceImpl implements PostService {
 
                 try {
                     // 외부 서비스 호출
-                    String result = activityClient.saveNewsfeed(newsfeedClientDto);
+                    ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
+                    String result = stringResponseEntity.getBody();
                     log.info("Info log: Follower - userID={} result={}", follows.getUserId(), result);
                 } catch (Exception e) {
                     // 오류 발생 시 처리

@@ -1,6 +1,6 @@
 package com.demo.preorder.post.controller;
 
-import com.demo.preorder.client.service.ActivityClient;
+import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.post.dto.GreatPostDto;
 import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.post.service.GreatPostService;
@@ -19,11 +19,12 @@ public class GreatPostController {
 
     private final GreatPostService greatPostService;
 
-    private final ActivityClient activityClient;
+    private final UserServiceClient userServiceClient;
     @PostMapping
     public ResponseEntity<?> saveGreatPost(@RequestHeader Map<String, String> httpHeaders,
                                            @RequestBody GreatPostDto greatPostDto){
-        Long userId = activityClient.findUserId(httpHeaders);
+        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+        Long userId = responseEntity.getBody();
         GreatPost greatPost =  greatPostService.saveGreatPost(userId, greatPostDto);
 
         if (greatPost != null) {
@@ -46,7 +47,8 @@ public class GreatPostController {
     @DeleteMapping
     public ResponseEntity<?> deleteGreatPost(@RequestHeader Map<String, String> httpHeaders,
                                              @RequestBody GreatPostDto greatPostDto){
-        Long userId = activityClient.findUserId(httpHeaders);
+        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+        Long userId = responseEntity.getBody();
         greatPostService.deleteGreatPost(userId,greatPostDto);
         return ResponseEntity.status(HttpStatus.OK).body("ok");
     }

@@ -29,5 +29,9 @@ spring:
       enabled: true  # multipart 처리를 활성화
       max-file-size: 2MB  # 최대 파일 크기 제한
       max-request-size: 2MB  # 최대 요청 크기 제한
+
+  cloud:
+    config:
+      enabled: false
   jwt:
     secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa

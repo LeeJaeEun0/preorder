@@ -1,6 +1,6 @@
 package com.demo.preorder.comment.controller;
 
-import com.demo.preorder.client.service.ActivityClient;
+import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.comment.dto.CommentDeleteDto;
 import com.demo.preorder.comment.dto.CommentDto;
 import com.demo.preorder.comment.dto.CommentReplayDto;
@@ -9,7 +9,6 @@ import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +24,13 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    private final ActivityClient activityClient;
+    private final UserServiceClient userServiceClient;
 
     @PostMapping("/comment")
     public ResponseEntity<?> saveComment(@RequestHeader Map<String, String> httpHeaders,
                                          @RequestBody CommentDto commentDto){
-        Long userId = activityClient.findUserId(httpHeaders);
+        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+        Long userId = responseEntity.getBody();
         Comment comment = commentService.saveComment(userId, commentDto);
         if(comment != null){
             return  ResponseEntity.status(HttpStatus.CREATED).body(comment);
@@ -41,7 +41,8 @@ public class CommentController {
     @PostMapping("/replay")
     public ResponseEntity<?> insertComment(@RequestHeader Map<String, String> httpHeaders,
                                            @RequestBody CommentReplayDto commentReplayDto){
-        Long userId = activityClient.findUserId(httpHeaders);
+        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+        Long userId = responseEntity.getBody();
         Comment comment = commentService.insertComment(userId, commentReplayDto);
         if(comment != null){
             return  ResponseEntity.status(HttpStatus.CREATED).body(comment);
@@ -61,7 +62,8 @@ public class CommentController {
     @PutMapping
     public ResponseEntity<?> changeCommentContent(@RequestHeader Map<String, String> httpHeaders,
                                                   @RequestBody CommentUpdateDto commentUpdateDto){
-        Long userId = activityClient.findUserId(httpHeaders);
+        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+        Long userId = responseEntity.getBody();
         log.info("info log = {}", userId);
         log.info("info log = {}", commentUpdateDto.getCommentId());
         log.info("info log = {}", commentUpdateDto.getContent());
@@ -76,7 +78,8 @@ public class CommentController {
     @DeleteMapping
     public ResponseEntity<?> deleteComment(@RequestHeader Map<String, String> httpHeaders,
                                            @RequestBody CommentDeleteDto commentDeleteDto) throws Exception {
-        Long userId = activityClient.findUserId(httpHeaders);
+        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+        Long userId = responseEntity.getBody();
         log.info("info log = {}", userId);
         log.info("info log = {}", commentDeleteDto.getCommentId());
         commentService.deleteComment(userId,commentDeleteDto);

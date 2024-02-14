@@ -1,13 +1,12 @@
 package com.demo.preorder.post.controller;
 
-import com.demo.preorder.client.service.ActivityClient;
+import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.post.dto.PostDto;
 import com.demo.preorder.post.dto.SearchwordDto;
 import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +22,14 @@ public class PostController {
     
     private final PostService postService;
 
-    private final ActivityClient activityClient;
+    private final UserServiceClient userServiceClient;
 
     @PostMapping
     public ResponseEntity<?> savePost(@RequestHeader Map<String, String> httpHeaders,
                                       @RequestBody PostDto postDto){
-        log.info("info log = {}",postDto.getContents());
-        Long userId = activityClient.findUserId(httpHeaders);
+        log.info("info log = {}",httpHeaders);
+        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+        Long userId = responseEntity.getBody();
         Post post = postService.savePost(userId, postDto);
 
         if(post != null){
@@ -64,7 +64,8 @@ public class PostController {
     public ResponseEntity<?> changePost(@RequestHeader Map<String, String> httpHeaders,
                                         @RequestBody PostDto postDto){
 
-        Long userId = activityClient.findUserId(httpHeaders);
+        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+        Long userId = responseEntity.getBody();
         log.info("info log = {}",userId);
         log.info("info log = {}",postDto.getPostId());
         log.info("info log = {}",postDto.getContents());
@@ -79,7 +80,8 @@ public class PostController {
     @DeleteMapping
     public ResponseEntity<?> deletePost(@RequestHeader Map<String, String> httpHeaders,
                                         @RequestBody PostDto postDto) throws Exception {
-        Long userId = activityClient.findUserId(httpHeaders);
+        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+        Long userId = responseEntity.getBody();
         postService.deletePost(userId, postDto);
         return null;
 

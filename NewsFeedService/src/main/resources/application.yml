@@ -10,20 +10,15 @@ spring:
     password: 1234
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: preorder.project1@gmail.com
-    password: ucmn ngyz cwze zapc
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls: # 추가 안하면 SMTPSendFailedException
-            enable: true
 
+  cloud:
+    config:
+      enabled: false
 
   jwt:
     secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+user:
+  service:
+    url: http://localhost:8080

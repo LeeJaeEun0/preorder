@@ -1,11 +1,9 @@
 package com.demo.preorder.comment.controller;
 
-import com.demo.preorder.client.service.ActivityClient;
+import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.comment.dto.GreatCommentDto;
 import com.demo.preorder.comment.entity.GreatComment;
 import com.demo.preorder.comment.service.GreatCommentService;
-import com.demo.preorder.post.dto.GreatPostDto;
-import com.demo.preorder.post.entity.GreatPost;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +18,13 @@ import java.util.Map;
 public class GreatCommentController {
     private final GreatCommentService greatCommentService;
 
-    private final ActivityClient activityClient;
+    private final UserServiceClient userServiceClient;
 
     @PostMapping
     public ResponseEntity<?> saveGreatPost(@RequestHeader Map<String, String> httpHeaders,
                                            @RequestBody GreatCommentDto greatCommentDto){
-        Long userId = activityClient.findUserId(httpHeaders);
+        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+        Long userId = responseEntity.getBody();
         GreatComment greatComment =  greatCommentService.saveGreatComment(userId, greatCommentDto);
         if (greatComment != null) {
             return  ResponseEntity.status(HttpStatus.CREATED).body(greatComment);
@@ -47,7 +46,8 @@ public class GreatCommentController {
     @DeleteMapping
     public ResponseEntity<?> deleteCommentPost(@RequestHeader Map<String, String> httpHeaders,
                                                @RequestBody GreatCommentDto greatCommentDto){
-        Long userId = activityClient.findUserId(httpHeaders);
+        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+        Long userId = responseEntity.getBody();
         greatCommentService.deleteGreatComment(userId,greatCommentDto);;
         return ResponseEntity.status(HttpStatus.OK).body("ok");
     }

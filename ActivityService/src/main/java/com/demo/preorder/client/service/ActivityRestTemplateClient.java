@@ -17,12 +17,12 @@ import java.net.URI;
 import java.util.Map;
 @Slf4j
 @Service
-public class ActivityClient {
+public class ActivityRestTemplateClient {
     private final RestTemplate restTemplate;
 
     // RestTemplate을 생성자 주입 방식으로 의존성 주입
     @Autowired
-    public ActivityClient(RestTemplate restTemplate) {
+    public ActivityRestTemplateClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

@@ -1,7 +1,8 @@
 package com.demo.preorder.follow.service.impl;
 
 import com.demo.preorder.client.dto.NewsfeedClientDto;
-import com.demo.preorder.client.service.ActivityClient;
+import com.demo.preorder.client.service.NewsfeedServiceClient;
+import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.dto.FollowDto;
@@ -9,6 +10,7 @@ import com.demo.preorder.follow.service.FollowService;
 import com.demo.preorder.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,16 +21,23 @@ import java.util.List;
 public class FollowServiceImpl implements FollowService {
 
     private final FollowDao followDao;
-    private final ActivityClient activityClient;
+
+    private final NewsfeedServiceClient newsfeedServiceClient;
+
+    private final UserServiceClient userServiceClient;
 
     @Override
     public FollowDto saveFollow(Long userId,FollowDto followDto) {
         Follow follow = new Follow();
         if (followDto.getFollowingId() ==null)
             return null;
+        ResponseEntity<User> userResponseEntity1 = userServiceClient.findUser(userId);
+        User user1 = userResponseEntity1.getBody();
+        follow.setUserId(user1);
 
-        follow.setUserId(activityClient.findUser(userId));
-        follow.setFollowingId(activityClient.findUser(followDto.getFollowingId()));
+        ResponseEntity<User> userResponseEntity2 = userServiceClient.findUser(followDto.getFollowingId());
+        User user2 = userResponseEntity2.getBody();
+        follow.setFollowingId(user2);
         Follow saved = followDao.insertFollow(follow);
 
         List<Follow> followList = followDao.findFollowing(saved.getUserId().getId());
@@ -44,7 +53,8 @@ public class FollowServiceImpl implements FollowService {
 
                 try {
                     // 외부 서비스 호출
-                    String result = activityClient.saveNewsfeed(newsfeedClientDto);
+                    ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
+                    String result = stringResponseEntity.getBody();
                     log.info("Info log: Following - userID={} result={}", follows.getUserId(), result);
                 } catch (Exception e) {
                     // 오류 발생 시 처리
@@ -67,7 +77,8 @@ public class FollowServiceImpl implements FollowService {
 
                 try {
                     // 외부 서비스 호출
-                    String result = activityClient.saveNewsfeed(newsfeedClientDto);
+                    ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
+                    String result = stringResponseEntity.getBody();
                     log.info("Info log: Follower - userID={} result={}", follows.getUserId(), result);
                 } catch (Exception e) {
                     // 오류 발생 시 처리
