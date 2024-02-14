@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/internal/newsfeeds")
 @RequiredArgsConstructor
-public class RestTemplateController {
+public class InternalNewsfeedController {
 
     private final NewsfeedService newsfeedService;
 

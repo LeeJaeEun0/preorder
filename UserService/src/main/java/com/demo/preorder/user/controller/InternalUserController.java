@@ -11,7 +11,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/internal/users")
 @RequiredArgsConstructor
-public class RestTemplateController {
+public class InternalUserController {
 
     private final UserService userService;
     // 받은 토큰에서 이메일 추출해 userId 리턴
