@@ -55,7 +55,7 @@ public class ProfileServiceImpl implements ProfileService {
             String uploadDir = "C:/path/to/upload/dir/";
             Path path = Paths.get(uploadDir + profileDto.getFile().getOriginalFilename());
             Files.copy(profileDto.getFile().getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
+            log.info("file upload");
             return profileDao.updateProfile(userId, profileDto.getFile().getOriginalFilename(), profileDto.getGreeting());
         } catch (IOException e) {
             log.error("파일 업로드 및 저장 실패: {}", profileDto.getFile().getOriginalFilename(), e);

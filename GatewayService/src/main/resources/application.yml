@@ -1,0 +1,67 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: GatewayService
+  main:
+    web-application-type: reactive
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/preorder?useSSL=false
+    username: root
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+  cloud:
+    config:
+      enabled: false
+    gateway:
+      routes:
+        - id: UserService
+          uri: http://127.0.0.1:8080/
+          predicates:
+            - Path=/auth/**
+
+        - id: UserService
+          uri: http://127.0.0.1:8080/
+          predicates:
+            - Path=/api/users/**
+
+        - id: UserService
+          uri: http://127.0.0.1:8080/
+          predicates:
+            - Path=/user/**
+
+        - id: ActivityService
+          uri: http://127.0.0.1:8081/
+          predicates:
+            - Path=/api/comments/**
+
+        - id: ActivityService
+          uri: http://127.0.0.1:8081/
+          predicates:
+            - Path=/api/greatComments/**
+
+        - id: ActivityService
+          uri: http://127.0.0.1:8081/
+          predicates:
+            - Path=/api/followers/**
+
+        - id: ActivityService
+          uri: http://127.0.0.1:8081/
+          predicates:
+            - Path=/api/greatPosts/**
+
+        - id: ActivityService
+          uri: http://127.0.0.1:8081/
+          predicates:
+            - Path=/api/posts/**
+
+        - id: NewsFeedService
+          uri: http://127.0.0.1:8082/
+          predicates:
+            - Path=/newsfeeds/**

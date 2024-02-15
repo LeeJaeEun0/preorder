@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/greatComment")
+@RequestMapping("/api/greatComments")
 @RequiredArgsConstructor
 public class GreatCommentController {
     private final GreatCommentService greatCommentService;
