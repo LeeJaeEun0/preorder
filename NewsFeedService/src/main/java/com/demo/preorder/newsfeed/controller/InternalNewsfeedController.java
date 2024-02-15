@@ -1,4 +1,4 @@
-package com.demo.preorder.newsfeed.Controller;
+package com.demo.preorder.newsfeed.controller;
 
 import com.demo.preorder.newsfeed.dto.NewsfeedDto;
 import com.demo.preorder.newsfeed.dto.NewsfeedMyNewsDto;
