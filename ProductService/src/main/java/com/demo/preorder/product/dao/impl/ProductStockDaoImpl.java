@@ -63,7 +63,7 @@ public class ProductStockDaoImpl implements ProductStockDao {
             productStockRepository.save(productStock);
             log.info("info log = stock 변경 성공");
         }else {
-            log.info("info log = stock 변경 실패");
+            log.error("info log = stock 변경 실패");
         }
     }
 

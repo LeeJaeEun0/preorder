@@ -7,6 +7,7 @@ import com.demo.preorder.product.dto.ProductUpdateDto;
 import com.demo.preorder.product.entity.Product;
 import com.demo.preorder.product.entity.ProductStock;
 import com.demo.preorder.product.service.ProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductDao productDao;
 
     private final ProductStockDao productStockDao;
+    @Transactional
     @Override
     public Product saveProduct(ProductDto productDto) {
         Product product = new Product();
@@ -46,12 +48,14 @@ public class ProductServiceImpl implements ProductService {
         return productDao.findAllProduct();
     }
 
+    @Transactional
     @Override
     public Product changeProduct(Long productId,ProductUpdateDto productUpdateDto) {
         productStockDao.updateProductStock(productId,productUpdateDto.getStock());
         return productDao.changeProduct(productId, productUpdateDto.getTitle(), productUpdateDto.getContent(), productUpdateDto.getPrice());
     }
 
+    @Transactional
     @Override
     public void deleteProduct(Long productId) {
         productStockDao.deleteProductStock(productId);

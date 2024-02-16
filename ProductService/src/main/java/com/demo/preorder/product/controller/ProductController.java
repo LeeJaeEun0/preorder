@@ -34,7 +34,7 @@ public class ProductController {
         if(productList != null){
             return  ResponseEntity.status(HttpStatus.OK).body(productList);
         }else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 작성에 실패했습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 조회에 실패했습니다.");
         }
     }
 
@@ -44,7 +44,7 @@ public class ProductController {
         if(product != null){
             return  ResponseEntity.status(HttpStatus.OK).body(product);
         }else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 작성에 실패했습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 조회에 실패했습니다.");
         }
     }
 
@@ -54,7 +54,7 @@ public class ProductController {
         if(product != null){
             return  ResponseEntity.status(HttpStatus.OK).body(product);
         }else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 작성에 실패했습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 수정에 실패했습니다.");
         }
     }
 
