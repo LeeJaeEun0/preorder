@@ -1,0 +1,55 @@
+package com.demo.preorder.product.dao.impl;
+
+import com.demo.preorder.product.dao.ProductDao;
+import com.demo.preorder.product.entity.Product;
+import com.demo.preorder.product.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
+
+@Component
+@RequiredArgsConstructor
+public class ProductDaoImpl implements ProductDao {
+
+    private final ProductRepository productRepository;
+    @Override
+    public Product saveProduct(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
+    public Product getProductById(Long productId) {
+        Optional<Product> optionalProduct =productRepository.findById(productId);
+        if (optionalProduct.isPresent()) return optionalProduct.get();
+        return null;
+    }
+
+    @Override
+    public List<Product> findAllProduct() {
+        return productRepository.findAll();
+    }
+
+    @Override
+    public Product changeProduct(Long productId, String title, String content, Long price) {
+        Optional<Product> optionalProduct= productRepository.findById(productId);
+        if (optionalProduct.isPresent()){
+            Product product = optionalProduct.get();
+            product.setTitle(title);
+            product.setContent(content);
+            product.setPrice(price);
+            return productRepository.save(product);
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteProduct(Long productId) {
+        Optional<Product> optionalProduct= productRepository.findById(productId);
+        if (optionalProduct.isPresent()){
+            Product product = optionalProduct.get();
+            productRepository.delete(product);
+        }
+    }
+}
