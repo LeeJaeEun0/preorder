@@ -8,9 +8,9 @@ public interface PreorderProductStockDao {
 
     PreorderProductStock getPreorderProductById(Long preorderProductId);
 
-    PreorderProductStock incrementCount(Long preorderProductId, Long count);
+    PreorderProductStock incrementCount(Long preorderProductId);
 
-    PreorderProductStock decrementCount(Long preorderProductId, Long count);
+    PreorderProductStock decrementCount(Long preorderProductId);
 
     void updatePreorderProductStock(Long preorderProductId, Long stock);
 

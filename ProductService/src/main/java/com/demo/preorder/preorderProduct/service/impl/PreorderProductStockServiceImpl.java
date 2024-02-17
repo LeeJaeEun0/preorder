@@ -18,12 +18,12 @@ public class PreorderProductStockServiceImpl implements PreorderProductStockServ
     }
 
     @Override
-    public PreorderProductStock incrementCount(Long preorderProductId, Long count) {
-        return preorderProductStockDao.incrementCount(preorderProductId,count);
+    public PreorderProductStock incrementCount(Long preorderProductId) {
+        return preorderProductStockDao.incrementCount(preorderProductId);
     }
 
     @Override
-    public PreorderProductStock decrementCount(Long preorderProductId, Long count) {
-        return preorderProductStockDao.decrementCount(preorderProductId,count);
+    public PreorderProductStock decrementCount(Long preorderProductId) {
+        return preorderProductStockDao.decrementCount(preorderProductId);
     }
 }

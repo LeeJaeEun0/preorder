@@ -32,23 +32,23 @@ public class PreorderProductStockDaoImpl implements PreorderProductStockDao {
     }
 
     @Override
-    public PreorderProductStock incrementCount(Long preorderProductId, Long count) {
+    public PreorderProductStock incrementCount(Long preorderProductId) {
         Optional<PreorderProductStock> optionalPreorderProductStock = preorderProductStockRepository.findByPreorderProductIdId(preorderProductId);
         if(optionalPreorderProductStock.isPresent()){
             PreorderProductStock preorderProductStock = optionalPreorderProductStock.get();
-            preorderProductStock.setStock(preorderProductStock.getStock()+count);
+            preorderProductStock.setStock(preorderProductStock.getStock()+1);
             return preorderProductStockRepository.save(preorderProductStock);
         }
         return null;
     }
 
     @Override
-    public PreorderProductStock decrementCount(Long preorderProductId, Long count) {
+    public PreorderProductStock decrementCount(Long preorderProductId) {
         Optional<PreorderProductStock> optionalPreorderProductStock = preorderProductStockRepository.findByPreorderProductIdId(preorderProductId);
         if(optionalPreorderProductStock.isPresent()){
             PreorderProductStock preorderProductStock = optionalPreorderProductStock.get();
-            if (preorderProductStock.getStock() - count >=0){
-                preorderProductStock.setStock(preorderProductStock.getStock()-count);
+            if (preorderProductStock.getStock() - 1 >=0){
+                preorderProductStock.setStock(preorderProductStock.getStock()-1);
                 return preorderProductStockRepository.save(preorderProductStock);
             }
             return null;

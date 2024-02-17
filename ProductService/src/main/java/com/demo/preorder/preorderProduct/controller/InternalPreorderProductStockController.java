@@ -14,8 +14,8 @@ public class InternalPreorderProductStockController {
     private final PreorderProductStockService preorderProductStockService;
 
     @PutMapping("/increment/{preorderProductId}")
-    public ResponseEntity<?> incrementCount(@PathVariable("preorderProductId") Long preorderProductId, @RequestParam("count") Long count){
-        PreorderProductStock preorderProductStock = preorderProductStockService.incrementCount(preorderProductId, count);
+    public ResponseEntity<?> incrementCount(@PathVariable("preorderProductId") Long preorderProductId){
+        PreorderProductStock preorderProductStock = preorderProductStockService.incrementCount(preorderProductId);
         if(preorderProductStock != null){
             return  ResponseEntity.status(HttpStatus.OK).body(preorderProductStock);
         }else {
@@ -24,8 +24,8 @@ public class InternalPreorderProductStockController {
     }
 
     @PutMapping("/decrement/{preorderProductId}")
-    public ResponseEntity<?> decrementCount(@PathVariable("preorderProductId") Long preorderProductId,@RequestParam("count") Long count){
-        PreorderProductStock preorderProductStock = preorderProductStockService.decrementCount(preorderProductId, count);
+    public ResponseEntity<?> decrementCount(@PathVariable("preorderProductId") Long preorderProductId){
+        PreorderProductStock preorderProductStock = preorderProductStockService.decrementCount(preorderProductId);
         if(preorderProductStock != null){
             return  ResponseEntity.status(HttpStatus.OK).body(preorderProductStock);
         }else {
