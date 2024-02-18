@@ -19,6 +19,6 @@ spring:
 
   jwt:
     secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
-user:
+order:
   service:
-    url: http://localhost:8080
+    url: http://localhost:8085

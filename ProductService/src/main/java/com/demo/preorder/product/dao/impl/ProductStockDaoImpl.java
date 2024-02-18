@@ -29,11 +29,11 @@ public class ProductStockDaoImpl implements ProductStockDao {
     }
 
     @Override
-    public ProductStock incrementCount(Long productId, Long count) {
+    public ProductStock incrementCount(Long productId) {
         Optional<ProductStock>  optionalProductStock = productStockRepository.findByProductIdId(productId);
         if(optionalProductStock.isPresent()){
             ProductStock productStock = optionalProductStock.get();
-            productStock.setStock(productStock.getStock()+count);
+            productStock.setStock(productStock.getStock()+1);
             return productStockRepository.save(productStock);
         }
 
@@ -41,12 +41,12 @@ public class ProductStockDaoImpl implements ProductStockDao {
     }
 
     @Override
-    public ProductStock decrementCount(Long productId, Long count) {
+    public ProductStock decrementCount(Long productId) {
         Optional<ProductStock>  optionalProductStock = productStockRepository.findByProductIdId(productId);
         if(optionalProductStock.isPresent()) {
             ProductStock productStock = optionalProductStock.get();
-            if(productStock.getStock()-count >= 0){
-            productStock.setStock(productStock.getStock() - count);
+            if(productStock.getStock()-1 >= 0){
+            productStock.setStock(productStock.getStock() - 1);
             return productStockRepository.save(productStock);
             }
             else return null;

@@ -1,22 +1,28 @@
 package com.demo.preorder.order.service.impl;
 
+import com.demo.preorder.order.client.service.ProductServiceClient;
 import com.demo.preorder.order.dao.OrderDao;
 import com.demo.preorder.order.dto.OrderDto;
 import com.demo.preorder.order.dto.OrderResponseDto;
 import com.demo.preorder.order.entity.Order;
 import com.demo.preorder.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDao orderDao;
+
+    private final ProductServiceClient productServiceClient;
 
     @Override
     public OrderResponseDto saveOrder(OrderDto orderDto) {
@@ -44,9 +50,54 @@ public class OrderServiceImpl implements OrderService {
                 return orderResponseDto;
             }
         } else {
-            OrderResponseDto orderResponseDto = new OrderResponseDto();
-            orderResponseDto.setStatus("failure");
-            return orderResponseDto;
+
+            Order order = new Order();
+            order.setUserId(orderDto.getUserId());
+            order.setProductId(orderDto.getProductId());
+            order.setProductType(orderDto.getProductType());
+            order.setCount(orderDto.getCount());
+            order.setTotalAmount(orderDto.getTotalAmount());
+            order.setStatus("cancel");
+
+            Order saveOrder = orderDao.saveOrder(order);
+
+            if (saveOrder != null) {
+                OrderResponseDto orderResponseDto = new OrderResponseDto();
+                orderResponseDto.setProductId(saveOrder.getProductId());
+                orderResponseDto.setCount(saveOrder.getCount());
+                orderResponseDto.setTotalAmount(saveOrder.getTotalAmount());
+                orderResponseDto.setStatus(saveOrder.getStatus());
+
+
+                    if(saveOrder.getProductType().equals("product")){
+                        try {
+                            // 외부 서비스 호출
+                            ResponseEntity<Long> productStocks = productServiceClient.incrementProductStocks(orderDto.getProductId());
+                            Long result = productStocks.getBody();
+                            log.info("Info log: productStock - {} ", result);
+                        } catch (Exception e) {
+                            // 오류 발생 시 처리
+                            log.error("Error saving productStock {}", e.getMessage(), e);
+                            // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+                        }
+
+                    }
+                    else if (saveOrder.getProductType().equals("preorderProduct")) {
+                        try {
+                            // 외부 서비스 호출
+                            ResponseEntity<Long> productStocks = productServiceClient.incrementPreorderProductStocks(orderDto.getProductId());
+                            Long result = productStocks.getBody();
+                            log.info("Info log: productStock - {} ", result);
+                        } catch (Exception e) {
+                            // 오류 발생 시 처리
+                            log.error("Error saving productStock {}", e.getMessage(), e);
+                            // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+                        }
+
+                    }
+
+                return orderResponseDto;
+            }
         }
         return null;
     }
@@ -104,13 +155,41 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponseDto updateOrder(Long orderId) {
-        Order order = orderDao.updateOrder(orderId);
-        if(order != null){
+        Order saveOrder = orderDao.updateOrder(orderId);
+        if(saveOrder != null){
             OrderResponseDto orderResponseDto =new OrderResponseDto();
-            orderResponseDto.setProductId(order.getProductId());
-            orderResponseDto.setCount(order.getCount());
-            orderResponseDto.setTotalAmount(order.getTotalAmount());
-            orderResponseDto.setStatus(order.getStatus());
+            orderResponseDto.setProductId(saveOrder.getProductId());
+            orderResponseDto.setCount(saveOrder.getCount());
+            orderResponseDto.setTotalAmount(saveOrder.getTotalAmount());
+            orderResponseDto.setStatus(saveOrder.getStatus());
+
+            if(saveOrder.getProductType().equals("product")){
+                try {
+                    // 외부 서비스 호출
+                    ResponseEntity<Long> productStocks = productServiceClient.incrementProductStocks(orderResponseDto.getProductId());
+                    Long result = productStocks.getBody();
+                    log.info("Info log: productStock - {} ", result);
+                } catch (Exception e) {
+                    // 오류 발생 시 처리
+                    log.error("Error saving productStock {}", e.getMessage(), e);
+                    // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+                }
+
+            }
+            else if (saveOrder.getProductType().equals("preorderProduct")) {
+                try {
+                    // 외부 서비스 호출
+                    ResponseEntity<Long> productStocks = productServiceClient.incrementPreorderProductStocks(orderResponseDto.getProductId());
+                    Long result = productStocks.getBody();
+                    log.info("Info log: productStock - {} ", result);
+                } catch (Exception e) {
+                    // 오류 발생 시 처리
+                    log.error("Error saving productStock {}", e.getMessage(), e);
+                    // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+                }
+
+            }
+
             return orderResponseDto;
         }
         return null;

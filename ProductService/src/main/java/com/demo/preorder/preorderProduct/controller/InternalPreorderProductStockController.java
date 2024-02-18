@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 public class InternalPreorderProductStockController {
     private final PreorderProductStockService preorderProductStockService;
 
-    @PutMapping("/increment/{preorderProductId}")
-    public ResponseEntity<?> incrementCount(@PathVariable("preorderProductId") Long preorderProductId){
+    @PutMapping("/increment")
+    public ResponseEntity<?> incrementCount(@RequestParam("preorderProductId") Long preorderProductId){
         PreorderProductStock preorderProductStock = preorderProductStockService.incrementCount(preorderProductId);
         if(preorderProductStock != null){
             return  ResponseEntity.status(HttpStatus.OK).body(preorderProductStock);
@@ -23,8 +23,8 @@ public class InternalPreorderProductStockController {
         }
     }
 
-    @PutMapping("/decrement/{preorderProductId}")
-    public ResponseEntity<?> decrementCount(@PathVariable("preorderProductId") Long preorderProductId){
+    @PutMapping("/decrement")
+    public ResponseEntity<?> decrementCount(@RequestParam("preorderProductId") Long preorderProductId){
         PreorderProductStock preorderProductStock = preorderProductStockService.decrementCount(preorderProductId);
         if(preorderProductStock != null){
             return  ResponseEntity.status(HttpStatus.OK).body(preorderProductStock);

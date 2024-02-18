@@ -18,12 +18,12 @@ public class ProductStockImpl implements ProductStockService {
     }
 
     @Override
-    public ProductStock incrementCount(Long productId, Long count) {
-        return productStockDao.incrementCount(productId, count);
+    public ProductStock incrementCount(Long productId) {
+        return productStockDao.incrementCount(productId);
     }
 
     @Override
-    public ProductStock decrementCount(Long productId, Long count) {
-        return productStockDao.decrementCount(productId, count);
+    public ProductStock decrementCount(Long productId) {
+        return productStockDao.decrementCount(productId);
     }
 }

@@ -7,9 +7,9 @@ public interface ProductStockDao {
 
     ProductStock getProductById(Long productId);
 
-    ProductStock incrementCount(Long productId, Long count);
+    ProductStock incrementCount(Long productId);
 
-    ProductStock decrementCount(Long productId, Long count);
+    ProductStock decrementCount(Long productId);
 
     void updateProductStock(Long productId, Long stock);
 
