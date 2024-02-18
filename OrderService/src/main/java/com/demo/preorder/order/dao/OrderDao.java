@@ -10,9 +10,9 @@ public interface OrderDao {
 
     Order getOrderById(Long orderId);
 
-    List<Order> findOrderSuccessById(Long orderId);
+    List<Order> findOrderSuccessById(Long productId, String productType);
 
-    List<Order> findOrderCancelById(Long orderId);
+    List<Order> findOrderCancelById(Long productId, String productType);
 
     Order updateOrder(Long orderId);
 }

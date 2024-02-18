@@ -66,8 +66,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderResponseDto> findOrderSuccessById(Long orderId) {
-        List<Order> orderList = orderDao.findOrderSuccessById(orderId);
+    public List<OrderResponseDto> findOrderSuccessById(Long productId, String productType) {
+        List<Order> orderList = orderDao.findOrderSuccessById(productId,productType);
         if(orderList != null) {
             return orderList.stream()
                     .map(order -> {
@@ -84,9 +84,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderResponseDto> findOrderCancelById(Long orderId) {
+    public List<OrderResponseDto> findOrderCancelById(Long productId, String productType) {
 
-        List<Order> orderList = orderDao.findOrderCancelById(orderId);
+        List<Order> orderList = orderDao.findOrderCancelById(productId,productType);
         if(orderList != null) {
             return orderList.stream()
                     .map(order -> {

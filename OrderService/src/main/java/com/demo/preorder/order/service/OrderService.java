@@ -13,9 +13,9 @@ public interface OrderService {
 
     OrderResponseDto getOrderById(Long orderId);
 
-    List<OrderResponseDto> findOrderSuccessById(Long orderId);
+    List<OrderResponseDto> findOrderSuccessById(Long productId, String productType);
 
-    List<OrderResponseDto> findOrderCancelById(Long orderId);
+    List<OrderResponseDto> findOrderCancelById(Long productId, String productType);
 
     OrderResponseDto updateOrder(Long orderId);
 }

@@ -26,9 +26,9 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/success/{orderId}")
-    public ResponseEntity<?> findOrderSuccessById(@PathVariable("orderId") Long orderId) {
-        List<OrderResponseDto> orderResponseDtoList = orderService.findOrderSuccessById(orderId);
+    @GetMapping("/success/{productId}")
+    public ResponseEntity<?> findOrderSuccessById(@PathVariable("productId") Long productId, @RequestParam("productType") String productType) {
+        List<OrderResponseDto> orderResponseDtoList = orderService.findOrderSuccessById(productId, productType);
         if (orderResponseDtoList  != null) {
             return ResponseEntity.accepted().body(orderResponseDtoList);
         } else {
@@ -36,9 +36,9 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/cancel/{orderId}")
-    public ResponseEntity<?> findOrderCancelById(@PathVariable("orderId") Long orderId){
-        List<OrderResponseDto> orderResponseDtoList = orderService.findOrderCancelById(orderId);
+    @GetMapping("/cancel/{productId}")
+    public ResponseEntity<?> findOrderCancelById(@PathVariable("productId") Long productId,@RequestParam("productType") String productType){
+        List<OrderResponseDto> orderResponseDtoList = orderService.findOrderCancelById(productId, productType);
         if (orderResponseDtoList  != null) {
             return ResponseEntity.accepted().body(orderResponseDtoList);
         } else {

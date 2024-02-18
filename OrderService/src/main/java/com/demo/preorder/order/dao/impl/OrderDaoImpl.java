@@ -30,13 +30,13 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<Order> findOrderSuccessById(Long orderId) {
-        return orderRepository.findByIdAndStatus(orderId,"success");
+    public List<Order> findOrderSuccessById(Long productId, String productType) {
+        return orderRepository.findByProductIdAndProductTypeAndStatus(productId,productType,"success");
     }
 
     @Override
-    public List<Order> findOrderCancelById(Long orderId) {
-        return orderRepository.findByIdAndStatus(orderId,"cancel");
+    public List<Order> findOrderCancelById(Long productId, String productType) {
+        return orderRepository.findByProductIdAndProductTypeAndStatus(productId,productType,"cancel");
     }
 
     @Override
