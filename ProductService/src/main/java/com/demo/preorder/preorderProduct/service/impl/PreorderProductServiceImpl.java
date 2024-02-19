@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -38,7 +39,7 @@ public class PreorderProductServiceImpl implements PreorderProductService {
         preorderProduct.setPrice(preorderProductDto.getPrice());
         preorderProduct.setAvailableFrom(preorderProductDto.getAvailableFrom());
         PreorderProduct saved = preorderProductDao.savePreorderProduct(preorderProduct);
-        if(saved != null) {
+        if (saved != null) {
             PreorderProductStock preorderProductStock = new PreorderProductStock();
             preorderProductStock.setPreorderProductId(saved);
             preorderProductStock.setStock(preorderProductDto.getStock());
@@ -49,32 +50,35 @@ public class PreorderProductServiceImpl implements PreorderProductService {
 
     @Override
     public OrderResponseDto submitOrder(Long userId, Long preorderProductId) {
-       PreorderProduct preorderProduct= preorderProductDao.getPreorderProductById(preorderProductId);
-       if(preorderProduct != null){
-           OrderDto orderDto = new OrderDto();
-           orderDto.setUserId(userId);
-           orderDto.setProductId(preorderProductId);
-           orderDto.setProductType("preorderProduct");
-           orderDto.setCount(1L);
-           orderDto.setTotalAmount(preorderProduct.getPrice());
+        PreorderProduct preorderProduct = preorderProductDao.getPreorderProductById(preorderProductId);
 
-           PreorderProductStock productStock = preorderProductStockDao.decrementCount(preorderProductId);
-           if(productStock.getStock() >= 0){
-               try {
-                   // 외부 서비스 호출
-                   ResponseEntity<OrderResponseDto>  responseDtoResponseEntity = orderServiceClient.saveOrder(orderDto);
-                   OrderResponseDto result = responseDtoResponseEntity.getBody();
-                   log.info("Info log: order - preorderProductId ={} result={}", result.getProductId(), result.getStatus());
-                   return result;
-               } catch (Exception e) {
-                   // 오류 발생 시 처리
-                   log.error("Error order : {}",  e.getMessage(), e);
-                   return null;
-                   // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
-               }
-           }
-           return null;
-       }
+        if (LocalDateTime.now().isAfter(preorderProduct.getAvailableFrom()) || (LocalDateTime.now().equals(preorderProduct.getAvailableFrom()))) {
+            if (preorderProduct != null) {
+                OrderDto orderDto = new OrderDto();
+                orderDto.setUserId(userId);
+                orderDto.setProductId(preorderProductId);
+                orderDto.setProductType("preorderProduct");
+                orderDto.setCount(1L);
+                orderDto.setTotalAmount(preorderProduct.getPrice());
+
+                PreorderProductStock productStock = preorderProductStockDao.decrementCount(preorderProductId);
+                if (productStock.getStock() >= 0) {
+                    try {
+                        // 외부 서비스 호출
+                        ResponseEntity<OrderResponseDto> responseDtoResponseEntity = orderServiceClient.saveOrder(orderDto);
+                        OrderResponseDto result = responseDtoResponseEntity.getBody();
+                        log.info("Info log: order - preorderProductId ={} result={}", result.getProductId(), result.getStatus());
+                        return result;
+                    } catch (Exception e) {
+                        // 오류 발생 시 처리
+                        log.error("Error order : {}", e.getMessage(), e);
+                        return null;
+                        // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+                    }
+                }
+                return null;
+            }
+        }
         return null;
     }
 
@@ -90,8 +94,8 @@ public class PreorderProductServiceImpl implements PreorderProductService {
 
     @Transactional
     @Override
-    public PreorderProduct changePreorderProduct(Long preorderProductId,PreorderProductUpdateDto preorderProductUpdateDto) {
-        preorderProductStockDao.updatePreorderProductStock(preorderProductId,preorderProductUpdateDto.getStock());
+    public PreorderProduct changePreorderProduct(Long preorderProductId, PreorderProductUpdateDto preorderProductUpdateDto) {
+        preorderProductStockDao.updatePreorderProductStock(preorderProductId, preorderProductUpdateDto.getStock());
         return preorderProductDao.changePreorderProduct(preorderProductId, preorderProductUpdateDto.getTitle(), preorderProductUpdateDto.getContent(), preorderProductUpdateDto.getPrice(), preorderProductUpdateDto.getAvailableFrom());
     }
 
