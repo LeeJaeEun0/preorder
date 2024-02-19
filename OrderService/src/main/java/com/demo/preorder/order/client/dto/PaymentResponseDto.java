@@ -1,5 +1,5 @@
-package com.demo.preorder.payment.dto;
-;
+package com.demo.preorder.order.client.dto;
+
 import lombok.Getter;
 import lombok.Setter;
 

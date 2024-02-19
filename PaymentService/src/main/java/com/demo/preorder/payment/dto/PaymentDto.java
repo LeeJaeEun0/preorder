@@ -14,4 +14,7 @@ public class PaymentDto {
 
     private Long orderId;
 
+    private Long productId;
+
+    private String productType;
 }

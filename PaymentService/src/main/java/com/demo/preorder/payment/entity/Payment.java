@@ -20,15 +20,17 @@ import java.time.LocalDateTime;
 @Builder
 public class Payment {
     @Id
-    @Column(name="order_id")
+    @Column(name="payment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long userId;
 
-    @OneToOne
-    @JoinColumn(name = "order_id")
-    private Order orderId;
+    private Long orderId;
+
+    private Long productId;
+
+    private String productType;
 
     private String status;
 

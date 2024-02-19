@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 @Entity
 @Data
@@ -36,11 +37,11 @@ public class Order {
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @Column(name = "created_date", nullable = true, insertable = true, updatable = false)
-    private LocalDateTime createdDate;
+    private LocalDate createdDate;
 
     @PrePersist
     public void setDate() {
-        this.setCreatedDate(LocalDateTime.now());
+        this.setCreatedDate(LocalDate.now());
     }
 
 }

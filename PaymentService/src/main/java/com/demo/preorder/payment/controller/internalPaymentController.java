@@ -19,7 +19,7 @@ public class internalPaymentController {
     private final PaymentService paymentService;
 
     @PostMapping
-    public ResponseEntity<?> saveOrder(@RequestBody PaymentDto paymentDto){
+    public ResponseEntity<?> savePayment(@RequestBody PaymentDto paymentDto){
         PaymentResponseDto paymentResponseDto = paymentService.savePayment(paymentDto);
         if(paymentResponseDto != null){
             return  ResponseEntity.status(HttpStatus.CREATED).body(paymentResponseDto);

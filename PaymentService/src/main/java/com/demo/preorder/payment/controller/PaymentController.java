@@ -17,7 +17,7 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @GetMapping("/{paymentId}")
-    public ResponseEntity<?> getOrderById(@PathVariable("paymentId") Long paymentId){
+    public ResponseEntity<?> getPaymentById(@PathVariable("paymentId") Long paymentId){
         PaymentResponseDto paymentResponseDto = paymentService.getPaymentById(paymentId);
         if (paymentResponseDto  != null) {
             return ResponseEntity.accepted().body(paymentResponseDto);
@@ -27,7 +27,7 @@ public class PaymentController {
     }
 
     @PutMapping("/{paymentId}")
-    public ResponseEntity<?> updateOrder(@PathVariable("paymentId") Long paymentId){
+    public ResponseEntity<?> updatePayment(@PathVariable("paymentId") Long paymentId){
         PaymentResponseDto paymentResponseDto = paymentService.updatePayment(paymentId);
         if (paymentResponseDto  != null) {
             return ResponseEntity.accepted().body(paymentResponseDto);

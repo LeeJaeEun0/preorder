@@ -1,5 +1,8 @@
 package com.demo.preorder.order.service.impl;
 
+import com.demo.preorder.order.client.dto.PaymentDto;
+import com.demo.preorder.order.client.dto.PaymentResponseDto;
+import com.demo.preorder.order.client.service.PaymentServiceClient;
 import com.demo.preorder.order.client.service.ProductServiceClient;
 import com.demo.preorder.order.dao.OrderDao;
 import com.demo.preorder.order.dto.OrderDto;
@@ -24,6 +27,8 @@ public class OrderServiceImpl implements OrderService {
 
     private final ProductServiceClient productServiceClient;
 
+    private final PaymentServiceClient paymentServiceClient;
+
     @Override
     public OrderResponseDto saveOrder(OrderDto orderDto) {
         Random random = new Random();
@@ -47,6 +52,25 @@ public class OrderServiceImpl implements OrderService {
                 orderResponseDto.setCount(saveOrder.getCount());
                 orderResponseDto.setTotalAmount(saveOrder.getTotalAmount());
                 orderResponseDto.setStatus(saveOrder.getStatus());
+
+                try {
+                    PaymentDto paymentDto = new PaymentDto();
+                    paymentDto.setUserId(saveOrder.getUserId());
+                    paymentDto.setOrderId(saveOrder.getId());
+                    paymentDto.setProductId(saveOrder.getProductId());
+                    paymentDto.setProductType(saveOrder.getProductType());
+
+                    // 외부 서비스 호출
+                    ResponseEntity<PaymentResponseDto> productStocks = paymentServiceClient.savePayment(paymentDto);
+                    PaymentResponseDto result = productStocks.getBody();
+                    log.info("Info log: payment - {} ", result);
+                } catch (Exception e) {
+                    // 오류 발생 시 처리
+                    log.error("Error saving payment {}", e.getMessage(), e);
+                    // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+                }
+
+
                 return orderResponseDto;
             }
         } else {

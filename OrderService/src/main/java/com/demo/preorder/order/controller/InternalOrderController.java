@@ -29,13 +29,4 @@ public class InternalOrderController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<?> getOrder(@RequestParam("orderId") Long orderId){
-        Order order = orderDao.getOrderById(orderId);
-        if(order != null){
-            return  ResponseEntity.accepted().body(order);
-        }else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("주문 작성에 실패했습니다.");
-        }
-    }
 }

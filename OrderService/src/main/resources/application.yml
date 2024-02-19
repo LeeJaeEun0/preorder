@@ -22,3 +22,7 @@ spring:
 product:
   service:
     url: http://localhost:8084
+
+payment:
+  service:
+    url: http://localhost:8086

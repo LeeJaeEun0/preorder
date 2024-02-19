@@ -16,8 +16,9 @@ public class InternalPreorderProductStockController {
     @PutMapping("/increment")
     public ResponseEntity<?> incrementCount(@RequestParam("preorderProductId") Long preorderProductId){
         PreorderProductStock preorderProductStock = preorderProductStockService.incrementCount(preorderProductId);
-        if(preorderProductStock != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(preorderProductStock);
+        Long stock = preorderProductStock.getStock();
+        if(stock != null){
+            return  ResponseEntity.status(HttpStatus.OK).body(stock);
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("재고 증가에 실패했습니다.");
         }
