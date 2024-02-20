@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,8 +17,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PreorderProduct {
-
+public class PreorderProduct implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @Column(name="product_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

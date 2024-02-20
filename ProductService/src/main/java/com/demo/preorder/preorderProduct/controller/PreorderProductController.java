@@ -3,7 +3,9 @@ package com.demo.preorder.preorderProduct.controller;
 import com.demo.preorder.preorderProduct.dto.PreorderProductDto;
 import com.demo.preorder.preorderProduct.dto.PreorderProductUpdateDto;
 import com.demo.preorder.preorderProduct.entity.PreorderProduct;
+import com.demo.preorder.preorderProduct.entity.PreorderProductStock;
 import com.demo.preorder.preorderProduct.service.PreorderProductService;
+import com.demo.preorder.preorderProduct.service.PreorderProductStockService;
 import com.demo.preorder.product.client.dto.OrderResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,61 +19,66 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PreorderProductController {
 
-    private final PreorderProductService  preorderProductService;
+    private final PreorderProductStockService preorderProductStockService;
+
+    private final PreorderProductService preorderProductService;
 
     @PostMapping
-    public ResponseEntity<?> saveProduct(@RequestBody PreorderProductDto preorderProductDto){
+    public ResponseEntity<?> saveProduct(@RequestBody PreorderProductDto preorderProductDto) {
         PreorderProduct preorderProduct = preorderProductService.savePreorderProduct(preorderProductDto);
-        if(preorderProduct != null){
-            return  ResponseEntity.status(HttpStatus.CREATED).body(preorderProduct);
-        }else {
+        if (preorderProduct != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(preorderProduct);
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 작성에 실패했습니다.");
         }
     }
 
     @PostMapping("/{userId}/{preorderProductId}")
-    public ResponseEntity<?> submitOrder(@PathVariable("userId") Long userId, @PathVariable("preorderProductId") Long preorderProductId){
+    public ResponseEntity<?> submitOrder(@PathVariable("userId") Long userId, @PathVariable("preorderProductId") Long preorderProductId) {
+
         OrderResponseDto orderResponseDto = preorderProductService.submitOrder(userId, preorderProductId);
-        if(orderResponseDto != null){
-            return  ResponseEntity.status(HttpStatus.CREATED).body(orderResponseDto);
-        }else {
+        if (orderResponseDto != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(orderResponseDto);
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("주문 요청에 실패했습니다.");
+
         }
     }
 
-    @GetMapping
-    public ResponseEntity<?> findProductAll(){
-        List<PreorderProduct> preorderProductList = preorderProductService.findAllPreorderProduct();
-        if(preorderProductList != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(preorderProductList);
-        }else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 조회에 실패했습니다.");
+        @GetMapping
+        public ResponseEntity<?> findProductAll () {
+            List<PreorderProduct> preorderProductList = preorderProductService.findAllPreorderProduct();
+            if (preorderProductList != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(preorderProductList);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 조회에 실패했습니다.");
+            }
+        }
+
+        @GetMapping("/{preorderProductId}")
+        public ResponseEntity<?> getProductById (@PathVariable("preorderProductId") Long preorderProductId){
+            PreorderProduct preorderProduct = preorderProductService.getPreorderProductById(preorderProductId);
+            if (preorderProduct != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(preorderProduct);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 조회에 실패했습니다.");
+            }
+        }
+
+        @PutMapping("/{preorderProductId}")
+        public ResponseEntity<?> changeProduct (@PathVariable("preorderProductId") Long
+        preorderProductId, @RequestBody PreorderProductUpdateDto preorderProductUpdateDto){
+            PreorderProduct preorderProduct = preorderProductService.changePreorderProduct(preorderProductId, preorderProductUpdateDto);
+            if (preorderProduct != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(preorderProduct);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 수정에 실패했습니다.");
+            }
+        }
+
+        @DeleteMapping("/{preorderProductId}")
+        public ResponseEntity<?> deleteProduct (@PathVariable("preorderProductId") Long preorderProductId){
+            preorderProductService.deletePreorderProduct(preorderProductId);
+            return ResponseEntity.status(HttpStatus.OK).body("ok");
         }
     }
-
-    @GetMapping("/{preorderProductId}")
-    public ResponseEntity<?> getProductById(@PathVariable("preorderProductId") Long preorderProductId){
-        PreorderProduct preorderProduct = preorderProductService.getPreorderProductById(preorderProductId);
-        if(preorderProduct != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(preorderProduct);
-        }else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 조회에 실패했습니다.");
-        }
-    }
-
-    @PutMapping("/{preorderProductId}")
-    public ResponseEntity<?> changeProduct(@PathVariable("preorderProductId") Long preorderProductId,@RequestBody PreorderProductUpdateDto preorderProductUpdateDto){
-        PreorderProduct preorderProduct = preorderProductService.changePreorderProduct(preorderProductId,preorderProductUpdateDto);
-        if(preorderProduct != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(preorderProduct);
-        }else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 수정에 실패했습니다.");
-        }
-    }
-
-    @DeleteMapping("/{preorderProductId}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("preorderProductId") Long preorderProductId){
-        preorderProductService.deletePreorderProduct(preorderProductId);
-        return  ResponseEntity.status(HttpStatus.OK).body("ok");
-    }
-}

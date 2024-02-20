@@ -35,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
 
         // 80%의 사람만 주문한다고 가정
         // 20%의 사람은 변심으로 주문을 취소한다고 가정
-        if (random.nextDouble() < 0.8)  {
+        if (random.nextDouble() < 0.8) {
             Order order = new Order();
             order.setUserId(orderDto.getUserId());
             order.setProductId(orderDto.getProductId());
@@ -93,32 +93,31 @@ public class OrderServiceImpl implements OrderService {
                 orderResponseDto.setStatus(saveOrder.getStatus());
 
 
-                    if(saveOrder.getProductType().equals("product")){
-                        try {
-                            // 외부 서비스 호출
-                            ResponseEntity<Long> productStocks = productServiceClient.incrementProductStocks(orderDto.getProductId());
-                            Long result = productStocks.getBody();
-                            log.info("Info log: productStock - {} ", result);
-                        } catch (Exception e) {
-                            // 오류 발생 시 처리
-                            log.error("Error saving productStock {}", e.getMessage(), e);
-                            // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
-                        }
-
+                if (saveOrder.getProductType().equals("product")) {
+                    try {
+                        // 외부 서비스 호출
+                        ResponseEntity<Long> productStocks = productServiceClient.incrementProductStocks(orderDto.getProductId());
+                        Long result = productStocks.getBody();
+                        log.info("Info log: productStock - {} ", result);
+                    } catch (Exception e) {
+                        // 오류 발생 시 처리
+                        log.error("Error saving productStock {}", e.getMessage(), e);
+                        // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
                     }
-                    else if (saveOrder.getProductType().equals("preorderProduct")) {
-                        try {
-                            // 외부 서비스 호출
-                            ResponseEntity<Long> productStocks = productServiceClient.incrementPreorderProductStocks(orderDto.getProductId());
-                            Long result = productStocks.getBody();
-                            log.info("Info log: productStock - {} ", result);
-                        } catch (Exception e) {
-                            // 오류 발생 시 처리
-                            log.error("Error saving productStock {}", e.getMessage(), e);
-                            // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
-                        }
 
+                } else if (saveOrder.getProductType().equals("preorderProduct")) {
+                    try {
+                        // 외부 서비스 호출
+                        ResponseEntity<Long> productStocks = productServiceClient.incrementPreorderProductStocks(orderDto.getProductId());
+                        Long result = productStocks.getBody();
+                        log.info("Info log: productStock - {} ", result);
+                    } catch (Exception e) {
+                        // 오류 발생 시 처리
+                        log.error("Error saving productStock {}", e.getMessage(), e);
+                        // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
                     }
+
+                }
 
                 return orderResponseDto;
             }
@@ -129,8 +128,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponseDto getOrderById(Long orderId) {
         Order order = orderDao.getOrderById(orderId);
-        if(order != null){
-            OrderResponseDto orderResponseDto =new OrderResponseDto();
+        if (order != null) {
+            OrderResponseDto orderResponseDto = new OrderResponseDto();
             orderResponseDto.setProductId(order.getProductId());
             orderResponseDto.setCount(order.getCount());
             orderResponseDto.setTotalAmount(order.getTotalAmount());
@@ -142,8 +141,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderResponseDto> findOrderSuccessById(Long productId, String productType) {
-        List<Order> orderList = orderDao.findOrderSuccessById(productId,productType);
-        if(orderList != null) {
+        List<Order> orderList = orderDao.findOrderSuccessById(productId, productType);
+        if (orderList != null) {
             return orderList.stream()
                     .map(order -> {
                         OrderResponseDto orderResponseDto = new OrderResponseDto();
@@ -155,14 +154,14 @@ public class OrderServiceImpl implements OrderService {
                     })
                     .collect(Collectors.toList());
         }
-        return  null;
+        return null;
     }
 
     @Override
     public List<OrderResponseDto> findOrderCancelById(Long productId, String productType) {
 
-        List<Order> orderList = orderDao.findOrderCancelById(productId,productType);
-        if(orderList != null) {
+        List<Order> orderList = orderDao.findOrderCancelById(productId, productType);
+        if (orderList != null) {
             return orderList.stream()
                     .map(order -> {
                         OrderResponseDto orderResponseDto = new OrderResponseDto();
@@ -174,20 +173,20 @@ public class OrderServiceImpl implements OrderService {
                     })
                     .collect(Collectors.toList());
         }
-        return  null;
+        return null;
     }
 
     @Override
     public OrderResponseDto updateOrder(Long orderId) {
         Order saveOrder = orderDao.updateOrder(orderId);
-        if(saveOrder != null){
-            OrderResponseDto orderResponseDto =new OrderResponseDto();
+        if (saveOrder != null) {
+            OrderResponseDto orderResponseDto = new OrderResponseDto();
             orderResponseDto.setProductId(saveOrder.getProductId());
             orderResponseDto.setCount(saveOrder.getCount());
             orderResponseDto.setTotalAmount(saveOrder.getTotalAmount());
             orderResponseDto.setStatus(saveOrder.getStatus());
 
-            if(saveOrder.getProductType().equals("product")){
+            if (saveOrder.getProductType().equals("product")) {
                 try {
                     // 외부 서비스 호출
                     ResponseEntity<Long> productStocks = productServiceClient.incrementProductStocks(orderResponseDto.getProductId());
@@ -199,8 +198,7 @@ public class OrderServiceImpl implements OrderService {
                     // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
                 }
 
-            }
-            else if (saveOrder.getProductType().equals("preorderProduct")) {
+            } else if (saveOrder.getProductType().equals("preorderProduct")) {
                 try {
                     // 외부 서비스 호출
                     ResponseEntity<Long> productStocks = productServiceClient.incrementPreorderProductStocks(orderResponseDto.getProductId());
