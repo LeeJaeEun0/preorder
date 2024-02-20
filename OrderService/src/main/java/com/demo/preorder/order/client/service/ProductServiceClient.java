@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "ProductService", url = "${product.service.url}")
 public interface ProductServiceClient {
     @PutMapping("/api/internal/preorderProductStocks/increment")
-    ResponseEntity<Long> incrementPreorderProductStocks(@RequestParam Long productId);
+    ResponseEntity<Long> incrementPreorderProductStocks(@RequestParam Long preorderProductId);
 
     @PutMapping("/api/internal/productStocks/increment")
     ResponseEntity<Long> incrementProductStocks(@RequestParam Long productId);
