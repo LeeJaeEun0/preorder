@@ -7,7 +7,7 @@ spring:
     web-application-type: reactive
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/preorder?useSSL=false
+    url: jdbc:mysql://localhost:3306/preorder?allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: 1234
   jpa:
@@ -65,3 +65,33 @@ spring:
           uri: http://127.0.0.1:8082/
           predicates:
             - Path=/newsfeeds/**
+
+        - id: ProductService
+          uri: http://127.0.0.1:8084/
+          predicates:
+            - Path=/api/preorderProducts/**
+
+        - id: ProductService
+          uri: http://127.0.0.1:8084/
+          predicates:
+            - Path=/api/preorderProductStocks/**
+
+        - id: ProductService
+          uri: http://127.0.0.1:8084/
+          predicates:
+            - Path=/api/products/**
+
+        - id: ProductService
+          uri: http://127.0.0.1:8084/
+          predicates:
+            - Path=/api/productStocks/**
+
+        - id: OrderService
+          uri: http://127.0.0.1:8085/
+          predicates:
+            - Path=/api/orders/**
+
+        - id: PaymentService
+          uri: http://127.0.0.1:8086/
+          predicates:
+            - Path=/api/payments/**
