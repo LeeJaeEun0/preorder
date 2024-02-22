@@ -2,8 +2,8 @@ package com.demo.preorder.user.dao.impl;
 
 import com.demo.preorder.user.dao.EmailCertificationDao;
 import com.demo.preorder.user.entity.EmailCertification;
-import com.demo.preorder.user.exception.CustomException;
-import com.demo.preorder.user.exception.ErrorCode;
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.user.repository.EmailCertificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor

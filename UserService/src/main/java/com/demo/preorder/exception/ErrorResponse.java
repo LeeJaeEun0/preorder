@@ -1,4 +1,4 @@
-package com.demo.preorder.user.exception;
+package com.demo.preorder.exception;
 
 import lombok.Getter;
 import lombok.Setter;

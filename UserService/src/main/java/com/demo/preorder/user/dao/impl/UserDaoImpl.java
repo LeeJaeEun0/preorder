@@ -3,12 +3,10 @@ package com.demo.preorder.user.dao.impl;
 import com.demo.preorder.cofig.PasswordEncoder;
 import com.demo.preorder.user.dao.UserDao;
 import com.demo.preorder.user.entity.User;
-import com.demo.preorder.user.exception.CustomException;
-import com.demo.preorder.user.exception.ErrorCode;
-import com.demo.preorder.user.repository.EmailCertificationRepository;
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.Optional;
 

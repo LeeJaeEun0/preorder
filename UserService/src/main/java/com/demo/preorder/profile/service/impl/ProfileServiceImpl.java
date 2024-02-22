@@ -1,5 +1,7 @@
 package com.demo.preorder.profile.service.impl;
 
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.profile.dao.ProfileDao;
 import com.demo.preorder.profile.dto.ProfileDto;
 import com.demo.preorder.profile.entity.Profile;
@@ -29,10 +31,10 @@ public class ProfileServiceImpl implements ProfileService {
         try {
             Profile profile = new Profile();
             User user = userDao.findUser(userId);
-            if (user == null) return null;
+            if (user == null) throw new CustomException(ErrorCode.INVALID_ID);
             profile.setUserId(user);
             profile.setGreeting(profileDto.getGreeting());
-            if(profileDto.getFile() == null) return null;
+            if(profileDto.getFile() == null) throw new CustomException(ErrorCode.NOT_EXISTS_PROFILE);
             profile.setImage(userId.toString() + profileDto.getFile().getOriginalFilename());
 
             // 파일 저장
@@ -55,11 +57,11 @@ public class ProfileServiceImpl implements ProfileService {
             Profile profile = profileDao.findProfileByUserId(userId) ;
             String fileName = profile.getImage();
 
-            if(!deleteFile(fileName)) return null;
+            deleteFile(fileName);
 
             User user = userDao.findUser(userId);
-            if (user == null) return null;
-            if(profileDto.getFile() == null) return null;
+            if (user == null) throw new CustomException(ErrorCode.INVALID_ID);
+            if(profileDto.getFile() == null) throw new CustomException(ErrorCode.NOT_EXISTS_PROFILE);
 
 
             String uploadDir = "C:/path/to/upload/dir/";
@@ -74,16 +76,14 @@ public class ProfileServiceImpl implements ProfileService {
         return null;
     }
 
-    public boolean deleteFile(String fileName) {
+    public void deleteFile(String fileName) {
         Path fileStorageLocation = Paths.get("C:/path/to/upload/dir/").toAbsolutePath().normalize();
         Path filePath = fileStorageLocation.resolve(fileName).normalize();
 
         try {
             Files.deleteIfExists(filePath);
-            return true;
         } catch (IOException ex) {
-            // 예외 처리
-            return false;
+            log.info("삭제할 파일이 없습니다.");
         }
     }
 }

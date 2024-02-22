@@ -1,4 +1,6 @@
 package com.demo.preorder.filter;
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.user.entity.AuthenticateUser;
 import com.demo.preorder.user.entity.Role;
 import com.demo.preorder.user.exception.AuthorizationException;
@@ -40,8 +42,7 @@ public class JwtAuthorizationFilter implements Filter {
             return;
         }
         if(!isContainToken(httpServletRequest)){
-            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(),"인증 오류");
-            return;
+            throw new CustomException(ErrorCode.JWT_EXCEPTION);
         }
         try{
             String token = getToken(httpServletRequest);
@@ -50,17 +51,13 @@ public class JwtAuthorizationFilter implements Filter {
             log.info("값 : {}",authenticateUser.getEmail());
             chain.doFilter(request, response);
         } catch (JsonParseException e){
-            log.error("JsonParseException");
-            httpServletResponse.sendError(HttpStatus.BAD_REQUEST.value());
+            throw new CustomException(ErrorCode.JSON_PARSE_EXCEPTION);
         } catch (SignatureException | MalformedJwtException | UnsupportedJwtException e){
-            log.error("JwtException");
-            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "인증 오류");
+            throw new CustomException(ErrorCode.JWT_EXCEPTION);
         } catch (ExpiredJwtException e){
-            log.error("JwtTokenExpired");
-            httpServletResponse.sendError(HttpStatus.FORBIDDEN.value(), "토큰이 만료 되었습니다");
+            throw new CustomException(ErrorCode.JWT_TOKEN_EXPIRED);
         } catch (AuthorizationException e){
-            log.error("AuthorizationException");
-            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "권한이 없습니다");
+            throw new CustomException(ErrorCode.AUTHORIZATION_EXCEPTION);
         }
     }
 
