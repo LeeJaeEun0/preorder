@@ -16,8 +16,8 @@ public interface UserService {
 
     Long findUserId(Map<String, String> httpHeaders);
 
-    User changeUserProfile(Long userId, ProfileDto profileDto) throws Exception;
+    User changeUserProfile(Long userId, ProfileDto profileDto);
 
-    User changeUserPassword(Long userId, PasswordDto passwordDto) throws Exception;
-    void deleteUser(Long userId) throws Exception;
+    User changeUserPassword(Long userId, PasswordDto passwordDto);
+    void deleteUser(Long userId);
 }

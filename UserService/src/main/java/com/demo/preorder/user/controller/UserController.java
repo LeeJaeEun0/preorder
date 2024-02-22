@@ -37,7 +37,7 @@ public class UserController {
 
     @PutMapping("/profile")
     public ResponseEntity<?> updateProfile(@RequestHeader Map<String, String> httpHeaders,
-                                           @RequestBody ProfileDto profileDto) throws Exception {
+                                           @RequestBody ProfileDto profileDto) {
         Map<String, String> httpHeader = httpHeaders;
         Long userId = userService.findUserId(httpHeader);
         User user = userService.changeUserProfile(userId,profileDto);
@@ -46,14 +46,14 @@ public class UserController {
 
     @PutMapping("/password")
     public ResponseEntity<?> updatePassword(@RequestHeader Map<String, String> httpHeaders,
-                                            @RequestBody PasswordDto passwordDto) throws Exception {
+                                            @RequestBody PasswordDto passwordDto) {
         Long userId = userService.findUserId(httpHeaders);
         User user = userService.changeUserPassword(userId,passwordDto);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteUser(@RequestHeader Map<String, String> httpHeaders) throws Exception {
+    public ResponseEntity<?> deleteUser(@RequestHeader Map<String, String> httpHeaders) {
         Long userId = userService.findUserId(httpHeaders);
         userService.deleteUser(userId);
         return ResponseEntity.status(HttpStatus.OK).body("ok");

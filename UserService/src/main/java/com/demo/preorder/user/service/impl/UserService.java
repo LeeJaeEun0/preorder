@@ -7,6 +7,8 @@ import com.demo.preorder.user.dto.UserRegisterDto;
 import com.demo.preorder.user.dto.UserResponseDto;
 import com.demo.preorder.user.dto.UserVerifyResponseDto;
 import com.demo.preorder.user.entity.*;
+import com.demo.preorder.user.exception.CustomException;
+import com.demo.preorder.user.exception.ErrorCode;
 import com.demo.preorder.user.provider.JwtProvider;
 import com.demo.preorder.user.repository.UserRepository;
 import com.demo.preorder.user.repository.UserRoleRepository;
@@ -37,6 +39,11 @@ public class UserService {
 
     @Transactional
     public UserResponseDto registerUser(UserRegisterDto userRegisterDto){
+
+        Optional<User> savedUser = userRepository.findByEmail(userRegisterDto.getUserEmail());
+        if(savedUser.isPresent()) {
+            throw new CustomException(ErrorCode.EXISTS_EMAIL);
+        }
 
         String encryptedPassword = passwordEncoder.encrypt(userRegisterDto.getUserEmail(), userRegisterDto.getPassword());
 
