@@ -1,6 +1,7 @@
 package com.demo.preorder.profile.controller;
 
 import com.demo.preorder.profile.dto.ProfileDto;
+import com.demo.preorder.profile.dto.ProfileResponseDto;
 import com.demo.preorder.profile.entity.Profile;
 import com.demo.preorder.profile.service.ProfileService;
 import com.demo.preorder.user.service.UserService;
@@ -27,7 +28,7 @@ public class ProfileController {
     public ResponseEntity<?> saveProfile(@RequestHeader Map<String, String> httpHeaders,
                                          @ModelAttribute ProfileDto profileDto) throws IOException {
         Long userId = userService.findUserId(httpHeaders);
-        Profile profile = profileService.saveProfile(userId, profileDto);
+        ProfileResponseDto profile = profileService.saveProfile(userId, profileDto);
         if(profile != null){
             return  ResponseEntity.status(HttpStatus.CREATED).body(profile);
         }else {
@@ -39,7 +40,7 @@ public class ProfileController {
     public ResponseEntity<?> updateProfile(@RequestHeader Map<String, String> httpHeaders,
                                            @ModelAttribute ProfileDto profileDto) throws IOException {
         Long userId = userService.findUserId(httpHeaders);
-        Profile profile = profileService.updateProfile(userId, profileDto);
+        ProfileResponseDto profile = profileService.updateProfile(userId, profileDto);
         if(profile != null){
             return  ResponseEntity.status(HttpStatus.OK).body(profile);
         }else {

@@ -1,10 +1,7 @@
 package com.demo.preorder.user.controller;
 
+import com.demo.preorder.user.dto.*;
 import com.demo.preorder.user.entity.User;
-import com.demo.preorder.user.dto.EmailDto;
-import com.demo.preorder.user.dto.PasswordDto;
-import com.demo.preorder.user.dto.ProfileDto;
-import com.demo.preorder.user.dto.UserDto;
 import com.demo.preorder.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +37,7 @@ public class UserController {
                                            @RequestBody ProfileDto profileDto) {
         Map<String, String> httpHeader = httpHeaders;
         Long userId = userService.findUserId(httpHeader);
-        User user = userService.changeUserProfile(userId,profileDto);
+        UserResponseDto user = userService.changeUserProfile(userId,profileDto);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
@@ -48,7 +45,7 @@ public class UserController {
     public ResponseEntity<?> updatePassword(@RequestHeader Map<String, String> httpHeaders,
                                             @RequestBody PasswordDto passwordDto) {
         Long userId = userService.findUserId(httpHeaders);
-        User user = userService.changeUserPassword(userId,passwordDto);
+        UserResponseDto user = userService.changeUserPassword(userId,passwordDto);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 

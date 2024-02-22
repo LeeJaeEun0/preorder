@@ -5,6 +5,7 @@ import com.demo.preorder.user.dao.UserDao;
 import com.demo.preorder.user.dto.EmailDto;
 import com.demo.preorder.user.dto.PasswordDto;
 import com.demo.preorder.user.dto.ProfileDto;
+import com.demo.preorder.user.dto.UserResponseDto;
 import com.demo.preorder.user.entity.EmailCertification;
 import com.demo.preorder.user.entity.User;
 import com.demo.preorder.exception.CustomException;
@@ -51,8 +52,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User getUser(Long userId) {
-        return userDao.findUser(userId);
+    public UserResponseDto getUser(Long userId) {
+        return new UserResponseDto(userDao.findUser(userId));
     }
 
     @Override
@@ -64,13 +65,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User changeUserProfile(Long userId, ProfileDto profileDto) {
-        return userDao.updateUserProfile(userId,profileDto.getName());
+    public UserResponseDto changeUserProfile(Long userId, ProfileDto profileDto) {
+        return new UserResponseDto(userDao.updateUserProfile(userId,profileDto.getName()));
     }
 
     @Override
-    public User changeUserPassword(Long userId, PasswordDto passwordDto) {
-        return userDao.updateUserPassword(userId, passwordDto.getOldPassword(), passwordDto.getNewPassword());
+    public UserResponseDto changeUserPassword(Long userId, PasswordDto passwordDto) {
+        return new UserResponseDto(userDao.updateUserPassword(userId, passwordDto.getOldPassword(), passwordDto.getNewPassword()));
     }
 
     @Override

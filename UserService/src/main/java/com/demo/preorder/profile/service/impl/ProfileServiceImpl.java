@@ -4,6 +4,7 @@ import com.demo.preorder.exception.CustomException;
 import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.profile.dao.ProfileDao;
 import com.demo.preorder.profile.dto.ProfileDto;
+import com.demo.preorder.profile.dto.ProfileResponseDto;
 import com.demo.preorder.profile.entity.Profile;
 import com.demo.preorder.profile.service.ProfileService;
 import com.demo.preorder.user.dao.UserDao;
@@ -26,7 +27,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final UserDao userDao;
 
     @Override
-    public Profile saveProfile(Long userId, ProfileDto profileDto) throws IOException {
+    public ProfileResponseDto saveProfile(Long userId, ProfileDto profileDto) throws IOException {
 
         try {
             Profile profile = new Profile();
@@ -42,7 +43,7 @@ public class ProfileServiceImpl implements ProfileService {
             Path path = Paths.get(uploadDir + userId.toString() + profileDto.getFile().getOriginalFilename());
             Files.copy(profileDto.getFile().getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-            return profileDao.saveProfile(profile);
+            return new ProfileResponseDto(profileDao.saveProfile(profile));
         } catch (IOException e) {
             log.error("파일 업로드 및 저장 실패: {}", profileDto.getFile().getOriginalFilename(), e);
         }
@@ -51,7 +52,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Profile updateProfile(Long userId, ProfileDto profileDto) throws IOException {
+    public ProfileResponseDto updateProfile(Long userId, ProfileDto profileDto) throws IOException {
 
         try {
             Profile profile = profileDao.findProfileByUserId(userId) ;
@@ -68,7 +69,7 @@ public class ProfileServiceImpl implements ProfileService {
             Path path = Paths.get(uploadDir +userId.toString() + profileDto.getFile().getOriginalFilename());
             Files.copy(profileDto.getFile().getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             log.info("file upload");
-            return profileDao.updateProfile(userId, userId.toString()+profileDto.getFile().getOriginalFilename(), profileDto.getGreeting());
+            return new ProfileResponseDto(profileDao.updateProfile(userId, userId.toString()+profileDto.getFile().getOriginalFilename(), profileDto.getGreeting()));
         } catch (IOException e) {
             log.error("파일 업로드 및 저장 실패: {}", profileDto.getFile().getOriginalFilename(), e);
         }
