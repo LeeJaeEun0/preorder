@@ -52,4 +52,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser(@RequestHeader Map<String, String> httpHeaders) throws Exception {
+        Long userId = userService.findUserId(httpHeaders);
+        userService.deleteUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
+    }
+
 }
