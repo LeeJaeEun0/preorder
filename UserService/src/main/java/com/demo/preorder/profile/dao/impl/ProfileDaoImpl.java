@@ -28,4 +28,9 @@ public class ProfileDaoImpl implements ProfileDao {
 
         return profileRepository.save(profile);
     }
+
+    @Override
+    public Profile findProfileByUserId(Long userId) {
+        return profileRepository.findByUserIdId(userId);
+    }
 }

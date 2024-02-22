@@ -7,4 +7,6 @@ public interface ProfileDao {
     Profile saveProfile(Profile profile);
 
     Profile updateProfile(Long userId, String image, String greeting);
+
+    Profile findProfileByUserId(Long userId);
 }
