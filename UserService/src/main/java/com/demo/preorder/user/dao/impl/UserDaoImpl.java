@@ -89,7 +89,7 @@ public class UserDaoImpl implements UserDao {
 
     }
     @Override
-    public void deletetUser(Long userId) throws Exception {
+    public void deleteUser(Long userId) throws Exception {
         Optional<User> deleteUser = userRepository.findById(userId);
         if (deleteUser.isPresent()) {
             User user = deleteUser.get();

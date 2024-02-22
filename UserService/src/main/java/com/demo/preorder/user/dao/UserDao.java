@@ -11,5 +11,5 @@ public interface UserDao {
     Optional<User> selectUser(Long userid);
     public User updateUserProfile(Long userId, String name) throws Exception;
     User updateUserPassword(Long userId, String oldPassword, String newPassword) throws Exception;
-    public void deletetUser(Long userId) throws Exception;
+    public void deleteUser(Long userId) throws Exception;
 }
