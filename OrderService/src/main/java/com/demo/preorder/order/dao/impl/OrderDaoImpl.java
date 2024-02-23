@@ -1,5 +1,7 @@
 package com.demo.preorder.order.dao.impl;
 
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.order.dao.OrderDao;
 import com.demo.preorder.order.entity.Order;
 import com.demo.preorder.order.repository.OrderRepository;
@@ -25,8 +27,7 @@ public class OrderDaoImpl implements OrderDao {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         if(optionalOrder.isPresent()){
             return  optionalOrder.get();
-        }
-        return null;
+        }else throw new CustomException(ErrorCode.INVALID_ORDER);
     }
 
     @Override
@@ -46,7 +47,6 @@ public class OrderDaoImpl implements OrderDao {
             Order order = optionalOrder.get();
             order.setStatus("cancel");
             return orderRepository.save(order);
-        }
-        return null;
+        }else throw new CustomException(ErrorCode.INVALID_ORDER);
     }
 }
