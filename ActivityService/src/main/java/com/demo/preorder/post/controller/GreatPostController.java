@@ -35,8 +35,8 @@ public class GreatPostController {
     }
 
     @GetMapping
-    public ResponseEntity<?> greatPostList( @RequestBody GreatPostDto greatPostDto){
-        List<GreatPost> greatPostList =  greatPostService.greatPostList(greatPostDto);
+    public ResponseEntity<?> greatPostList( @RequestParam("postId") Long postId){
+        List<GreatPost> greatPostList =  greatPostService.greatPostList(postId);
         if (greatPostList != null) {
             return  ResponseEntity.status(HttpStatus.OK).body(greatPostList);
         }else {
@@ -44,12 +44,12 @@ public class GreatPostController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{postId}")
     public ResponseEntity<?> deleteGreatPost(@RequestHeader Map<String, String> httpHeaders,
-                                             @RequestBody GreatPostDto greatPostDto){
+                                             @PathVariable("postId") Long postId){
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        greatPostService.deleteGreatPost(userId,greatPostDto);
+        greatPostService.deleteGreatPost(userId,postId);
         return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 

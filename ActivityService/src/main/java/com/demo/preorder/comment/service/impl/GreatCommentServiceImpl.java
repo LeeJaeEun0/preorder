@@ -82,12 +82,12 @@ public class GreatCommentServiceImpl implements GreatCommentService {
     }
 
     @Override
-    public void deleteGreatComment(Long userId, GreatCommentDto greatCommentDto) {
-        greatCommentDao.deleteGreatComment(userId, greatCommentDto.getGreatCommentId());
+    public void deleteGreatComment(Long userId, Long greatCommentId) {
+        greatCommentDao.deleteGreatComment(userId, greatCommentId);
     }
 
     @Override
-    public List<GreatComment> greatCommentList(GreatCommentDto greatCommentDto) {
-        return greatCommentDao.greatCommentList(greatCommentDto.getCommentId());
+    public List<GreatComment> greatCommentList(Long greatCommentId) {
+        return greatCommentDao.greatCommentList(greatCommentId);
     }
 }

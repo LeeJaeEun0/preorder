@@ -10,7 +10,7 @@ public interface PostService {
 
     Post savePost(Long userId,PostDto postDto);
 
-    Post selectPost(PostDto postDto);
+    Post selectPost(Long postId);
 
     List<Post> listPost();
 
@@ -18,5 +18,5 @@ public interface PostService {
 
     Post changePost(Long userId,PostDto postDto);
 
-    void deletePost(Long UserId,PostDto postDto) throws Exception;
+    void deletePost(Long UserId,Long postId) throws Exception;
 }

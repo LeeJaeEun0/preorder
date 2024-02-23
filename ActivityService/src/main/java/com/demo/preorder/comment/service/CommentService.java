@@ -11,10 +11,10 @@ import java.util.List;
 public interface CommentService {
     Comment saveComment(Long userId,CommentDto commentDto);
 
-    Comment insertComment(Long userId, CommentReplayDto commentReplayDto);
+    Comment saveReplay(Long userId, CommentReplayDto commentReplayDto);
 
-    List<Comment> selectComment(CommentDto commentDto);
-    Comment changeCommentContent(Long userId, CommentUpdateDto commentUpdateDto);
+    List<Comment> selectComment(Long postId);
+    Comment updateCommentContent(Long userId, CommentUpdateDto commentUpdateDto);
 
-    void deleteComment(Long userId, CommentDeleteDto commentDeleteDto) throws Exception;
+    void deleteComment(Long userId, Long commentId) throws Exception;
 }

@@ -33,17 +33,17 @@ public class FollowController {
         }
 
     }
-    @DeleteMapping
+    @DeleteMapping("{followingId}")
     public ResponseEntity<Follow> deleteFollow(@RequestHeader Map<String, String> httpHeaders,
-                                               @RequestBody FollowDto followDto) throws Exception {
+                                               @PathVariable("followingId") Long followingId) throws Exception {
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        followService.deleteFollow(userId,followDto);
+        followService.deleteFollow(userId,followingId);
         return  null;
     }
     @GetMapping("/follower")
-    public ResponseEntity<List<Follow>> findFollower(@RequestBody FollowDto followDto){
-        List<Follow> follows = followService.findFollower(followDto);
+    public ResponseEntity<List<Follow>> findFollower(@RequestParam Long followingId){
+        List<Follow> follows = followService.findFollower(followingId);
         return  ResponseEntity.status(HttpStatus.OK).body(follows);
     }
     @GetMapping("/following")

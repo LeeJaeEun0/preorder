@@ -8,12 +8,11 @@ public interface CommentDao {
     Comment saveComment(Comment comment);
 
     Integer findGroupId();
-    Comment insertComment(Comment comment);
 
     Comment selectedComment(Long commentId);
 
     List<Comment> selectComment(Long postId);
-    Comment changeCommentContent(Long userId, Long commentId, String content);
+    Comment updateCommentContent(Long userId, Long commentId, String content);
 
     void deleteComment(Long userId, Long commentId) throws Exception;
 

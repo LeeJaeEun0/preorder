@@ -123,7 +123,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment insertComment(Long userId, CommentReplayDto commentReplayDto) {
+    public Comment saveReplay(Long userId, CommentReplayDto commentReplayDto) {
         Comment comment = new Comment();
         ResponseEntity<User> userResponseEntity = userServiceClient.findUser(userId);
         User user = userResponseEntity.getBody();
@@ -142,17 +142,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> selectComment(CommentDto commentDto) {
-        return commentDao.selectComment(commentDto.getPostId());
+    public List<Comment> selectComment(Long postId) {
+        return commentDao.selectComment(postId);
     }
 
     @Override
-    public Comment changeCommentContent(Long userId, CommentUpdateDto commentUpdateDto) {
-        return commentDao.changeCommentContent(userId, commentUpdateDto.getCommentId(), commentUpdateDto.getContent());
+    public Comment updateCommentContent(Long userId, CommentUpdateDto commentUpdateDto) {
+        return commentDao.updateCommentContent(userId, commentUpdateDto.getCommentId(), commentUpdateDto.getContent());
     }
 
     @Override
-    public void deleteComment(Long userId, CommentDeleteDto commentDeleteDto) throws Exception {
-        commentDao.deleteComment(userId, commentDeleteDto.getCommentId());
+    public void deleteComment(Long userId, Long commentId) throws Exception {
+        commentDao.deleteComment(userId, commentId);
     }
 }

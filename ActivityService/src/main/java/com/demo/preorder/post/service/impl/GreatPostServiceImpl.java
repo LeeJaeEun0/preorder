@@ -98,12 +98,12 @@ public class GreatPostServiceImpl implements GreatPostService {
     }
 
     @Override
-    public void deleteGreatPost(Long userId, GreatPostDto greatPostDto) {
-        greatPostDao.deleteGreatPost(userId, greatPostDto.getGreatPostId());
+    public void deleteGreatPost(Long userId, Long postId) {
+        greatPostDao.deleteGreatPost(userId, postId);
     }
 
     @Override
-    public List<GreatPost> greatPostList(GreatPostDto greatPostDto) {
-        return greatPostDao.greatPostList(greatPostDto.getPostId());
+    public List<GreatPost> greatPostList(Long postId) {
+        return greatPostDao.greatPostList(postId);
     }
 }

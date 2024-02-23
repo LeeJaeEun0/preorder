@@ -92,14 +92,14 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public void deleteFollow(Long userId,FollowDto followDto) throws Exception {
-        followDao.deleteFollow(userId, followDto.getFollowingId());
+    public void deleteFollow(Long userId,Long followingId) throws Exception {
+        followDao.deleteFollow(userId, followingId);
     }
 
     // 나를 팔로우한 사람
     @Override
-    public List<Follow> findFollower(FollowDto followDto) {
-        return followDao.findFollower(followDto.getFollowingId());
+    public List<Follow> findFollower(Long followingId) {
+        return followDao.findFollower(followingId);
     }
 
     // 내가 팔로우한 사람

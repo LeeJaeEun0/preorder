@@ -94,8 +94,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post selectPost(PostDto postDto) {
-        return postDao.selectPost(postDto.getPostId());
+    public Post selectPost(Long postId) {
+        return postDao.selectPost(postId);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(Long userId,PostDto postDto) throws Exception {
-        postDao.deletePost(userId,postDto.getPostId());
+    public void deletePost(Long userId,Long postId) throws Exception {
+        postDao.deletePost(userId,postId);
     }
 }

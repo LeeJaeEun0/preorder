@@ -9,7 +9,7 @@ import java.util.List;
 public interface GreatPostService {
     GreatPost saveGreatPost(Long userId, GreatPostDto greatPostDto);
 
-    void deleteGreatPost(Long userId, GreatPostDto greatPostDto);
+    void deleteGreatPost(Long userId, Long postId);
 
-    List<GreatPost> greatPostList(GreatPostDto greatPostDto);
+    List<GreatPost> greatPostList(Long postId);
 }

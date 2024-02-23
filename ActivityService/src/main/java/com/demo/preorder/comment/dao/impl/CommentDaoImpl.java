@@ -24,30 +24,7 @@ public class CommentDaoImpl implements CommentDao {
     @Override
     @Transactional
     public Comment saveComment(Comment comment) {
-        Comment saved = commentRepository.save(comment);
-        Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUseId().getId());
-
-//        if (optionalFollowList.isPresent()) {
-//            List<Follow> followList = optionalFollowList.get();
-//
-//            for (Follow follows : followList) {
-//                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
-//                newsfeedIFollow.setUserId(follows.getUserId());
-//                newsfeedIFollow.setFollowingId(saved.getUseId());
-//                newsfeedIFollow.setType("comment");
-//                newsfeedIFollow.setTargetId(saved.getId());
-//                newsfeedIFollowRepository.save(newsfeedIFollow);
-//            }
-//        }
-//
-//        // 포스트를 작성한 사람에게 댓글 알림
-//        NewsfeedMyNews newsfeedFollowedMe = new NewsfeedMyNews();
-//        newsfeedFollowedMe.setUserId(saved.getPostId().getUserId());
-//        newsfeedFollowedMe.setWriterId(saved.getUseId());
-//        newsfeedFollowedMe.setType("comment");
-//        newsfeedFollowedMe.setPostId(saved.getId());
-//        newsfeedMyNewsRepository.save(newsfeedFollowedMe);
-        return saved;
+        return commentRepository.save(comment);
     }
 
     @Override
@@ -55,11 +32,6 @@ public class CommentDaoImpl implements CommentDao {
         Comment comment = commentRepository.findTopByOrderByCommentGroupDesc();
         if (comment == null) return 1;
         return comment.getCommentGroup();
-    }
-
-    @Override
-    public Comment insertComment(Comment comment) {
-        return commentRepository.save(comment);
     }
 
     @Override
@@ -79,7 +51,7 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public Comment changeCommentContent(Long userId, Long commentId, String content) {
+    public Comment updateCommentContent(Long userId, Long commentId, String content) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         if(optionalComment.isPresent()){
             Comment comment = optionalComment.get();

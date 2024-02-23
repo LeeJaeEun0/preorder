@@ -34,8 +34,8 @@ public class GreatCommentController {
     }
 
     @GetMapping
-    public ResponseEntity<?> greatCommentList(@RequestBody GreatCommentDto greatCommentDto){
-        List<GreatComment> greatCommentList =  greatCommentService.greatCommentList(greatCommentDto);
+    public ResponseEntity<?> greatCommentList(@RequestParam("greatCommentId") Long greatCommentId){
+        List<GreatComment> greatCommentList =  greatCommentService.greatCommentList(greatCommentId);
         if (greatCommentList != null) {
             return  ResponseEntity.status(HttpStatus.OK).body(greatCommentList);
         }else {
@@ -43,12 +43,12 @@ public class GreatCommentController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("{greatCommentId}")
     public ResponseEntity<?> deleteCommentPost(@RequestHeader Map<String, String> httpHeaders,
-                                               @RequestBody GreatCommentDto greatCommentDto){
+                                               @PathVariable Long greatCommentId){
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        greatCommentService.deleteGreatComment(userId,greatCommentDto);;
+        greatCommentService.deleteGreatComment(userId,greatCommentId);;
         return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 }

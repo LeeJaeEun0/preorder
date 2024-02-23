@@ -18,23 +18,7 @@ public class FollowDaoImpl implements FollowDao {
     @Override
     @Transactional
     public Follow insertFollow(Follow follow) {
-        Follow saved = followRepository.save(follow);
-
-        Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUserId().getId());
-
-//        if (optionalFollowList.isPresent()) {
-//            List<Follow> followList = optionalFollowList.get();
-//
-//            for (Follow follows : followList) {
-//                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
-//                newsfeedIFollow.setUserId(follows.getUserId());
-//                newsfeedIFollow.setFollowingId(follow.getUserId());
-//                newsfeedIFollow.setType("follow");
-//                newsfeedIFollow.setTargetId(saved.getId());
-//                newsfeedIFollowRepository.save(newsfeedIFollow);
-//            }
-//        }
-        return saved;
+        return followRepository.save(follow);
     }
 
     @Override

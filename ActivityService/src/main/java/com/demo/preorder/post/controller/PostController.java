@@ -40,8 +40,8 @@ public class PostController {
     }
 
     @GetMapping("/selectPost")
-    public ResponseEntity<?> selectPost(@RequestBody PostDto postDto){
-        Post post = postService.selectPost(postDto);
+    public ResponseEntity<?> selectPost(@RequestParam Long postId){
+        Post post = postService.selectPost(postId);
         if(post != null){
             return  ResponseEntity.status(HttpStatus.OK).body(post);
         }else {
@@ -77,13 +77,13 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("포스트 수정에 실패했습니다.");
         }
     }
-    @DeleteMapping
+    @DeleteMapping("/{postId}")
     public ResponseEntity<?> deletePost(@RequestHeader Map<String, String> httpHeaders,
-                                        @RequestBody PostDto postDto) throws Exception {
+                                        @PathVariable Long postId) throws Exception {
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        postService.deletePost(userId, postDto);
-        return null;
+        postService.deletePost(userId, postId);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
 
     }
 

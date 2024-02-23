@@ -28,61 +28,63 @@ public class CommentController {
 
     @PostMapping("/comment")
     public ResponseEntity<?> saveComment(@RequestHeader Map<String, String> httpHeaders,
-                                         @RequestBody CommentDto commentDto){
-        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+                                         @RequestBody CommentDto commentDto) {
+        ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
         Comment comment = commentService.saveComment(userId, commentDto);
-        if(comment != null){
-            return  ResponseEntity.status(HttpStatus.CREATED).body(comment);
-        }else {
+        if (comment != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(comment);
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("댓글 작성에 실패했습니다.");
         }
     }
+
     @PostMapping("/replay")
-    public ResponseEntity<?> insertComment(@RequestHeader Map<String, String> httpHeaders,
-                                           @RequestBody CommentReplayDto commentReplayDto){
-        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+    public ResponseEntity<?> saveReplay(@RequestHeader Map<String, String> httpHeaders,
+                                        @RequestBody CommentReplayDto commentReplayDto) {
+        ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        Comment comment = commentService.insertComment(userId, commentReplayDto);
-        if(comment != null){
-            return  ResponseEntity.status(HttpStatus.CREATED).body(comment);
-        }else {
+        Comment comment = commentService.saveReplay(userId, commentReplayDto);
+        if (comment != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(comment);
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("대댓글 작성에 실패했습니다.");
         }
     }
+
     @GetMapping
-    public ResponseEntity<?> selectComment(@RequestBody CommentDto commentDto){
-        List<Comment> commentList = commentService.selectComment(commentDto);
-        if(commentList != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(commentList);
-        }else {
+    public ResponseEntity<?> selectComment(@RequestParam("postId")Long postId) {
+        List<Comment> commentList = commentService.selectComment(postId);
+        if (commentList != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(commentList);
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("댓글 찾기에 실패했습니다.");
         }
     }
+
     @PutMapping
-    public ResponseEntity<?> changeCommentContent(@RequestHeader Map<String, String> httpHeaders,
-                                                  @RequestBody CommentUpdateDto commentUpdateDto){
-        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+    public ResponseEntity<?> updateCommentContent(@RequestHeader Map<String, String> httpHeaders,
+                                                  @RequestBody CommentUpdateDto commentUpdateDto) {
+        ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
         log.info("info log = {}", userId);
         log.info("info log = {}", commentUpdateDto.getCommentId());
         log.info("info log = {}", commentUpdateDto.getContent());
-        Comment comment = commentService.changeCommentContent(userId, commentUpdateDto);
+        Comment comment = commentService.updateCommentContent(userId, commentUpdateDto);
 
-        if(comment != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(comment);
-        }else {
+        if (comment != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(comment);
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("댓글 수정에 실패했습니다.");
         }
     }
-    @DeleteMapping
+
+    @DeleteMapping("/{commentId}")
     public ResponseEntity<?> deleteComment(@RequestHeader Map<String, String> httpHeaders,
-                                           @RequestBody CommentDeleteDto commentDeleteDto) throws Exception {
-        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+                                           @PathVariable("commentId") Long commentId) throws Exception {
+        ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        log.info("info log = {}", userId);
-        log.info("info log = {}", commentDeleteDto.getCommentId());
-        commentService.deleteComment(userId,commentDeleteDto);
+        commentService.deleteComment(userId, commentId);
         return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 }
