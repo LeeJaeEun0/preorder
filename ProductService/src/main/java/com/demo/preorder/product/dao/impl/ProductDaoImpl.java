@@ -1,5 +1,7 @@
 package com.demo.preorder.product.dao.impl;
 
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.product.dao.ProductDao;
 import com.demo.preorder.product.entity.Product;
 import com.demo.preorder.product.repository.ProductRepository;
@@ -23,7 +25,7 @@ public class ProductDaoImpl implements ProductDao {
     public Product getProductById(Long productId) {
         Optional<Product> optionalProduct =productRepository.findById(productId);
         if (optionalProduct.isPresent()) return optionalProduct.get();
-        return null;
+        else throw new CustomException(ErrorCode.INVALID_PRODUCT);
     }
 
     @Override
@@ -40,8 +42,7 @@ public class ProductDaoImpl implements ProductDao {
             product.setContent(content);
             product.setPrice(price);
             return productRepository.save(product);
-        }
-        return null;
+        }else throw new CustomException(ErrorCode.INVALID_PRODUCT);
     }
 
     @Override
@@ -50,6 +51,6 @@ public class ProductDaoImpl implements ProductDao {
         if (optionalProduct.isPresent()){
             Product product = optionalProduct.get();
             productRepository.delete(product);
-        }
+        }else throw new CustomException(ErrorCode.INVALID_PRODUCT);
     }
 }

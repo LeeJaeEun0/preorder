@@ -1,5 +1,7 @@
 package com.demo.preorder.preorderProduct.dao.impl;
 
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.preorderProduct.dao.PreorderProductStockDao;
 import com.demo.preorder.preorderProduct.entity.PreorderProductStock;
 import com.demo.preorder.preorderProduct.repository.PreorderProductStockRepository;
@@ -25,59 +27,54 @@ public class PreorderProductStockDaoImpl implements PreorderProductStockDao {
     @Override
     public PreorderProductStock getPreorderProductById(Long preorderProductId) {
         Optional<PreorderProductStock> optionalPreorderProductStock = preorderProductStockRepository.findByPreorderProductIdId(preorderProductId);
-        if(optionalPreorderProductStock.isPresent()){
+        if (optionalPreorderProductStock.isPresent()) {
             return optionalPreorderProductStock.get();
-        }
-        else return null;
+        } else throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT_STOCK);
     }
 
     @Override
     public PreorderProductStock incrementCount(Long preorderProductId) {
         Optional<PreorderProductStock> optionalPreorderProductStock = preorderProductStockRepository.findByPreorderProductIdId(preorderProductId);
-        if(optionalPreorderProductStock.isPresent()){
+        if (optionalPreorderProductStock.isPresent()) {
             PreorderProductStock preorderProductStock = optionalPreorderProductStock.get();
-            preorderProductStock.setStock(preorderProductStock.getStock()+1);
+            preorderProductStock.setStock(preorderProductStock.getStock() + 1);
             return preorderProductStockRepository.save(preorderProductStock);
-        }
-        return null;
+        }else throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT_STOCK);
     }
 
     @Override
     public PreorderProductStock decrementCount(Long preorderProductId) {
         Optional<PreorderProductStock> optionalPreorderProductStock = preorderProductStockRepository.findByPreorderProductIdId(preorderProductId);
-        if(optionalPreorderProductStock.isPresent()){
+        if (optionalPreorderProductStock.isPresent()) {
             PreorderProductStock preorderProductStock = optionalPreorderProductStock.get();
-            if (preorderProductStock.getStock() - 1 >=0){
-                preorderProductStock.setStock(preorderProductStock.getStock()-1);
+            if (preorderProductStock.getStock() - 1 >= 0) {
+                preorderProductStock.setStock(preorderProductStock.getStock() - 1);
                 return preorderProductStockRepository.save(preorderProductStock);
             }
             return null;
-        }
-        return null;
+        }else throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT_STOCK);
     }
 
     @Override
     public void updatePreorderProductStock(Long preorderProductId, Long stock) {
         Optional<PreorderProductStock> optionalPreorderProductStock = preorderProductStockRepository.findByPreorderProductIdId(preorderProductId);
-        if(optionalPreorderProductStock.isPresent()){
+        if (optionalPreorderProductStock.isPresent()) {
             PreorderProductStock preorderProductStock = optionalPreorderProductStock.get();
             preorderProductStock.setStock(stock);
             preorderProductStockRepository.save(preorderProductStock);
-            log.info("info log = stock 변경 성공");
-        }else {
-            log.error("info log = stock 변경 실패");
+        } else {
+           throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT_STOCK);
         }
     }
 
     @Override
     public void deletePreorderProductStock(Long preorderProductId) {
         Optional<PreorderProductStock> optionalPreorderProductStock = preorderProductStockRepository.findByPreorderProductIdId(preorderProductId);
-        if(optionalPreorderProductStock.isPresent()){
+        if (optionalPreorderProductStock.isPresent()) {
             PreorderProductStock preorderProductStock = optionalPreorderProductStock.get();
             preorderProductStockRepository.delete(preorderProductStock);
-            log.info("info log = stock 삭제 성공");
-        }else {
-            log.error("info log = stock 삭제 실패");
+        } else {
+            throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT_STOCK);
         }
     }
 }

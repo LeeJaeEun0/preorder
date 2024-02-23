@@ -1,8 +1,11 @@
 package com.demo.preorder.preorderProduct.service.impl;
 
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.preorderProduct.dao.PreorderProductDao;
 import com.demo.preorder.preorderProduct.dao.PreorderProductStockDao;
 import com.demo.preorder.preorderProduct.dto.PreorderProductDto;
+import com.demo.preorder.preorderProduct.dto.PreorderProductResponseDto;
 import com.demo.preorder.preorderProduct.dto.PreorderProductUpdateDto;
 import com.demo.preorder.preorderProduct.entity.PreorderProduct;
 import com.demo.preorder.preorderProduct.entity.PreorderProductStock;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,7 +36,7 @@ public class PreorderProductServiceImpl implements PreorderProductService {
 
     @Transactional
     @Override
-    public PreorderProduct savePreorderProduct(PreorderProductDto preorderProductDto) {
+    public PreorderProductResponseDto savePreorderProduct(PreorderProductDto preorderProductDto) {
         PreorderProduct preorderProduct = new PreorderProduct();
         preorderProduct.setTitle(preorderProductDto.getTitle());
         preorderProduct.setContent(preorderProductDto.getContent());
@@ -45,7 +49,7 @@ public class PreorderProductServiceImpl implements PreorderProductService {
             preorderProductStock.setStock(preorderProductDto.getStock());
             preorderProductStockDao.savePreorderProductStock(preorderProductStock);
         }
-        return saved;
+        return new PreorderProductResponseDto(saved);
     }
 
     @Override
@@ -75,10 +79,9 @@ public class PreorderProductServiceImpl implements PreorderProductService {
                             // 오류 발생 시 처리
                             log.error("Error order : {}", e.getMessage(), e);
                             return null;
-                            // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
                         }
                     }
-                    return null;
+                    throw new CustomException(ErrorCode.NOT_EXISTS_PREORDER_PRODUCT_STOCK);
                 }
             }
         }
@@ -86,20 +89,25 @@ public class PreorderProductServiceImpl implements PreorderProductService {
     }
 
     @Override
-    public PreorderProduct getPreorderProductById(Long preorderProductId) {
-        return preorderProductDao.getPreorderProductById(preorderProductId);
+    public PreorderProductResponseDto getPreorderProductById(Long preorderProductId) {
+        return new PreorderProductResponseDto(preorderProductDao.getPreorderProductById(preorderProductId));
     }
 
     @Override
-    public List<PreorderProduct> findAllPreorderProduct() {
-        return preorderProductDao.findAllPreorderProduct();
-    }
+    public List<PreorderProductResponseDto> findAllPreorderProduct() {
+        List<PreorderProduct> preorderProducts = preorderProductDao.findAllPreorderProduct();
 
+        List<PreorderProductResponseDto> preorderProductResponseDtos = preorderProducts.stream()
+                .map(PreorderProductResponseDto::new)
+                .collect(Collectors.toList());
+
+        return preorderProductResponseDtos;
+    }
     @Transactional
     @Override
-    public PreorderProduct changePreorderProduct(Long preorderProductId, PreorderProductUpdateDto preorderProductUpdateDto) {
+    public PreorderProductResponseDto changePreorderProduct(Long preorderProductId, PreorderProductUpdateDto preorderProductUpdateDto) {
         preorderProductStockDao.updatePreorderProductStock(preorderProductId, preorderProductUpdateDto.getStock());
-        return preorderProductDao.changePreorderProduct(preorderProductId, preorderProductUpdateDto.getTitle(), preorderProductUpdateDto.getContent(), preorderProductUpdateDto.getPrice(), preorderProductUpdateDto.getAvailableFrom());
+        return new PreorderProductResponseDto(preorderProductDao.changePreorderProduct(preorderProductId, preorderProductUpdateDto.getTitle(), preorderProductUpdateDto.getContent(), preorderProductUpdateDto.getPrice(), preorderProductUpdateDto.getAvailableFrom()));
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package com.demo.preorder.product.controller;
 
+import com.demo.preorder.product.dto.ProductStockResponseDto;
 import com.demo.preorder.product.entity.ProductStock;
 import com.demo.preorder.product.service.ProductStockService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class InternalProductStockController {
 
     @PutMapping("/increment")
     public ResponseEntity<?> incrementCount(@RequestParam("productId") Long productId){
-        ProductStock productStock = productStockService.incrementCount(productId);
+        ProductStockResponseDto productStock = productStockService.incrementCount(productId);
         Long stock = productStock.getStock();
         if(stock != null){
             return  ResponseEntity.status(HttpStatus.OK).body(stock);
@@ -28,7 +29,7 @@ public class InternalProductStockController {
 
     @PutMapping("/decrement")
     public ResponseEntity<?> decrementCount(@RequestParam("productId") Long productId){
-        ProductStock productStock = productStockService.decrementCount(productId);
+        ProductStockResponseDto productStock = productStockService.decrementCount(productId);
         Long stock = productStock.getStock();
         if(stock != null){
             return  ResponseEntity.status(HttpStatus.OK).body(stock);
