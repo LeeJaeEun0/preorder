@@ -1,5 +1,7 @@
 package com.demo.preorder.payment.dao.impl;
 
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.payment.dao.PaymentDao;
 import com.demo.preorder.payment.entity.Payment;
 import com.demo.preorder.payment.repository.PaymentRepository;
@@ -24,8 +26,7 @@ public class PaymentDaoImpl implements PaymentDao {
         Optional<Payment> optionalPayment = paymentRepository.findById(paymentId);
         if(optionalPayment.isPresent()){
             return optionalPayment.get();
-        }
-        return null;
+        }else throw new CustomException(ErrorCode.INVALID_PAYMENT);
     }
 
     @Override
@@ -35,7 +36,6 @@ public class PaymentDaoImpl implements PaymentDao {
             Payment payment = optionalPayment.get();
             payment.setStatus("cancel");
             return paymentRepository.save(payment);
-        }
-        return null;
+        }else throw new CustomException(ErrorCode.INVALID_PAYMENT);
     }
 }
