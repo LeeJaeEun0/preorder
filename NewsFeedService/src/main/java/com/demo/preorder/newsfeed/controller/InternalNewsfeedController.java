@@ -2,6 +2,8 @@ package com.demo.preorder.newsfeed.controller;
 
 import com.demo.preorder.newsfeed.dto.NewsfeedDto;
 import com.demo.preorder.newsfeed.dto.NewsfeedMyNewsDto;
+import com.demo.preorder.newsfeed.dto.NewsfeedMyNewsResponseDto;
+import com.demo.preorder.newsfeed.dto.NewsfeedResponseDto;
 import com.demo.preorder.newsfeed.entity.Newsfeed;
 import com.demo.preorder.newsfeed.entity.NewsfeedMyNews;
 import com.demo.preorder.newsfeed.service.NewsfeedMyNewsService;
@@ -25,7 +27,7 @@ public class InternalNewsfeedController {
 
     @PostMapping
     public ResponseEntity<?> createNewsfeed(@RequestBody NewsfeedDto newsfeedDto){
-        Newsfeed newsfeed = newsfeedService.saveNewsfeed(newsfeedDto);
+        NewsfeedResponseDto newsfeed = newsfeedService.saveNewsfeed(newsfeedDto);
         if(newsfeed != null){
             return  ResponseEntity.status(HttpStatus.CREATED).body(newsfeed);
         }else {
@@ -35,7 +37,7 @@ public class InternalNewsfeedController {
 
     @PostMapping("/myNews")
     public ResponseEntity<?> createNewsfeedMyNews(@RequestBody NewsfeedMyNewsDto newsfeedMyNewsDto){
-        NewsfeedMyNews newsfeedMyNews = newsfeedMyNewsService.saveNewsfeedMyNew(newsfeedMyNewsDto);
+        NewsfeedMyNewsResponseDto newsfeedMyNews = newsfeedMyNewsService.saveNewsfeedMyNew(newsfeedMyNewsDto);
         if(newsfeedMyNews != null){
             return  ResponseEntity.status(HttpStatus.CREATED).body(newsfeedMyNews);
         }else {
