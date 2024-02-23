@@ -9,7 +9,7 @@ public interface UserDao {
     //void deleteEmailCertification(String email);
     Long findUserId(String email);
     Optional<User> selectUser(Long userid);
-    public User updateUserProfile(Long userId, String name) throws Exception;
-    User updateUserPassword(Long userId, String oldPassword, String newPassword) throws Exception;
-    public void deletetUser(Long userId) throws Exception;
+    public User updateUserProfile(Long userId, String name);
+    User updateUserPassword(Long userId, String oldPassword, String newPassword) ;
+    public void deleteUser(Long userId) ;
 }

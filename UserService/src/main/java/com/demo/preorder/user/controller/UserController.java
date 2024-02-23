@@ -1,10 +1,7 @@
 package com.demo.preorder.user.controller;
 
+import com.demo.preorder.user.dto.*;
 import com.demo.preorder.user.entity.User;
-import com.demo.preorder.user.dto.EmailDto;
-import com.demo.preorder.user.dto.PasswordDto;
-import com.demo.preorder.user.dto.ProfileDto;
-import com.demo.preorder.user.dto.UserDto;
 import com.demo.preorder.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,19 +34,26 @@ public class UserController {
 
     @PutMapping("/profile")
     public ResponseEntity<?> updateProfile(@RequestHeader Map<String, String> httpHeaders,
-                                           @RequestBody ProfileDto profileDto) throws Exception {
+                                           @RequestBody ProfileDto profileDto) {
         Map<String, String> httpHeader = httpHeaders;
         Long userId = userService.findUserId(httpHeader);
-        User user = userService.changeUserProfile(userId,profileDto);
+        UserResponseDto user = userService.changeUserProfile(userId,profileDto);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @PutMapping("/password")
     public ResponseEntity<?> updatePassword(@RequestHeader Map<String, String> httpHeaders,
-                                            @RequestBody PasswordDto passwordDto) throws Exception {
+                                            @RequestBody PasswordDto passwordDto) {
         Long userId = userService.findUserId(httpHeaders);
-        User user = userService.changeUserPassword(userId,passwordDto);
+        UserResponseDto user = userService.changeUserPassword(userId,passwordDto);
         return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser(@RequestHeader Map<String, String> httpHeaders) {
+        Long userId = userService.findUserId(httpHeaders);
+        userService.deleteUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
 }

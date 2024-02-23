@@ -1,20 +1,20 @@
 package com.demo.preorder.user.service.impl;
 
-import com.demo.preorder.cofig.PasswordEncoder;
 import com.demo.preorder.user.dao.EmailCertificationDao;
 import com.demo.preorder.user.dao.UserDao;
 import com.demo.preorder.user.dto.EmailDto;
 import com.demo.preorder.user.dto.PasswordDto;
 import com.demo.preorder.user.dto.ProfileDto;
-import com.demo.preorder.user.dto.UserDto;
+import com.demo.preorder.user.dto.UserResponseDto;
 import com.demo.preorder.user.entity.EmailCertification;
 import com.demo.preorder.user.entity.User;
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.user.jwt.JwtUtils;
 import com.demo.preorder.user.provider.EmailProvider;
 import com.demo.preorder.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -33,31 +33,27 @@ public class UserServiceImpl implements UserService {
     public boolean checkEmail(EmailDto emailDTO) {
         log.info("info log : emailService");
         String email = emailDTO.getEmail();
-        log.info("info log = {}",email);
         boolean isExistEmail = userDao.checkEmail(email);
-        if(isExistEmail) return false;
+        if(isExistEmail) throw new CustomException(ErrorCode.EXISTS_EMAIL);
 
         log.info("info log = {}", isExistEmail);
 
         String certificationNumber = emailProvider.getCertificationNumber();
-        log.info("info log = {}",certificationNumber);
-        boolean isSuccessed = emailProvider.sendCertificationMail(email, certificationNumber);
-        log.info("info log = {}",isSuccessed);
-        if(!isSuccessed) return false;
+        boolean isSucceed = emailProvider.sendCertificationMail(email, certificationNumber);
+        if(!isSucceed) throw new CustomException(ErrorCode.TRANSMISSION_FAILED);
+        log.info("info log = {}", isSucceed);
 
         EmailCertification emailCertification = new EmailCertification();
         emailCertification.setEmail(emailDTO.getEmail());
         emailCertification.setNumber(certificationNumber);
-        log.info("info log = {}",emailCertification.getEmail());
-        log.info("info log = {}",emailCertification.getNumber());
         emailCertificationDao.insertEmailCertification(emailCertification);
         return true;
     }
 
 
     @Override
-    public User getUser(Long userId) {
-        return userDao.findUser(userId);
+    public UserResponseDto getUser(Long userId) {
+        return new UserResponseDto(userDao.findUser(userId));
     }
 
     @Override
@@ -69,17 +65,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User changeUserProfile(Long userId, ProfileDto profileDto) throws Exception {
-        return userDao.updateUserProfile(userId,profileDto.getName());
+    public UserResponseDto changeUserProfile(Long userId, ProfileDto profileDto) {
+        return new UserResponseDto(userDao.updateUserProfile(userId,profileDto.getName()));
     }
 
     @Override
-    public User changeUserPassword(Long userId, PasswordDto passwordDto) throws Exception {
-        return userDao.updateUserPassword(userId, passwordDto.getOldPassword(), passwordDto.getNewPassword());
+    public UserResponseDto changeUserPassword(Long userId, PasswordDto passwordDto) {
+        return new UserResponseDto(userDao.updateUserPassword(userId, passwordDto.getOldPassword(), passwordDto.getNewPassword()));
     }
 
     @Override
-    public void deleteUser(Long userId) throws Exception {
-
+    public void deleteUser(Long userId){
+        userDao.deleteUser(userId);
     }
 }

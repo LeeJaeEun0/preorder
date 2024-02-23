@@ -7,11 +7,12 @@ import com.demo.preorder.user.dto.UserRegisterDto;
 import com.demo.preorder.user.dto.UserResponseDto;
 import com.demo.preorder.user.dto.UserVerifyResponseDto;
 import com.demo.preorder.user.entity.*;
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.user.provider.JwtProvider;
 import com.demo.preorder.user.repository.UserRepository;
 import com.demo.preorder.user.repository.UserRoleRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,11 @@ public class UserService {
     @Transactional
     public UserResponseDto registerUser(UserRegisterDto userRegisterDto){
 
+        Optional<User> savedUser = userRepository.findByEmail(userRegisterDto.getUserEmail());
+        if(savedUser.isPresent()) {
+            throw new CustomException(ErrorCode.EXISTS_EMAIL);
+        }
+
         String encryptedPassword = passwordEncoder.encrypt(userRegisterDto.getUserEmail(), userRegisterDto.getPassword());
 
         User user = User.builder()
@@ -60,16 +66,17 @@ public class UserService {
 
     public UserVerifyResponseDto verifyUser(UserLoginDto userLoginDto){
         Optional<User> optionalUser = userRepository.findByEmail(userLoginDto.getUserEmail());
-        User user = optionalUser.get();
-        log.info("info log userLoginDto = {}", userLoginDto.getUserEmail());
-        log.info("info log user = {}", user.getEmail());
-        if(user == null || !user.getPassword().equals(passwordEncoder.encrypt(userLoginDto.getUserEmail(),userLoginDto.getUserPassword())))
+        if(optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            if (!user.getPassword().equals(passwordEncoder.encrypt(userLoginDto.getUserEmail(), userLoginDto.getUserPassword())))
+                throw new CustomException(ErrorCode.INVALID_PASSWORD);
             return UserVerifyResponseDto.builder()
-                    .isValid(false)
-                    .build();
-        return UserVerifyResponseDto.builder()
-                .isValid(true)
-                .userRole(user.getUserRoles().stream().map(UserRole::getRole).collect(Collectors.toSet())).build();
+                    .isValid(true)
+                    .userRole(user.getUserRoles().stream().map(UserRole::getRole).collect(Collectors.toSet())).build();
+        }else{
+            throw new CustomException(ErrorCode.INVALID_EMAIL);
+        }
     }
 
     public UserResponseDto findUserByEmail(String userEmail){
