@@ -1,5 +1,7 @@
 package com.demo.preorder.product.dao.impl;
 
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.product.dao.ProductStockDao;
 import com.demo.preorder.product.entity.ProductStock;
 import com.demo.preorder.product.repository.ProductStockRepository;
@@ -23,60 +25,54 @@ public class ProductStockDaoImpl implements ProductStockDao {
 
     @Override
     public ProductStock getProductById(Long productId) {
-        Optional<ProductStock>  optionalProductStock = productStockRepository.findByProductIdId(productId);
-        if(optionalProductStock.isPresent()) return optionalProductStock.get();
-        return null;
+        Optional<ProductStock> optionalProductStock = productStockRepository.findByProductIdId(productId);
+        if (optionalProductStock.isPresent()) return optionalProductStock.get();
+        else throw new CustomException(ErrorCode.INVALID_PRODUCT);
     }
 
     @Override
     public ProductStock incrementCount(Long productId) {
-        Optional<ProductStock>  optionalProductStock = productStockRepository.findByProductIdId(productId);
-        if(optionalProductStock.isPresent()){
+        Optional<ProductStock> optionalProductStock = productStockRepository.findByProductIdId(productId);
+        if (optionalProductStock.isPresent()) {
             ProductStock productStock = optionalProductStock.get();
-            productStock.setStock(productStock.getStock()+1);
+            productStock.setStock(productStock.getStock() + 1);
             return productStockRepository.save(productStock);
-        }
-
-        return null;
+        }else throw new CustomException(ErrorCode.INVALID_PRODUCT);
     }
 
     @Override
     public ProductStock decrementCount(Long productId) {
-        Optional<ProductStock>  optionalProductStock = productStockRepository.findByProductIdId(productId);
-        if(optionalProductStock.isPresent()) {
+        Optional<ProductStock> optionalProductStock = productStockRepository.findByProductIdId(productId);
+        if (optionalProductStock.isPresent()) {
             ProductStock productStock = optionalProductStock.get();
-            if(productStock.getStock()-1 >= 0){
-            productStock.setStock(productStock.getStock() - 1);
-            return productStockRepository.save(productStock);
-            }
-            else return null;
-        }
-        return  null;
+            if (productStock.getStock() - 1 >= 0) {
+                productStock.setStock(productStock.getStock() - 1);
+                return productStockRepository.save(productStock);
+            } else throw new CustomException(ErrorCode.NOT_EXISTS_PRODUCT_STOCK);
+        }else throw new CustomException(ErrorCode.INVALID_PRODUCT);
+
     }
 
     @Override
     public void updateProductStock(Long productId, Long stock) {
-        Optional<ProductStock>  optionalProductStock = productStockRepository.findByProductIdId(productId);
-        if(optionalProductStock.isPresent()) {
+        Optional<ProductStock> optionalProductStock = productStockRepository.findByProductIdId(productId);
+        if (optionalProductStock.isPresent()) {
             ProductStock productStock = optionalProductStock.get();
             productStock.setStock(stock);
             productStockRepository.save(productStock);
-            log.info("info log = stock 변경 성공");
-        }else {
-            log.error("info log = stock 변경 실패");
+        } else {
+            throw new CustomException(ErrorCode.INVALID_PRODUCT);
         }
     }
 
     @Override
     public void deleteProductStock(Long productId) {
         Optional<ProductStock> optionalProductStock = productStockRepository.findByProductIdId(productId);
-        log.info("info log: {}",optionalProductStock);
-        if(optionalProductStock.isPresent()) {
+        if (optionalProductStock.isPresent()) {
             ProductStock productStock = optionalProductStock.get();
             productStockRepository.delete(productStock);
-            log.info("info log = stock 삭제 성공");
-        }else{
-            log.error("info log = stock 삭제 실패");
+        } else {
+            throw new CustomException(ErrorCode.INVALID_PRODUCT);
         }
     }
 }

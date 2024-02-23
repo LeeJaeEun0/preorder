@@ -1,5 +1,7 @@
 package com.demo.preorder.preorderProduct.dao.impl;
 
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.preorderProduct.dao.PreorderProductDao;
 import com.demo.preorder.preorderProduct.entity.PreorderProduct;
 import com.demo.preorder.preorderProduct.repository.PreorederProductRepository;
@@ -23,10 +25,9 @@ public class PreorderProductDaoImpl implements PreorderProductDao {
     @Override
     public PreorderProduct getPreorderProductById(Long preorderProductId) {
         Optional<PreorderProduct> optionalPreorderProduct = preorederProductRepository.findById(preorderProductId);
-        if (optionalPreorderProduct.isPresent()){
+        if (optionalPreorderProduct.isPresent()) {
             return optionalPreorderProduct.get();
-        }
-        return null;
+        } else throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT);
     }
 
     @Override
@@ -37,22 +38,21 @@ public class PreorderProductDaoImpl implements PreorderProductDao {
     @Override
     public PreorderProduct changePreorderProduct(Long preorderProductId, String title, String content, Long price, LocalDateTime availableFrom) {
         Optional<PreorderProduct> optionalPreorderProduct = preorederProductRepository.findById(preorderProductId);
-        if (optionalPreorderProduct.isPresent()){
+        if (optionalPreorderProduct.isPresent()) {
             PreorderProduct preorderProduct = optionalPreorderProduct.get();
             preorderProduct.setTitle(title);
             preorderProduct.setContent(content);
             preorderProduct.setAvailableFrom(availableFrom);
             return preorederProductRepository.save(preorderProduct);
-        }
-        return null;
+        } else throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT);
     }
 
     @Override
     public void deletePreorderProduct(Long preorderProductId) {
         Optional<PreorderProduct> optionalPreorderProduct = preorederProductRepository.findById(preorderProductId);
-        if (optionalPreorderProduct.isPresent()){
+        if (optionalPreorderProduct.isPresent()) {
             PreorderProduct preorderProduct = optionalPreorderProduct.get();
             preorederProductRepository.delete(preorderProduct);
-        }
+        }else throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT);
     }
 }

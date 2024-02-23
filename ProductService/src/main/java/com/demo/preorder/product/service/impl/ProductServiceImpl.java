@@ -1,5 +1,7 @@
 package com.demo.preorder.product.service.impl;
 
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.preorderProduct.entity.PreorderProduct;
 import com.demo.preorder.preorderProduct.entity.PreorderProductStock;
 import com.demo.preorder.product.client.dto.OrderDto;
@@ -71,15 +73,13 @@ public class ProductServiceImpl implements ProductService {
                         log.info("Info log: order - productId ={} result={}", result.getProductId(), result.getStatus());
                         return result;
                     } catch (Exception e) {
-                        // 오류 발생 시 처리
                         log.error("Error order : {}", e.getMessage(), e);
                         return null;
-                        // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
                     }
                 }
-                return null;
             }
         }
+        else throw new CustomException(ErrorCode.INVALID_PRODUCT);
         return null;
     }
 
