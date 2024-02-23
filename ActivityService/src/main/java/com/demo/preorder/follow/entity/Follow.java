@@ -1,6 +1,5 @@
 package com.demo.preorder.follow.entity;
 
-import com.demo.preorder.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

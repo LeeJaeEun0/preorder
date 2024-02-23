@@ -1,14 +1,10 @@
 package com.demo.preorder.comment.dao.impl;
 
-import com.demo.preorder.client.service.ActivityRestTemplateClient;
 import com.demo.preorder.comment.dao.GreatCommentDao;
 import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.entity.GreatComment;
 import com.demo.preorder.comment.repository.CommentRepository;
 import com.demo.preorder.comment.repository.GreatCommentRepository;
-import com.demo.preorder.follow.entity.Follow;
-import com.demo.preorder.follow.repository.FollowRepository;
-import com.demo.preorder.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

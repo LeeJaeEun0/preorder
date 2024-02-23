@@ -1,6 +1,5 @@
 package com.demo.preorder.client.dto;
 
-import com.demo.preorder.user.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 
