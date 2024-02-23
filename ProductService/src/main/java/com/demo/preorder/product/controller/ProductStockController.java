@@ -1,5 +1,6 @@
 package com.demo.preorder.product.controller;
 
+import com.demo.preorder.product.dto.ProductStockResponseDto;
 import com.demo.preorder.product.entity.ProductStock;
 import com.demo.preorder.product.service.ProductStockService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class ProductStockController {
 
     @GetMapping("/{productId}")
     public ResponseEntity<?> saveProductStock(@PathVariable("productId") Long productId){
-        ProductStock productStock = productStockService.getProductById(productId);
+        ProductStockResponseDto productStock = productStockService.getProductById(productId);
         if(productStock != null){
             return  ResponseEntity.status(HttpStatus.OK).body(productStock);
         }else {

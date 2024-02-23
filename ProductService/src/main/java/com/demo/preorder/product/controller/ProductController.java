@@ -2,6 +2,7 @@ package com.demo.preorder.product.controller;
 
 import com.demo.preorder.product.client.dto.OrderResponseDto;
 import com.demo.preorder.product.dto.ProductDto;
+import com.demo.preorder.product.dto.ProductResponseDto;
 import com.demo.preorder.product.dto.ProductUpdateDto;
 import com.demo.preorder.product.entity.Product;
 import com.demo.preorder.product.service.ProductService;
@@ -21,7 +22,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<?> saveProduct(@RequestBody ProductDto productDto){
-        Product product = productService.saveProduct(productDto);
+        ProductResponseDto product = productService.saveProduct(productDto);
         if(product != null){
             return  ResponseEntity.status(HttpStatus.CREATED).body(product);
         }else {
@@ -41,7 +42,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<?> findProductAll(){
-        List<Product> productList = productService.findAllProduct();
+        List<ProductResponseDto> productList = productService.findAllProduct();
         if(productList != null){
             return  ResponseEntity.status(HttpStatus.OK).body(productList);
         }else {
@@ -51,7 +52,7 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProductById(@PathVariable("productId") Long productId){
-        Product product = productService.getProductById(productId);
+        ProductResponseDto product = productService.getProductById(productId);
         if(product != null){
             return  ResponseEntity.status(HttpStatus.OK).body(product);
         }else {
@@ -61,7 +62,7 @@ public class ProductController {
 
     @PutMapping("/{productId}")
     public ResponseEntity<?> changeProduct(@PathVariable("productId") Long productId,@RequestBody ProductUpdateDto productUpdateDto){
-        Product product = productService.changeProduct(productId,productUpdateDto);
+        ProductResponseDto product = productService.changeProduct(productId,productUpdateDto);
         if(product != null){
             return  ResponseEntity.status(HttpStatus.OK).body(product);
         }else {

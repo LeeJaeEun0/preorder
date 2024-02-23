@@ -2,14 +2,13 @@ package com.demo.preorder.product.service.impl;
 
 import com.demo.preorder.exception.CustomException;
 import com.demo.preorder.exception.ErrorCode;
-import com.demo.preorder.preorderProduct.entity.PreorderProduct;
-import com.demo.preorder.preorderProduct.entity.PreorderProductStock;
 import com.demo.preorder.product.client.dto.OrderDto;
 import com.demo.preorder.product.client.dto.OrderResponseDto;
 import com.demo.preorder.product.client.service.OrderServiceClient;
 import com.demo.preorder.product.dao.ProductDao;
 import com.demo.preorder.product.dao.ProductStockDao;
 import com.demo.preorder.product.dto.ProductDto;
+import com.demo.preorder.product.dto.ProductResponseDto;
 import com.demo.preorder.product.dto.ProductUpdateDto;
 import com.demo.preorder.product.entity.Product;
 import com.demo.preorder.product.entity.ProductStock;
@@ -21,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Product saveProduct(ProductDto productDto) {
+    public ProductResponseDto saveProduct(ProductDto productDto) {
         Product product = new Product();
         product.setTitle(productDto.getTitle());
         product.setContent(productDto.getContent());
@@ -48,7 +48,8 @@ public class ProductServiceImpl implements ProductService {
             productStock.setStock(productDto.getStock());
             productStockDao.saveProductStock(productStock);
         }
-        return savedProduct;
+        assert savedProduct != null;
+        return new ProductResponseDto(savedProduct);
     }
 
     @Override
@@ -84,20 +85,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductById(Long productId) {
-        return productDao.getProductById(productId);
+    public ProductResponseDto getProductById(Long productId) {
+        return new ProductResponseDto(productDao.getProductById(productId));
     }
 
     @Override
-    public List<Product> findAllProduct() {
-        return productDao.findAllProduct();
+    public List<ProductResponseDto> findAllProduct() {
+        List<Product> products = productDao.findAllProduct();
+
+        List<ProductResponseDto> productResponseDtos = products.stream()
+                .map(ProductResponseDto::new)
+                .collect(Collectors.toList());
+
+        return productResponseDtos;
     }
 
     @Transactional
     @Override
-    public Product changeProduct(Long productId, ProductUpdateDto productUpdateDto) {
+    public ProductResponseDto changeProduct(Long productId, ProductUpdateDto productUpdateDto) {
         productStockDao.updateProductStock(productId, productUpdateDto.getStock());
-        return productDao.changeProduct(productId, productUpdateDto.getTitle(), productUpdateDto.getContent(), productUpdateDto.getPrice());
+        return new ProductResponseDto(productDao.changeProduct(productId, productUpdateDto.getTitle(), productUpdateDto.getContent(), productUpdateDto.getPrice()));
     }
 
     @Transactional

@@ -1,6 +1,7 @@
 package com.demo.preorder.preorderProduct.controller;
 
 import com.demo.preorder.preorderProduct.dto.PreorderProductDto;
+import com.demo.preorder.preorderProduct.dto.PreorderProductResponseDto;
 import com.demo.preorder.preorderProduct.dto.PreorderProductUpdateDto;
 import com.demo.preorder.preorderProduct.entity.PreorderProduct;
 import com.demo.preorder.preorderProduct.entity.PreorderProductStock;
@@ -25,7 +26,7 @@ public class PreorderProductController {
 
     @PostMapping
     public ResponseEntity<?> saveProduct(@RequestBody PreorderProductDto preorderProductDto) {
-        PreorderProduct preorderProduct = preorderProductService.savePreorderProduct(preorderProductDto);
+        PreorderProductResponseDto preorderProduct = preorderProductService.savePreorderProduct(preorderProductDto);
         if (preorderProduct != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(preorderProduct);
         } else {
@@ -47,7 +48,7 @@ public class PreorderProductController {
 
         @GetMapping
         public ResponseEntity<?> findProductAll () {
-            List<PreorderProduct> preorderProductList = preorderProductService.findAllPreorderProduct();
+            List<PreorderProductResponseDto> preorderProductList = preorderProductService.findAllPreorderProduct();
             if (preorderProductList != null) {
                 return ResponseEntity.status(HttpStatus.OK).body(preorderProductList);
             } else {
@@ -57,7 +58,7 @@ public class PreorderProductController {
 
         @GetMapping("/{preorderProductId}")
         public ResponseEntity<?> getProductById (@PathVariable("preorderProductId") Long preorderProductId){
-            PreorderProduct preorderProduct = preorderProductService.getPreorderProductById(preorderProductId);
+            PreorderProductResponseDto preorderProduct = preorderProductService.getPreorderProductById(preorderProductId);
             if (preorderProduct != null) {
                 return ResponseEntity.status(HttpStatus.OK).body(preorderProduct);
             } else {
@@ -68,7 +69,7 @@ public class PreorderProductController {
         @PutMapping("/{preorderProductId}")
         public ResponseEntity<?> changeProduct (@PathVariable("preorderProductId") Long
         preorderProductId, @RequestBody PreorderProductUpdateDto preorderProductUpdateDto){
-            PreorderProduct preorderProduct = preorderProductService.changePreorderProduct(preorderProductId, preorderProductUpdateDto);
+            PreorderProductResponseDto preorderProduct = preorderProductService.changePreorderProduct(preorderProductId, preorderProductUpdateDto);
             if (preorderProduct != null) {
                 return ResponseEntity.status(HttpStatus.OK).body(preorderProduct);
             } else {
