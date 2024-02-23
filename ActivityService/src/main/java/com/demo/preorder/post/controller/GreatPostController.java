@@ -20,12 +20,12 @@ public class GreatPostController {
     private final GreatPostService greatPostService;
 
     private final UserServiceClient userServiceClient;
-    @PostMapping
+    @PostMapping("/{postId}")
     public ResponseEntity<?> saveGreatPost(@RequestHeader Map<String, String> httpHeaders,
-                                           @RequestBody GreatPostDto greatPostDto){
+                                           @PathVariable("postId") Long postId){
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        GreatPost greatPost =  greatPostService.saveGreatPost(userId, greatPostDto);
+        GreatPost greatPost =  greatPostService.saveGreatPost(userId, postId);
 
         if (greatPost != null) {
             return  ResponseEntity.status(HttpStatus.CREATED).body(greatPost);

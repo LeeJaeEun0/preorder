@@ -21,13 +21,9 @@ public class Newsfeed {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User userId;
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "sender_id", referencedColumnName = "user_id")
-    private User senderId;
+    private Long senderId;
 
     private String type;
 

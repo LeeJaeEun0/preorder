@@ -53,7 +53,7 @@ public class PostDaoImpl implements PostDao {
         if(findPost.isPresent()){
             Post post = findPost.get();
 
-            if(post.getUserId().getId().equals(userId)) {
+            if(post.getUserId().equals(userId)) {
                 post.setContents(contents);
                 return postRepository.save(post);
             }
@@ -67,7 +67,7 @@ public class PostDaoImpl implements PostDao {
         if (deletepost.isPresent()) {
             Post post = deletepost.get();
 
-            if(post.getUserId().getId().equals(userId)) postRepository.delete(post);
+            if(post.getUserId().equals(userId)) postRepository.delete(post);
             else{
                 throw new Exception();
             }

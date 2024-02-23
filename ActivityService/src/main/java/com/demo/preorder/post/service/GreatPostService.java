@@ -7,7 +7,7 @@ import com.demo.preorder.post.entity.GreatPost;
 import java.util.List;
 
 public interface GreatPostService {
-    GreatPost saveGreatPost(Long userId, GreatPostDto greatPostDto);
+    GreatPost saveGreatPost(Long userId, Long postId);
 
     void deleteGreatPost(Long userId, Long postId);
 

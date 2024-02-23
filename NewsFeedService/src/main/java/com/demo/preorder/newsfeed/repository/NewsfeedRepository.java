@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface NewsfeedRepository extends JpaRepository<Newsfeed, Long> {
-    List<Newsfeed> findByUserIdIdOrderByCreatedDateDesc(Long userId);
+    List<Newsfeed> findByUserIdOrderByCreatedDateDesc(Long userId);
 }

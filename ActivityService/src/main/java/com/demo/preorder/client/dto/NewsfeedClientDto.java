@@ -7,9 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class NewsfeedClientDto {
-    private User userId;
+    private Long userId;
 
-    private User senderId;
+    private Long senderId;
 
     private String type;
 

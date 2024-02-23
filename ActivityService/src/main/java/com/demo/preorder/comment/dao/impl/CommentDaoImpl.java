@@ -19,8 +19,6 @@ public class CommentDaoImpl implements CommentDao {
 
     private final CommentRepository commentRepository;
 
-    private final FollowRepository followRepository;
-
     @Override
     @Transactional
     public Comment saveComment(Comment comment) {
@@ -56,7 +54,7 @@ public class CommentDaoImpl implements CommentDao {
         if(optionalComment.isPresent()){
             Comment comment = optionalComment.get();
 
-            if(comment.getUseId().getId().equals(userId)){
+            if(comment.getUseId().equals(userId)){
                 comment.setContent(content);
                 return commentRepository.save(comment);
             }
@@ -70,7 +68,7 @@ public class CommentDaoImpl implements CommentDao {
         if(optionalComment.isPresent()){
             Comment comment = optionalComment.get();
 
-            if(comment.getUseId().getId().equals(userId)){
+            if(comment.getUseId().equals(userId)){
                 commentRepository.delete(comment);
             }else{
                 throw new Exception();

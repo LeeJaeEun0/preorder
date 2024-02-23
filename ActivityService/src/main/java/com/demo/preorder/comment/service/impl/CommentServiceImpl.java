@@ -5,7 +5,6 @@ import com.demo.preorder.client.dto.NewsfeedMyNewsClientDto;
 import com.demo.preorder.client.service.NewsfeedServiceClient;
 import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.comment.dao.CommentDao;
-import com.demo.preorder.comment.dto.CommentDeleteDto;
 import com.demo.preorder.comment.dto.CommentDto;
 import com.demo.preorder.comment.dto.CommentReplayDto;
 import com.demo.preorder.comment.dto.CommentUpdateDto;
@@ -13,7 +12,6 @@ import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.service.CommentService;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
-import com.demo.preorder.user.entity.User;
 import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.entity.Post;
 import lombok.RequiredArgsConstructor;
@@ -40,12 +38,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment saveComment(Long userId,CommentDto commentDto) {
         Comment comment = new Comment();
-        ResponseEntity<User> userResponseEntity = userServiceClient.findUser(userId);
-        User user = userResponseEntity.getBody();
         Post post = postDao.selectPost(commentDto.getPostId());
-        if(user == null || post == null) return null;
+        if(userId == null || post == null) return null;
         comment.setPostId(post);
-        comment.setUseId(user);
+        comment.setUseId(userId);
         comment.setContent(commentDto.getContent());
         comment.setCommentDepth(0);
         int groupId = commentDao.findGroupId();
@@ -53,7 +49,7 @@ public class CommentServiceImpl implements CommentService {
 
         Comment saved = commentDao.saveComment(comment);
 
-        List<Follow> followList = followDao.findFollowing(saved.getUseId().getId());
+        List<Follow> followList = followDao.findFollowing(saved.getUseId());
 
         if (followList!= null) {
 
@@ -77,7 +73,7 @@ public class CommentServiceImpl implements CommentService {
             }
         }
 
-        List<Follow> followList2 = followDao.findFollower(saved.getUseId().getId());
+        List<Follow> followList2 = followDao.findFollower(saved.getUseId());
 
         if (followList!= null) {
 
@@ -125,12 +121,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment saveReplay(Long userId, CommentReplayDto commentReplayDto) {
         Comment comment = new Comment();
-        ResponseEntity<User> userResponseEntity = userServiceClient.findUser(userId);
-        User user = userResponseEntity.getBody();
         Post post = postDao.selectPost(commentReplayDto.getPostId());
-        if(user == null || post == null) return null;
+        if(userId == null || post == null) return null;
         comment.setPostId(post);
-        comment.setUseId(user);
+        comment.setUseId(userId);
         comment.setContent(commentReplayDto.getContent());
         comment.setCommentDepth(1);
 

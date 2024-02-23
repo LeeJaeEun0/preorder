@@ -28,10 +28,10 @@ public class GreatPostServiceImpl implements GreatPostService {
 
     private final FollowDao followDao;
     @Override
-    public GreatPost saveGreatPost(Long userId, GreatPostDto greatPostDto) {
-        GreatPost saved = greatPostDao.saveGreatPost(userId, greatPostDto.getPostId());
+    public GreatPost saveGreatPost(Long userId, Long postId) {
+        GreatPost saved = greatPostDao.saveGreatPost(userId, postId);
 
-        List<Follow> followList = followDao.findFollowing(saved.getUserId().getId());
+        List<Follow> followList = followDao.findFollowing(saved.getUserId());
 
         if (followList!= null) {
 
@@ -55,7 +55,7 @@ public class GreatPostServiceImpl implements GreatPostService {
             }
         }
 
-        List<Follow> followList2 = followDao.findFollower(saved.getUserId().getId());
+        List<Follow> followList2 = followDao.findFollower(saved.getUserId());
 
         if (followList!= null) {
 

@@ -7,9 +7,9 @@ import lombok.Setter;
 @Setter
 @Getter
 public class NewsfeedMyNewsDto {
-    private User userId;
+    private Long userId;
 
-    private User writerId;
+    private Long writerId;
 
     private String type;
 

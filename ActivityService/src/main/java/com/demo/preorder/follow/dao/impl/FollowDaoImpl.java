@@ -35,7 +35,7 @@ public class FollowDaoImpl implements FollowDao {
     // 나를 팔로우한 사람
     @Override
     public List<Follow> findFollower(Long followingId) {
-        Optional<List<Follow>> follower = followRepository.findByFollowingIdId(followingId);
+        Optional<List<Follow>> follower = followRepository.findByFollowingId(followingId);
         if(follower.isPresent()){
             List<Follow> followerList = follower.get();
             return followerList ;
@@ -46,7 +46,7 @@ public class FollowDaoImpl implements FollowDao {
     // 내가 팔로우한 사람
     @Override
     public List<Follow> findFollowing(Long userId) {
-        Optional<List<Follow>> following = followRepository.findByUserIdId(userId);
+        Optional<List<Follow>> following = followRepository.findByUserId(userId);
         if(following .isPresent()){
             List<Follow> followingList = following.get();
             return followingList;

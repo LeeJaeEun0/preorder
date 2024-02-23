@@ -10,7 +10,6 @@ import com.demo.preorder.post.dto.PostDto;
 import com.demo.preorder.post.dto.SearchwordDto;
 import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.post.service.PostService;
-import com.demo.preorder.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -33,16 +32,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post savePost(Long userId,PostDto postDto) {
         Post post = new Post();
-        ResponseEntity<User> userResponseEntity = userServiceClient.findUser(userId);
-        User user = userResponseEntity.getBody();
-        if(user == null)
-            return null;
-
-        post.setUserId(user);
+        post.setUserId(userId);
         post.setContents(postDto.getContents());
         Post saved = postDao.savePost(post);
 
-        List<Follow> followList = followDao.findFollowing(saved.getUserId().getId());
+        List<Follow> followList = followDao.findFollowing(saved.getUserId());
 
         if (followList!= null) {
 
@@ -66,7 +60,7 @@ public class PostServiceImpl implements PostService {
             }
         }
 
-        List<Follow> followList2 = followDao.findFollower(saved.getUserId().getId());
+        List<Follow> followList2 = followDao.findFollower(saved.getUserId());
 
         if (followList!= null) {
 

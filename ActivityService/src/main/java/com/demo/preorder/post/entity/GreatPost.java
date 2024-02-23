@@ -22,9 +22,7 @@ public class GreatPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User userId;
+    private Long userId;
 
     @ManyToOne
     @JoinColumn(name = "post_id")

@@ -1,6 +1,5 @@
 package com.demo.preorder.client.service;
 
-import com.demo.preorder.user.entity.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +15,4 @@ public interface UserServiceClient {
     @GetMapping("/api/internal/users/user")
     ResponseEntity<Long> findUserId(@RequestHeader Map<String, String> httpHeaders);
 
-    @GetMapping("/api/internal/users/member")
-    ResponseEntity<User> findUser(@RequestParam("userId") Long userId);
 }

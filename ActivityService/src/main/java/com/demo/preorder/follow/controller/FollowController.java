@@ -20,12 +20,12 @@ public class FollowController {
 
     private final UserServiceClient userServiceClient;
 
-    @PostMapping
+    @PostMapping("/{followingId}")
     public ResponseEntity<?> saveFollow(@RequestHeader Map<String, String> httpHeaders,
-                                        @RequestBody FollowDto followDto){
+                                        @PathVariable("followingId") Long followingId){
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        FollowDto followDto1 = followService.saveFollow(userId,followDto);
+        Follow followDto1 = followService.saveFollow(userId,followingId);
         if(followDto1 != null){
             return  ResponseEntity.status(HttpStatus.CREATED).body(followDto1);
         }else {
@@ -33,7 +33,7 @@ public class FollowController {
         }
 
     }
-    @DeleteMapping("{followingId}")
+    @DeleteMapping("/{followingId}")
     public ResponseEntity<Follow> deleteFollow(@RequestHeader Map<String, String> httpHeaders,
                                                @PathVariable("followingId") Long followingId) throws Exception {
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);

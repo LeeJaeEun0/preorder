@@ -1,9 +1,7 @@
 package com.demo.preorder.post.dao.impl;
 
 import com.demo.preorder.client.service.ActivityRestTemplateClient;
-import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.repository.FollowRepository;
-import com.demo.preorder.user.entity.User;
 import com.demo.preorder.post.dao.GreatPostDao;
 import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.post.entity.Post;
@@ -30,12 +28,11 @@ public class GreatPostDaoImpl implements GreatPostDao {
     @Override
     public GreatPost saveGreatPost(Long userId, Long postId) {
         GreatPost greatPost = new GreatPost();
-        User user = activityRestTemplateClient.findUser(userId);
         Optional<Post> optionalPost = postRepository.findById(postId);
-        if(user==null || optionalPost==null) return null;
+        if(userId==null || optionalPost==null) return null;
         Post post = optionalPost.get();
 
-        greatPost.setUserId(user);
+        greatPost.setUserId(userId);
         greatPost.setPostId(post);
         return greatPostRepository.save(greatPost);
 
@@ -46,7 +43,7 @@ public class GreatPostDaoImpl implements GreatPostDao {
         Optional<GreatPost> optionalGreatPost = greatPostRepository.findById(greatPostId);
         if(optionalGreatPost.isPresent()){
             GreatPost greatPost = optionalGreatPost.get();
-            if(greatPost.getUserId().getId().equals(userId))
+            if(greatPost.getUserId().equals(userId))
                 greatPostRepository.delete(greatPost);
         }
 

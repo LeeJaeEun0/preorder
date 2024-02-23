@@ -3,7 +3,6 @@ package com.demo.preorder.comment.service.impl;
 import com.demo.preorder.client.dto.NewsfeedClientDto;
 import com.demo.preorder.client.service.NewsfeedServiceClient;
 import com.demo.preorder.comment.dao.GreatCommentDao;
-import com.demo.preorder.comment.dto.GreatCommentDto;
 import com.demo.preorder.comment.entity.GreatComment;
 import com.demo.preorder.comment.service.GreatCommentService;
 import com.demo.preorder.follow.dao.FollowDao;
@@ -26,10 +25,10 @@ public class GreatCommentServiceImpl implements GreatCommentService {
 
     private final FollowDao followDao;
     @Override
-    public GreatComment saveGreatComment(Long userId, GreatCommentDto greatCommentDto) {
-        GreatComment saved = greatCommentDao.saveGreatComment(userId, greatCommentDto.getCommentId());
+    public GreatComment saveGreatComment(Long userId, Long commentId) {
+        GreatComment saved = greatCommentDao.saveGreatComment(userId, commentId);
 
-        List<Follow> followList = followDao.findFollowing(saved.getUserId().getId());
+        List<Follow> followList = followDao.findFollowing(saved.getUserId());
 
         if (followList!= null) {
 
@@ -53,7 +52,7 @@ public class GreatCommentServiceImpl implements GreatCommentService {
             }
         }
 
-        List<Follow> followList2 = followDao.findFollower(saved.getUserId().getId());
+        List<Follow> followList2 = followDao.findFollower(saved.getUserId());
 
         if (followList!= null) {
 
@@ -86,8 +85,4 @@ public class GreatCommentServiceImpl implements GreatCommentService {
         greatCommentDao.deleteGreatComment(userId, greatCommentId);
     }
 
-    @Override
-    public List<GreatComment> greatCommentList(Long greatCommentId) {
-        return greatCommentDao.greatCommentList(greatCommentId);
-    }
 }

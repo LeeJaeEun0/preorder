@@ -23,33 +23,27 @@ public class GreatCommentDaoImpl implements GreatCommentDao {
 
     private final CommentRepository commentRepository;
 
-    private final ActivityRestTemplateClient activityRestTemplateClient;
     @Override
     public GreatComment saveGreatComment(Long userId, Long commentId) {
         GreatComment greatComment = new GreatComment();
-        User user = activityRestTemplateClient.findUser(userId);
+
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
-        if(user==null || optionalComment==null) return null;
+        if(userId==null || optionalComment.isEmpty()) return null;
         Comment comment = optionalComment.get();
 
-        greatComment.setUserId(user);
+        greatComment.setUserId(userId);
         greatComment.setCommentId(comment);
         return greatCommentRepository.save(greatComment);
 
     }
 
-    @Override
-    public List<GreatComment> greatCommentList(Long commentId) {
-        return greatCommentRepository.findByCommentIdId(commentId);
-
-    }
 
     @Override
     public void deleteGreatComment(Long userId, Long greatCommentId) {
         Optional<GreatComment> optionalGreatComment = greatCommentRepository.findById(greatCommentId);
         if(optionalGreatComment.isPresent()){
             GreatComment greatComment = optionalGreatComment.get();
-            if(greatComment.getUserId().getId().equals(userId))
+            if(greatComment.getUserId().equals(userId))
                 greatCommentRepository.delete(greatComment);
         }
     }

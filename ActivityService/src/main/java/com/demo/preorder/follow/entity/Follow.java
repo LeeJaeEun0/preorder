@@ -22,13 +22,9 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User userId;
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "following_id", referencedColumnName = "user_id")
-    private User followingId;
+    private Long followingId;
 
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")

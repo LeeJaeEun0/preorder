@@ -6,7 +6,7 @@ import com.demo.preorder.follow.dto.FollowDto;
 import java.util.List;
 
 public interface FollowService {
-    FollowDto saveFollow(Long userId,FollowDto followDto);
+    Follow saveFollow(Long userId,Long followingId);
 
     void deleteFollow(Long userId, Long followingId) throws Exception;
 
