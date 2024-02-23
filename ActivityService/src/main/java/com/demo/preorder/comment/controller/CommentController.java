@@ -51,7 +51,7 @@ public class CommentController {
 
     @GetMapping
     public ResponseEntity<?> selectComment(@RequestParam("postId")Long postId) {
-        List<Comment> commentList = commentService.selectComment(postId);
+        List<CommentResponseDto> commentList = commentService.selectComment(postId);
         if (commentList != null) {
             return ResponseEntity.status(HttpStatus.OK).body(commentList);
         } else {

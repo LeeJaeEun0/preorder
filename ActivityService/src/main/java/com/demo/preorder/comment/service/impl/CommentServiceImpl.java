@@ -23,6 +23,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -136,8 +138,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> selectComment(Long postId) {
-        return commentDao.selectComment(postId);
+    public List<CommentResponseDto> selectComment(Long postId) {
+        List<Comment> comments = commentDao.selectComment(postId);
+
+        List<CommentResponseDto> commentResponseDtos = comments.stream()
+                .map(CommentResponseDto::new)
+                .collect(Collectors.toList());
+
+        return commentResponseDtos;
     }
 
     @Override

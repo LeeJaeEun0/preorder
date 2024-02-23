@@ -13,9 +13,9 @@ public interface PostService {
 
     PostResponseDto selectPost(Long postId);
 
-    List<Post> listPost();
+    List<PostResponseDto> listPost();
 
-    List<Post> searchPost(SearchwordDto searchwordDto);
+    List<PostResponseDto> searchPost(SearchwordDto searchwordDto);
 
     PostResponseDto changePost(Long userId, PostDto postDto);
 
