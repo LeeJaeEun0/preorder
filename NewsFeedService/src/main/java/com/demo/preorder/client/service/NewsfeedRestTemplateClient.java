@@ -1,6 +1,6 @@
 package com.demo.preorder.client.service;
 
-import com.demo.preorder.user.entity.User;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -49,26 +49,26 @@ public class NewsfeedRestTemplateClient {
         return responseEntity.getBody();
     }
 
-    public User findUser(Long userId){
-        // URI 생성 시 쿼리 파라미터로 userId 추가
-        URI uri = UriComponentsBuilder
-                .fromUriString("http://localhost:8080")
-                .path("/api/internal/users/member")
-                .queryParam("userId", userId) // 쿼리 파라미터로 userId 추가
-                .encode()
-                .build()
-                .toUri();
-
-        // RequestEntity를 GET 요청으로 구성
-        RequestEntity<Void> requestEntity = RequestEntity
-                .get(uri)
-                .build();
-
-        // exchange 메서드를 사용하여 요청 보내기
-        ResponseEntity<User> responseEntity = restTemplate.exchange( // 수정됨
-                requestEntity, User.class);
-        log.info("info log = {}",responseEntity);
-        // User 객체 반환
-        return responseEntity.getBody();
-    }
+//    public User findUser(Long userId){
+//        // URI 생성 시 쿼리 파라미터로 userId 추가
+//        URI uri = UriComponentsBuilder
+//                .fromUriString("http://localhost:8080")
+//                .path("/api/internal/users/member")
+//                .queryParam("userId", userId) // 쿼리 파라미터로 userId 추가
+//                .encode()
+//                .build()
+//                .toUri();
+//
+//        // RequestEntity를 GET 요청으로 구성
+//        RequestEntity<Void> requestEntity = RequestEntity
+//                .get(uri)
+//                .build();
+//
+//        // exchange 메서드를 사용하여 요청 보내기
+//        ResponseEntity<User> responseEntity = restTemplate.exchange( // 수정됨
+//                requestEntity, User.class);
+//        log.info("info log = {}",responseEntity);
+//        // User 객체 반환
+//        return responseEntity.getBody();
+//    }
 }
