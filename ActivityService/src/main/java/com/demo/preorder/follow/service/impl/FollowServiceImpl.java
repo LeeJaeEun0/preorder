@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -91,13 +92,25 @@ public class FollowServiceImpl implements FollowService {
 
     // 나를 팔로우한 사람
     @Override
-    public List<Follow> findFollower(Long followingId) {
-        return followDao.findFollower(followingId);
+    public List<FollowResponseDto> findFollower(Long followingId) {
+        List<Follow> followers = followDao.findFollower(followingId);
+
+        List<FollowResponseDto> followResponseDtos = followers.stream()
+                .map(FollowResponseDto::new)
+                .collect(Collectors.toList());
+
+        return followResponseDtos;
     }
 
     // 내가 팔로우한 사람
     @Override
-    public List<Follow> findFollowing(Long userId) {
-        return followDao.findFollowing(userId);
+    public List<FollowResponseDto> findFollowing(Long userId) {
+
+        List<Follow> followers = followDao.findFollowing(userId);
+        List<FollowResponseDto> followResponseDtos = followers.stream()
+                .map(FollowResponseDto::new) // Follow 객체를 FollowResponseDto로 변환하는 생성자 참조
+                .collect(Collectors.toList());
+
+        return followResponseDtos;
     }
 }

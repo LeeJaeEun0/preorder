@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -94,13 +95,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> listPost() {
-        return postDao.listPost();
+    public List<PostResponseDto> listPost() {
+        List<Post> posts = postDao.listPost();
+        List<PostResponseDto> postResponseDtos = posts.stream()
+                .map(PostResponseDto::new) // Post 객체를 PostResponseDto로 변환하는 생성자 참조
+                .collect(Collectors.toList());
+
+        return postResponseDtos;
     }
 
     @Override
-    public List<Post> searchPost(SearchwordDto searchwordDto) {
-        return postDao.searchPost(searchwordDto.getSearchWord());
+    public List<PostResponseDto> searchPost(SearchwordDto searchwordDto) {
+        List<Post> posts = postDao.searchPost(searchwordDto.getSearchWord());
+
+        List<PostResponseDto> postResponseDtos = posts.stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
+
+        return postResponseDtos;
     }
 
     @Override

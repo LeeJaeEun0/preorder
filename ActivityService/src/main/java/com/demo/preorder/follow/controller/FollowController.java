@@ -35,7 +35,7 @@ public class FollowController {
 
     }
     @DeleteMapping("/{followingId}")
-    public ResponseEntity<Follow> deleteFollow(@RequestHeader Map<String, String> httpHeaders,
+    public ResponseEntity<?> deleteFollow(@RequestHeader Map<String, String> httpHeaders,
                                                @PathVariable("followingId") Long followingId) throws Exception {
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
@@ -43,15 +43,15 @@ public class FollowController {
         return  null;
     }
     @GetMapping("/follower")
-    public ResponseEntity<List<Follow>> findFollower(@RequestParam Long followingId){
-        List<Follow> follows = followService.findFollower(followingId);
+    public ResponseEntity<?> findFollower(@RequestParam("followingId") Long followingId){
+        List<FollowResponseDto> follows = followService.findFollower(followingId);
         return  ResponseEntity.status(HttpStatus.OK).body(follows);
     }
     @GetMapping("/following")
-    public ResponseEntity<List<Follow>> findFollowing(@RequestHeader Map<String, String> httpHeaders){
+    public ResponseEntity<?> findFollowing(@RequestHeader Map<String, String> httpHeaders){
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        List<Follow> follows = followService.findFollowing(userId);
+        List<FollowResponseDto> follows = followService.findFollowing(userId);
         return  ResponseEntity.status(HttpStatus.OK).body(follows);
     }
 }

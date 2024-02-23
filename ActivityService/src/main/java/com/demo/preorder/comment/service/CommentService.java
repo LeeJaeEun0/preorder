@@ -10,7 +10,7 @@ public interface CommentService {
 
     CommentResponseDto saveReplay(Long userId, CommentReplayDto commentReplayDto);
 
-    List<Comment> selectComment(Long postId);
+    List<CommentResponseDto> selectComment(Long postId);
 
     CommentResponseDto updateCommentContent(Long userId, CommentUpdateDto commentUpdateDto);
 

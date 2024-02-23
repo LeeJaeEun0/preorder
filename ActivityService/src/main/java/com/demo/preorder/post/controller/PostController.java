@@ -51,13 +51,13 @@ public class PostController {
     }
     @GetMapping("/listPost")
     public ResponseEntity<?> listPost(){
-        List<Post> postList = postService.listPost();
+        List<PostResponseDto> postList = postService.listPost();
         return  ResponseEntity.status(HttpStatus.OK).body(postList);
 
     }
     @GetMapping("/searchPost")
     public ResponseEntity<?> searchPost(@RequestBody SearchwordDto searchwordDto){
-        List<Post> postList = postService.searchPost(searchwordDto);
+        List<PostResponseDto> postList = postService.searchPost(searchwordDto);
         return  ResponseEntity.status(HttpStatus.OK).body(postList);
 
     }
