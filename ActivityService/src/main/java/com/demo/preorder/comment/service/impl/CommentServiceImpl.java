@@ -7,6 +7,7 @@ import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.comment.dao.CommentDao;
 import com.demo.preorder.comment.dto.CommentDto;
 import com.demo.preorder.comment.dto.CommentReplayDto;
+import com.demo.preorder.comment.dto.CommentResponseDto;
 import com.demo.preorder.comment.dto.CommentUpdateDto;
 import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.service.CommentService;
@@ -35,7 +36,7 @@ public class CommentServiceImpl implements CommentService {
     private final FollowDao followDao;
 
     @Override
-    public Comment saveComment(Long userId,CommentDto commentDto) {
+    public CommentResponseDto saveComment(Long userId, CommentDto commentDto) {
         Comment comment = new Comment();
         Post post = postDao.selectPost(commentDto.getPostId());
         if(post == null) throw new CustomException(ErrorCode.INVALID_POST);
@@ -114,11 +115,11 @@ public class CommentServiceImpl implements CommentService {
 
 
 
-        return saved;
+        return new CommentResponseDto(saved);
     }
 
     @Override
-    public Comment saveReplay(Long userId, CommentReplayDto commentReplayDto) {
+    public CommentResponseDto saveReplay(Long userId, CommentReplayDto commentReplayDto) {
         Comment comment = new Comment();
         Post post = postDao.selectPost(commentReplayDto.getPostId());
         if(userId == null || post == null) return null;
@@ -131,7 +132,7 @@ public class CommentServiceImpl implements CommentService {
         if(parentComment == null) throw new CustomException(ErrorCode.NOT_EXISTS_PARENT_COMMENT);
         comment.setParentComment(parentComment);
         comment.setCommentGroup(parentComment.getCommentGroup());
-        return commentDao.saveComment(comment);
+        return new CommentResponseDto(commentDao.saveComment(comment));
     }
 
     @Override
@@ -140,8 +141,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment updateCommentContent(Long userId, CommentUpdateDto commentUpdateDto) {
-        return commentDao.updateCommentContent(userId, commentUpdateDto.getCommentId(), commentUpdateDto.getContent());
+    public CommentResponseDto updateCommentContent(Long userId, CommentUpdateDto commentUpdateDto) {
+        return new CommentResponseDto(commentDao.updateCommentContent(userId, commentUpdateDto.getCommentId(), commentUpdateDto.getContent()));
     }
 
     @Override

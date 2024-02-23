@@ -7,6 +7,7 @@ import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.post.dao.GreatPostDao;
 import com.demo.preorder.post.dto.GreatPostDto;
+import com.demo.preorder.post.dto.GreatPostResponseDto;
 import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.post.service.GreatPostService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class GreatPostServiceImpl implements GreatPostService {
 
     private final FollowDao followDao;
     @Override
-    public GreatPost saveGreatPost(Long userId, Long postId) {
+    public GreatPostResponseDto saveGreatPost(Long userId, Long postId) {
         GreatPost saved = greatPostDao.saveGreatPost(userId, postId);
 
         List<Follow> followList = followDao.findFollowing(saved.getUserId());
@@ -94,7 +95,7 @@ public class GreatPostServiceImpl implements GreatPostService {
             log.error("Error saving follower for userID={}: {}", newsfeedMyNewsClientDto.getUserId(), e.getMessage(), e);
             // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
         }
-        return saved;
+        return new GreatPostResponseDto(saved);
     }
 
     @Override

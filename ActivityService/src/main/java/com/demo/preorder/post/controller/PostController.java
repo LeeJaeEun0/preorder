@@ -2,6 +2,7 @@ package com.demo.preorder.post.controller;
 
 import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.post.dto.PostDto;
+import com.demo.preorder.post.dto.PostResponseDto;
 import com.demo.preorder.post.dto.SearchwordDto;
 import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.post.service.PostService;
@@ -30,7 +31,7 @@ public class PostController {
         log.info("info log = {}",httpHeaders);
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        Post post = postService.savePost(userId, postDto);
+        PostResponseDto post = postService.savePost(userId, postDto);
 
         if(post != null){
             return  ResponseEntity.status(HttpStatus.CREATED).body(post);
@@ -41,7 +42,7 @@ public class PostController {
 
     @GetMapping("/selectPost")
     public ResponseEntity<?> selectPost(@RequestParam Long postId){
-        Post post = postService.selectPost(postId);
+        PostResponseDto post = postService.selectPost(postId);
         if(post != null){
             return  ResponseEntity.status(HttpStatus.OK).body(post);
         }else {
@@ -70,7 +71,7 @@ public class PostController {
         log.info("info log = {}",postDto.getPostId());
         log.info("info log = {}",postDto.getContents());
 
-        Post post = postService.changePost(userId, postDto);
+        PostResponseDto post = postService.changePost(userId, postDto);
         if(post != null){
             return  ResponseEntity.status(HttpStatus.OK).body(post);
         }else {

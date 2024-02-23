@@ -3,6 +3,7 @@ package com.demo.preorder.comment.service.impl;
 import com.demo.preorder.client.dto.NewsfeedClientDto;
 import com.demo.preorder.client.service.NewsfeedServiceClient;
 import com.demo.preorder.comment.dao.GreatCommentDao;
+import com.demo.preorder.comment.dto.GreatCommentResponseDto;
 import com.demo.preorder.comment.entity.GreatComment;
 import com.demo.preorder.comment.service.GreatCommentService;
 import com.demo.preorder.follow.dao.FollowDao;
@@ -25,7 +26,7 @@ public class GreatCommentServiceImpl implements GreatCommentService {
 
     private final FollowDao followDao;
     @Override
-    public GreatComment saveGreatComment(Long userId, Long commentId) {
+    public GreatCommentResponseDto saveGreatComment(Long userId, Long commentId) {
         GreatComment saved = greatCommentDao.saveGreatComment(userId, commentId);
 
         List<Follow> followList = followDao.findFollowing(saved.getUserId());
@@ -76,7 +77,7 @@ public class GreatCommentServiceImpl implements GreatCommentService {
             }
         }
 
-        return saved;
+        return new GreatCommentResponseDto(saved);
 
     }
 

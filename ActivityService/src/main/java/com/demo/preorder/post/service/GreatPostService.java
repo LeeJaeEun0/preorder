@@ -2,12 +2,13 @@ package com.demo.preorder.post.service;
 
 import com.demo.preorder.post.dao.GreatPostDao;
 import com.demo.preorder.post.dto.GreatPostDto;
+import com.demo.preorder.post.dto.GreatPostResponseDto;
 import com.demo.preorder.post.entity.GreatPost;
 
 import java.util.List;
 
 public interface GreatPostService {
-    GreatPost saveGreatPost(Long userId, Long postId);
+    GreatPostResponseDto saveGreatPost(Long userId, Long postId);
 
     void deleteGreatPost(Long userId, Long postId);
 

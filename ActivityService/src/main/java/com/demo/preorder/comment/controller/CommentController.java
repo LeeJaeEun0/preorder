@@ -1,10 +1,7 @@
 package com.demo.preorder.comment.controller;
 
 import com.demo.preorder.client.service.UserServiceClient;
-import com.demo.preorder.comment.dto.CommentDeleteDto;
-import com.demo.preorder.comment.dto.CommentDto;
-import com.demo.preorder.comment.dto.CommentReplayDto;
-import com.demo.preorder.comment.dto.CommentUpdateDto;
+import com.demo.preorder.comment.dto.*;
 import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +28,7 @@ public class CommentController {
                                          @RequestBody CommentDto commentDto) {
         ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        Comment comment = commentService.saveComment(userId, commentDto);
+        CommentResponseDto comment = commentService.saveComment(userId, commentDto);
         if (comment != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(comment);
         } else {
@@ -44,7 +41,7 @@ public class CommentController {
                                         @RequestBody CommentReplayDto commentReplayDto) {
         ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        Comment comment = commentService.saveReplay(userId, commentReplayDto);
+        CommentResponseDto comment = commentService.saveReplay(userId, commentReplayDto);
         if (comment != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(comment);
         } else {
@@ -70,7 +67,7 @@ public class CommentController {
         log.info("info log = {}", userId);
         log.info("info log = {}", commentUpdateDto.getCommentId());
         log.info("info log = {}", commentUpdateDto.getContent());
-        Comment comment = commentService.updateCommentContent(userId, commentUpdateDto);
+        CommentResponseDto comment = commentService.updateCommentContent(userId, commentUpdateDto);
 
         if (comment != null) {
             return ResponseEntity.status(HttpStatus.OK).body(comment);

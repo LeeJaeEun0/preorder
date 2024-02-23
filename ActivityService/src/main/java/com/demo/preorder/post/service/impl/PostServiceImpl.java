@@ -7,6 +7,7 @@ import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.dto.PostDto;
+import com.demo.preorder.post.dto.PostResponseDto;
 import com.demo.preorder.post.dto.SearchwordDto;
 import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.post.service.PostService;
@@ -30,7 +31,7 @@ public class PostServiceImpl implements PostService {
     private final FollowDao followDao;
 
     @Override
-    public Post savePost(Long userId,PostDto postDto) {
+    public PostResponseDto savePost(Long userId, PostDto postDto) {
         Post post = new Post();
         post.setUserId(userId);
         post.setContents(postDto.getContents());
@@ -84,12 +85,12 @@ public class PostServiceImpl implements PostService {
             }
         }
 
-        return saved;
+        return new PostResponseDto(saved);
     }
 
     @Override
-    public Post selectPost(Long postId) {
-        return postDao.selectPost(postId);
+    public PostResponseDto selectPost(Long postId) {
+        return new PostResponseDto(postDao.selectPost(postId));
     }
 
     @Override
@@ -103,8 +104,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post changePost(Long userId,PostDto postDto) {
-        return postDao.changePost(userId, postDto.getPostId(),postDto.getContents());
+    public PostResponseDto changePost(Long userId,PostDto postDto) {
+        return new PostResponseDto(postDao.changePost(userId, postDto.getPostId(),postDto.getContents()));
     }
 
     @Override

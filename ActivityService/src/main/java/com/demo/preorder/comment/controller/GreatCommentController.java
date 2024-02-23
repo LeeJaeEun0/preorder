@@ -2,6 +2,7 @@ package com.demo.preorder.comment.controller;
 
 import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.comment.dto.GreatCommentDto;
+import com.demo.preorder.comment.dto.GreatCommentResponseDto;
 import com.demo.preorder.comment.entity.GreatComment;
 import com.demo.preorder.comment.service.GreatCommentService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class GreatCommentController {
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
         log.info("id = {}",userId);
-        GreatComment greatComment =  greatCommentService.saveGreatComment(userId, commentId);
+        GreatCommentResponseDto greatComment =  greatCommentService.saveGreatComment(userId, commentId);
         if (greatComment != null) {
             return  ResponseEntity.status(HttpStatus.CREATED).body(greatComment);
         }else {

@@ -2,6 +2,8 @@ package com.demo.preorder.follow.service.impl;
 
 import com.demo.preorder.client.dto.NewsfeedClientDto;
 import com.demo.preorder.client.service.NewsfeedServiceClient;
+import com.demo.preorder.follow.dto.FollowDto;
+import com.demo.preorder.follow.dto.FollowResponseDto;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.service.FollowService;
@@ -22,7 +24,7 @@ public class FollowServiceImpl implements FollowService {
     private final NewsfeedServiceClient newsfeedServiceClient;
 
     @Override
-    public Follow saveFollow(Long userId,Long followingId) {
+    public FollowResponseDto saveFollow(Long userId, Long followingId) {
         Follow follow = new Follow();
         if (followingId ==null)
             return null;
@@ -79,7 +81,7 @@ public class FollowServiceImpl implements FollowService {
             }
         }
 
-        return saved;
+        return new FollowResponseDto(saved);
     }
 
     @Override

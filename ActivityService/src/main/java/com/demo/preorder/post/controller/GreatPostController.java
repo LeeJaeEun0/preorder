@@ -2,6 +2,7 @@ package com.demo.preorder.post.controller;
 
 import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.post.dto.GreatPostDto;
+import com.demo.preorder.post.dto.GreatPostResponseDto;
 import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.post.service.GreatPostService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class GreatPostController {
                                            @PathVariable("postId") Long postId){
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        GreatPost greatPost =  greatPostService.saveGreatPost(userId, postId);
+        GreatPostResponseDto greatPost =  greatPostService.saveGreatPost(userId, postId);
 
         if (greatPost != null) {
             return  ResponseEntity.status(HttpStatus.CREATED).body(greatPost);
