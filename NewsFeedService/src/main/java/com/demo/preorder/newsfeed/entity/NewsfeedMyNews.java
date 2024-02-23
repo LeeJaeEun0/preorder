@@ -22,13 +22,9 @@ public class NewsfeedMyNews {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User userId;
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "following_id", referencedColumnName = "user_id")
-    private User writerId;
+    private Long writerId;
 
     private String type;
 

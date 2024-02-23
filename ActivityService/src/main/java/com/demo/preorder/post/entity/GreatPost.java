@@ -1,6 +1,5 @@
 package com.demo.preorder.post.entity;
 
-import com.demo.preorder.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,9 +21,7 @@ public class GreatPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User userId;
+    private Long userId;
 
     @ManyToOne
     @JoinColumn(name = "post_id")

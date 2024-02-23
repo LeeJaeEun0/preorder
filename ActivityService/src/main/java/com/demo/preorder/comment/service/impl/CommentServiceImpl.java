@@ -5,15 +5,16 @@ import com.demo.preorder.client.dto.NewsfeedMyNewsClientDto;
 import com.demo.preorder.client.service.NewsfeedServiceClient;
 import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.comment.dao.CommentDao;
-import com.demo.preorder.comment.dto.CommentDeleteDto;
 import com.demo.preorder.comment.dto.CommentDto;
 import com.demo.preorder.comment.dto.CommentReplayDto;
+import com.demo.preorder.comment.dto.CommentResponseDto;
 import com.demo.preorder.comment.dto.CommentUpdateDto;
 import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.service.CommentService;
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
-import com.demo.preorder.user.entity.User;
 import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.entity.Post;
 import lombok.RequiredArgsConstructor;
@@ -28,24 +29,19 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
    private final PostDao postDao;
 
-   //private final ActivityRestTemplateClient activityRestTemplateClient;
    private final NewsfeedServiceClient newsfeedServiceClient;
-
-   private final UserServiceClient userServiceClient;
 
    private final CommentDao commentDao;
 
     private final FollowDao followDao;
 
     @Override
-    public Comment saveComment(Long userId,CommentDto commentDto) {
+    public CommentResponseDto saveComment(Long userId, CommentDto commentDto) {
         Comment comment = new Comment();
-        ResponseEntity<User> userResponseEntity = userServiceClient.findUser(userId);
-        User user = userResponseEntity.getBody();
         Post post = postDao.selectPost(commentDto.getPostId());
-        if(user == null || post == null) return null;
+        if(post == null) throw new CustomException(ErrorCode.INVALID_POST);
         comment.setPostId(post);
-        comment.setUseId(user);
+        comment.setUseId(userId);
         comment.setContent(commentDto.getContent());
         comment.setCommentDepth(0);
         int groupId = commentDao.findGroupId();
@@ -53,7 +49,7 @@ public class CommentServiceImpl implements CommentService {
 
         Comment saved = commentDao.saveComment(comment);
 
-        List<Follow> followList = followDao.findFollowing(saved.getUseId().getId());
+        List<Follow> followList = followDao.findFollowing(saved.getUseId());
 
         if (followList!= null) {
 
@@ -77,7 +73,7 @@ public class CommentServiceImpl implements CommentService {
             }
         }
 
-        List<Follow> followList2 = followDao.findFollower(saved.getUseId().getId());
+        List<Follow> followList2 = followDao.findFollower(saved.getUseId());
 
         if (followList!= null) {
 
@@ -119,40 +115,38 @@ public class CommentServiceImpl implements CommentService {
 
 
 
-        return saved;
+        return new CommentResponseDto(saved);
     }
 
     @Override
-    public Comment insertComment(Long userId, CommentReplayDto commentReplayDto) {
+    public CommentResponseDto saveReplay(Long userId, CommentReplayDto commentReplayDto) {
         Comment comment = new Comment();
-        ResponseEntity<User> userResponseEntity = userServiceClient.findUser(userId);
-        User user = userResponseEntity.getBody();
         Post post = postDao.selectPost(commentReplayDto.getPostId());
-        if(user == null || post == null) return null;
+        if(userId == null || post == null) return null;
         comment.setPostId(post);
-        comment.setUseId(user);
+        comment.setUseId(userId);
         comment.setContent(commentReplayDto.getContent());
         comment.setCommentDepth(1);
 
         Comment parentComment = commentDao.selectedComment(commentReplayDto.getParentComment());
-        if(parentComment == null) return null;
+        if(parentComment == null) throw new CustomException(ErrorCode.NOT_EXISTS_PARENT_COMMENT);
         comment.setParentComment(parentComment);
         comment.setCommentGroup(parentComment.getCommentGroup());
-        return commentDao.saveComment(comment);
+        return new CommentResponseDto(commentDao.saveComment(comment));
     }
 
     @Override
-    public List<Comment> selectComment(CommentDto commentDto) {
-        return commentDao.selectComment(commentDto.getPostId());
+    public List<Comment> selectComment(Long postId) {
+        return commentDao.selectComment(postId);
     }
 
     @Override
-    public Comment changeCommentContent(Long userId, CommentUpdateDto commentUpdateDto) {
-        return commentDao.changeCommentContent(userId, commentUpdateDto.getCommentId(), commentUpdateDto.getContent());
+    public CommentResponseDto updateCommentContent(Long userId, CommentUpdateDto commentUpdateDto) {
+        return new CommentResponseDto(commentDao.updateCommentContent(userId, commentUpdateDto.getCommentId(), commentUpdateDto.getContent()));
     }
 
     @Override
-    public void deleteComment(Long userId, CommentDeleteDto commentDeleteDto) throws Exception {
-        commentDao.deleteComment(userId, commentDeleteDto.getCommentId());
+    public void deleteComment(Long userId, Long commentId) {
+        commentDao.deleteComment(userId, commentId);
     }
 }

@@ -2,12 +2,11 @@ package com.demo.preorder.follow.service.impl;
 
 import com.demo.preorder.client.dto.NewsfeedClientDto;
 import com.demo.preorder.client.service.NewsfeedServiceClient;
-import com.demo.preorder.client.service.UserServiceClient;
+import com.demo.preorder.follow.dto.FollowDto;
+import com.demo.preorder.follow.dto.FollowResponseDto;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.dao.FollowDao;
-import com.demo.preorder.follow.dto.FollowDto;
 import com.demo.preorder.follow.service.FollowService;
-import com.demo.preorder.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,23 +23,17 @@ public class FollowServiceImpl implements FollowService {
 
     private final NewsfeedServiceClient newsfeedServiceClient;
 
-    private final UserServiceClient userServiceClient;
-
     @Override
-    public FollowDto saveFollow(Long userId,FollowDto followDto) {
+    public FollowResponseDto saveFollow(Long userId, Long followingId) {
         Follow follow = new Follow();
-        if (followDto.getFollowingId() ==null)
+        if (followingId ==null)
             return null;
-        ResponseEntity<User> userResponseEntity1 = userServiceClient.findUser(userId);
-        User user1 = userResponseEntity1.getBody();
-        follow.setUserId(user1);
 
-        ResponseEntity<User> userResponseEntity2 = userServiceClient.findUser(followDto.getFollowingId());
-        User user2 = userResponseEntity2.getBody();
-        follow.setFollowingId(user2);
+        follow.setUserId(userId);
+        follow.setFollowingId(followingId);
         Follow saved = followDao.insertFollow(follow);
 
-        List<Follow> followList = followDao.findFollowing(saved.getUserId().getId());
+        List<Follow> followList = followDao.findFollowing(saved.getUserId());
 
         if (followList!= null) {
 
@@ -64,7 +57,7 @@ public class FollowServiceImpl implements FollowService {
             }
         }
 
-        List<Follow> followList2 = followDao.findFollower(saved.getUserId().getId());
+        List<Follow> followList2 = followDao.findFollower(saved.getUserId());
 
         if (followList!= null) {
 
@@ -88,18 +81,18 @@ public class FollowServiceImpl implements FollowService {
             }
         }
 
-        return followDto;
+        return new FollowResponseDto(saved);
     }
 
     @Override
-    public void deleteFollow(Long userId,FollowDto followDto) throws Exception {
-        followDao.deleteFollow(userId, followDto.getFollowingId());
+    public void deleteFollow(Long userId,Long followingId){
+        followDao.deleteFollow(userId, followingId);
     }
 
     // 나를 팔로우한 사람
     @Override
-    public List<Follow> findFollower(FollowDto followDto) {
-        return followDao.findFollower(followDto.getFollowingId());
+    public List<Follow> findFollower(Long followingId) {
+        return followDao.findFollower(followingId);
     }
 
     // 내가 팔로우한 사람

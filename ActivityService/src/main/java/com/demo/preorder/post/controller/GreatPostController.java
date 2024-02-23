@@ -2,6 +2,7 @@ package com.demo.preorder.post.controller;
 
 import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.post.dto.GreatPostDto;
+import com.demo.preorder.post.dto.GreatPostResponseDto;
 import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.post.service.GreatPostService;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +21,12 @@ public class GreatPostController {
     private final GreatPostService greatPostService;
 
     private final UserServiceClient userServiceClient;
-    @PostMapping
+    @PostMapping("/{postId}")
     public ResponseEntity<?> saveGreatPost(@RequestHeader Map<String, String> httpHeaders,
-                                           @RequestBody GreatPostDto greatPostDto){
+                                           @PathVariable("postId") Long postId){
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        GreatPost greatPost =  greatPostService.saveGreatPost(userId, greatPostDto);
+        GreatPostResponseDto greatPost =  greatPostService.saveGreatPost(userId, postId);
 
         if (greatPost != null) {
             return  ResponseEntity.status(HttpStatus.CREATED).body(greatPost);
@@ -35,8 +36,8 @@ public class GreatPostController {
     }
 
     @GetMapping
-    public ResponseEntity<?> greatPostList( @RequestBody GreatPostDto greatPostDto){
-        List<GreatPost> greatPostList =  greatPostService.greatPostList(greatPostDto);
+    public ResponseEntity<?> greatPostList( @RequestParam("postId") Long postId){
+        List<GreatPost> greatPostList =  greatPostService.greatPostList(postId);
         if (greatPostList != null) {
             return  ResponseEntity.status(HttpStatus.OK).body(greatPostList);
         }else {
@@ -44,12 +45,12 @@ public class GreatPostController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{postId}")
     public ResponseEntity<?> deleteGreatPost(@RequestHeader Map<String, String> httpHeaders,
-                                             @RequestBody GreatPostDto greatPostDto){
+                                             @PathVariable("postId") Long postId){
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        greatPostService.deleteGreatPost(userId,greatPostDto);
+        greatPostService.deleteGreatPost(userId,postId);
         return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 

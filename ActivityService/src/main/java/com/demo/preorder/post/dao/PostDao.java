@@ -15,6 +15,6 @@ public interface PostDao {
 
     Post changePost(Long userId,Long PostId, String contents);
 
-    void deletePost(Long userID,Long postId) throws Exception;
+    void deletePost(Long userID,Long postId);
 
 }

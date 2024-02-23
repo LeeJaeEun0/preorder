@@ -21,6 +21,6 @@ public class NewsfeedMyNewsDaoImpl implements NewsfeedMyNewsDao {
 
     @Override
     public List<NewsfeedMyNews> newsfeedMyNews(Long userId) {
-        return newsfeedMyNewsRepository.findByUserIdIdOrderByCreatedDateDesc(userId);
+        return newsfeedMyNewsRepository.findByUserIdOrderByCreatedDateDesc(userId);
     }
 }

@@ -7,10 +7,10 @@ import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.post.dao.PostDao;
 import com.demo.preorder.post.dto.PostDto;
+import com.demo.preorder.post.dto.PostResponseDto;
 import com.demo.preorder.post.dto.SearchwordDto;
 import com.demo.preorder.post.entity.Post;
 import com.demo.preorder.post.service.PostService;
-import com.demo.preorder.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -31,18 +31,13 @@ public class PostServiceImpl implements PostService {
     private final FollowDao followDao;
 
     @Override
-    public Post savePost(Long userId,PostDto postDto) {
+    public PostResponseDto savePost(Long userId, PostDto postDto) {
         Post post = new Post();
-        ResponseEntity<User> userResponseEntity = userServiceClient.findUser(userId);
-        User user = userResponseEntity.getBody();
-        if(user == null)
-            return null;
-
-        post.setUserId(user);
+        post.setUserId(userId);
         post.setContents(postDto.getContents());
         Post saved = postDao.savePost(post);
 
-        List<Follow> followList = followDao.findFollowing(saved.getUserId().getId());
+        List<Follow> followList = followDao.findFollowing(saved.getUserId());
 
         if (followList!= null) {
 
@@ -66,7 +61,7 @@ public class PostServiceImpl implements PostService {
             }
         }
 
-        List<Follow> followList2 = followDao.findFollower(saved.getUserId().getId());
+        List<Follow> followList2 = followDao.findFollower(saved.getUserId());
 
         if (followList!= null) {
 
@@ -90,12 +85,12 @@ public class PostServiceImpl implements PostService {
             }
         }
 
-        return saved;
+        return new PostResponseDto(saved);
     }
 
     @Override
-    public Post selectPost(PostDto postDto) {
-        return postDao.selectPost(postDto.getPostId());
+    public PostResponseDto selectPost(Long postId) {
+        return new PostResponseDto(postDao.selectPost(postId));
     }
 
     @Override
@@ -109,12 +104,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post changePost(Long userId,PostDto postDto) {
-        return postDao.changePost(userId, postDto.getPostId(),postDto.getContents());
+    public PostResponseDto changePost(Long userId,PostDto postDto) {
+        return new PostResponseDto(postDao.changePost(userId, postDto.getPostId(),postDto.getContents()));
     }
 
     @Override
-    public void deletePost(Long userId,PostDto postDto) throws Exception {
-        postDao.deletePost(userId,postDto.getPostId());
+    public void deletePost(Long userId,Long postId) {
+        postDao.deletePost(userId,postId);
     }
 }

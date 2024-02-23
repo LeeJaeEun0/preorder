@@ -1,20 +1,18 @@
 package com.demo.preorder.comment.service;
 
-import com.demo.preorder.comment.dto.CommentDeleteDto;
-import com.demo.preorder.comment.dto.CommentDto;
-import com.demo.preorder.comment.dto.CommentReplayDto;
-import com.demo.preorder.comment.dto.CommentUpdateDto;
+import com.demo.preorder.comment.dto.*;
 import com.demo.preorder.comment.entity.Comment;
 
 import java.util.List;
 
 public interface CommentService {
-    Comment saveComment(Long userId,CommentDto commentDto);
+    CommentResponseDto saveComment(Long userId,CommentDto commentDto);
 
-    Comment insertComment(Long userId, CommentReplayDto commentReplayDto);
+    CommentResponseDto saveReplay(Long userId, CommentReplayDto commentReplayDto);
 
-    List<Comment> selectComment(CommentDto commentDto);
-    Comment changeCommentContent(Long userId, CommentUpdateDto commentUpdateDto);
+    List<Comment> selectComment(Long postId);
 
-    void deleteComment(Long userId, CommentDeleteDto commentDeleteDto) throws Exception;
+    CommentResponseDto updateCommentContent(Long userId, CommentUpdateDto commentUpdateDto);
+
+    void deleteComment(Long userId, Long commentId) ;
 }

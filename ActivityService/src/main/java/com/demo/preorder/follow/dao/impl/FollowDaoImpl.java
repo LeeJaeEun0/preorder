@@ -1,5 +1,7 @@
 package com.demo.preorder.follow.dao.impl;
 
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.repository.FollowRepository;
@@ -18,55 +20,31 @@ public class FollowDaoImpl implements FollowDao {
     @Override
     @Transactional
     public Follow insertFollow(Follow follow) {
-        Follow saved = followRepository.save(follow);
-
-        Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUserId().getId());
-
-//        if (optionalFollowList.isPresent()) {
-//            List<Follow> followList = optionalFollowList.get();
-//
-//            for (Follow follows : followList) {
-//                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
-//                newsfeedIFollow.setUserId(follows.getUserId());
-//                newsfeedIFollow.setFollowingId(follow.getUserId());
-//                newsfeedIFollow.setType("follow");
-//                newsfeedIFollow.setTargetId(saved.getId());
-//                newsfeedIFollowRepository.save(newsfeedIFollow);
-//            }
-//        }
-        return saved;
+        return followRepository.save(follow);
     }
 
     @Override
-    public void deleteFollow(Long userId, Long followingId) throws Exception{
+    public void deleteFollow(Long userId, Long followingId){
         Optional<Follow> deleteFollow = followRepository.findFollow(userId, followingId);
         if(deleteFollow.isPresent()){
             Follow follow = deleteFollow.get();
             followRepository.delete(follow);
         }else{
-            throw new Exception();
+            throw new CustomException(ErrorCode.NOT_EXISTS_FOLLOW);
         }
     }
 
     // 나를 팔로우한 사람
     @Override
     public List<Follow> findFollower(Long followingId) {
-        Optional<List<Follow>> follower = followRepository.findByFollowingIdId(followingId);
-        if(follower.isPresent()){
-            List<Follow> followerList = follower.get();
-            return followerList ;
-        }
-        return null;
+        Optional<List<Follow>> follower = followRepository.findByFollowingId(followingId);
+        return follower.orElse(null);
     }
 
     // 내가 팔로우한 사람
     @Override
     public List<Follow> findFollowing(Long userId) {
-        Optional<List<Follow>> following = followRepository.findByUserIdId(userId);
-        if(following .isPresent()){
-            List<Follow> followingList = following.get();
-            return followingList;
-        }
-        return null;
+        Optional<List<Follow>> following = followRepository.findByUserId(userId);
+        return following.orElse(null);
     }
 }

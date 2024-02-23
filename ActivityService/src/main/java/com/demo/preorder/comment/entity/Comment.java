@@ -1,6 +1,5 @@
 package com.demo.preorder.comment.entity;
 
-import com.demo.preorder.user.entity.User;
 import com.demo.preorder.post.entity.Post;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
@@ -28,9 +27,7 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post postId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User useId;
+    private Long useId;
 
     @ManyToOne
     @JoinColumn(name = "parent_comment_id")

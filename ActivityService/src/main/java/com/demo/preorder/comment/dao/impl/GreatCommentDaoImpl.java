@@ -1,14 +1,12 @@
 package com.demo.preorder.comment.dao.impl;
 
-import com.demo.preorder.client.service.ActivityRestTemplateClient;
 import com.demo.preorder.comment.dao.GreatCommentDao;
 import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.entity.GreatComment;
 import com.demo.preorder.comment.repository.CommentRepository;
 import com.demo.preorder.comment.repository.GreatCommentRepository;
-import com.demo.preorder.follow.entity.Follow;
-import com.demo.preorder.follow.repository.FollowRepository;
-import com.demo.preorder.user.entity.User;
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,51 +21,32 @@ public class GreatCommentDaoImpl implements GreatCommentDao {
 
     private final CommentRepository commentRepository;
 
-    private final FollowRepository followRepository;
-
-    private final ActivityRestTemplateClient activityRestTemplateClient;
     @Override
     public GreatComment saveGreatComment(Long userId, Long commentId) {
         GreatComment greatComment = new GreatComment();
-        User user = activityRestTemplateClient.findUser(userId);
+
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
-        if(user==null || optionalComment==null) return null;
+        if(optionalComment.isEmpty()) throw new CustomException(ErrorCode.INVALID_COMMENT);
         Comment comment = optionalComment.get();
 
-        greatComment.setUserId(user);
+        greatComment.setUserId(userId);
         greatComment.setCommentId(comment);
-        GreatComment saved = greatCommentRepository.save(greatComment);
-        Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUserId().getId());
-
-//        if (optionalFollowList.isPresent()) {
-//            List<Follow> followList = optionalFollowList.get();
-//
-//            for (Follow follows : followList) {
-//                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
-//                newsfeedIFollow.setUserId(follows.getUserId());
-//                newsfeedIFollow.setFollowingId(saved.getUserId());
-//                newsfeedIFollow.setType("greatComment");
-//                newsfeedIFollow.setTargetId(saved.getId());
-//                newsfeedIFollowRepository.save(newsfeedIFollow);
-//            }
-//        }
-        return saved;
+        return greatCommentRepository.save(greatComment);
 
     }
 
-    @Override
-    public List<GreatComment> greatCommentList(Long commentId) {
-        return greatCommentRepository.findByCommentIdId(commentId);
-
-    }
 
     @Override
     public void deleteGreatComment(Long userId, Long greatCommentId) {
         Optional<GreatComment> optionalGreatComment = greatCommentRepository.findById(greatCommentId);
         if(optionalGreatComment.isPresent()){
             GreatComment greatComment = optionalGreatComment.get();
-            if(greatComment.getUserId().getId().equals(userId))
+            if(greatComment.getUserId().equals(userId))
                 greatCommentRepository.delete(greatComment);
+            else
+                throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
+        }else {
+            throw new CustomException(ErrorCode.NOT_EXISTS_GREAT_COMMIT);
         }
     }
 }

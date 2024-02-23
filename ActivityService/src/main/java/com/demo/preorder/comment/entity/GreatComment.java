@@ -1,7 +1,6 @@
 package com.demo.preorder.comment.entity;
 
 
-import com.demo.preorder.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,9 +21,7 @@ public class GreatComment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User userId;
+    private Long userId;
 
     @ManyToOne
     @JoinColumn(name = "comment_id")

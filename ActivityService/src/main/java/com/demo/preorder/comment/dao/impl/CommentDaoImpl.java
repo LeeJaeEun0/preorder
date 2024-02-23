@@ -3,6 +3,8 @@ package com.demo.preorder.comment.dao.impl;
 import com.demo.preorder.comment.dao.CommentDao;
 import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.repository.CommentRepository;
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.repository.FollowRepository;
 import com.demo.preorder.post.repository.PostRepository;
@@ -19,35 +21,10 @@ public class CommentDaoImpl implements CommentDao {
 
     private final CommentRepository commentRepository;
 
-    private final FollowRepository followRepository;
-
     @Override
     @Transactional
     public Comment saveComment(Comment comment) {
-        Comment saved = commentRepository.save(comment);
-        Optional<List<Follow>>optionalFollowList = followRepository.findByFollowingIdId(saved.getUseId().getId());
-
-//        if (optionalFollowList.isPresent()) {
-//            List<Follow> followList = optionalFollowList.get();
-//
-//            for (Follow follows : followList) {
-//                NewsfeedIFollow newsfeedIFollow = new NewsfeedIFollow();
-//                newsfeedIFollow.setUserId(follows.getUserId());
-//                newsfeedIFollow.setFollowingId(saved.getUseId());
-//                newsfeedIFollow.setType("comment");
-//                newsfeedIFollow.setTargetId(saved.getId());
-//                newsfeedIFollowRepository.save(newsfeedIFollow);
-//            }
-//        }
-//
-//        // 포스트를 작성한 사람에게 댓글 알림
-//        NewsfeedMyNews newsfeedFollowedMe = new NewsfeedMyNews();
-//        newsfeedFollowedMe.setUserId(saved.getPostId().getUserId());
-//        newsfeedFollowedMe.setWriterId(saved.getUseId());
-//        newsfeedFollowedMe.setType("comment");
-//        newsfeedFollowedMe.setPostId(saved.getId());
-//        newsfeedMyNewsRepository.save(newsfeedFollowedMe);
-        return saved;
+        return commentRepository.save(comment);
     }
 
     @Override
@@ -58,18 +35,14 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public Comment insertComment(Comment comment) {
-        return commentRepository.save(comment);
-    }
-
-    @Override
     public Comment selectedComment(Long commentId) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         if(optionalComment.isPresent()){
-            Comment comment = optionalComment.get();
-            return comment;
+            return optionalComment.get();
+        }else {
+            throw new CustomException(ErrorCode.INVALID_COMMENT);
         }
-        return null;
+
     }
 
     @Override
@@ -79,30 +52,35 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public Comment changeCommentContent(Long userId, Long commentId, String content) {
+    public Comment updateCommentContent(Long userId, Long commentId, String content) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         if(optionalComment.isPresent()){
             Comment comment = optionalComment.get();
 
-            if(comment.getUseId().getId().equals(userId)){
+            if(comment.getUseId().equals(userId)){
                 comment.setContent(content);
                 return commentRepository.save(comment);
+            }else{
+                throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
             }
+        }else {
+            throw new CustomException(ErrorCode.INVALID_COMMENT);
         }
-        return null;
     }
 
     @Override
-    public void deleteComment(Long userId, Long commentId) throws Exception {
+    public void deleteComment(Long userId, Long commentId) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         if(optionalComment.isPresent()){
             Comment comment = optionalComment.get();
 
-            if(comment.getUseId().getId().equals(userId)){
+            if(comment.getUseId().equals(userId)){
                 commentRepository.delete(comment);
             }else{
-                throw new Exception();
+                throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
             }
+        }else{
+            throw new CustomException(ErrorCode.INVALID_COMMENT);
         }
     }
 }
