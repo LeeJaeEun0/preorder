@@ -108,7 +108,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(Long userId,Long postId) throws Exception {
+    public void deletePost(Long userId,Long postId) {
         postDao.deletePost(userId,postId);
     }
 }

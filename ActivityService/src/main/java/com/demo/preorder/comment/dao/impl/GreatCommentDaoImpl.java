@@ -5,6 +5,8 @@ import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.entity.GreatComment;
 import com.demo.preorder.comment.repository.CommentRepository;
 import com.demo.preorder.comment.repository.GreatCommentRepository;
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +26,7 @@ public class GreatCommentDaoImpl implements GreatCommentDao {
         GreatComment greatComment = new GreatComment();
 
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
-        if(userId==null || optionalComment.isEmpty()) return null;
+        if(optionalComment.isEmpty()) throw new CustomException(ErrorCode.INVALID_COMMENT);
         Comment comment = optionalComment.get();
 
         greatComment.setUserId(userId);
@@ -41,6 +43,10 @@ public class GreatCommentDaoImpl implements GreatCommentDao {
             GreatComment greatComment = optionalGreatComment.get();
             if(greatComment.getUserId().equals(userId))
                 greatCommentRepository.delete(greatComment);
+            else
+                throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
+        }else {
+            throw new CustomException(ErrorCode.NOT_EXISTS_GREAT_COMMIT);
         }
     }
 }

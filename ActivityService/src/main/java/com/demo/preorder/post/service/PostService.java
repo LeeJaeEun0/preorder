@@ -18,5 +18,5 @@ public interface PostService {
 
     Post changePost(Long userId,PostDto postDto);
 
-    void deletePost(Long UserId,Long postId) throws Exception;
+    void deletePost(Long UserId,Long postId) ;
 }

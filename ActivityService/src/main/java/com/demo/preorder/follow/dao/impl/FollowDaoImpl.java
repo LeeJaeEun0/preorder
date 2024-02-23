@@ -1,5 +1,7 @@
 package com.demo.preorder.follow.dao.impl;
 
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.repository.FollowRepository;
@@ -22,13 +24,13 @@ public class FollowDaoImpl implements FollowDao {
     }
 
     @Override
-    public void deleteFollow(Long userId, Long followingId) throws Exception{
+    public void deleteFollow(Long userId, Long followingId){
         Optional<Follow> deleteFollow = followRepository.findFollow(userId, followingId);
         if(deleteFollow.isPresent()){
             Follow follow = deleteFollow.get();
             followRepository.delete(follow);
         }else{
-            throw new Exception();
+            throw new CustomException(ErrorCode.NOT_EXISTS_FOLLOW);
         }
     }
 
@@ -36,21 +38,13 @@ public class FollowDaoImpl implements FollowDao {
     @Override
     public List<Follow> findFollower(Long followingId) {
         Optional<List<Follow>> follower = followRepository.findByFollowingId(followingId);
-        if(follower.isPresent()){
-            List<Follow> followerList = follower.get();
-            return followerList ;
-        }
-        return null;
+        return follower.orElse(null);
     }
 
     // 내가 팔로우한 사람
     @Override
     public List<Follow> findFollowing(Long userId) {
         Optional<List<Follow>> following = followRepository.findByUserId(userId);
-        if(following .isPresent()){
-            List<Follow> followingList = following.get();
-            return followingList;
-        }
-        return null;
+        return following.orElse(null);
     }
 }

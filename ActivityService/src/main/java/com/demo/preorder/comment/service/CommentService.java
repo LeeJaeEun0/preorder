@@ -14,7 +14,8 @@ public interface CommentService {
     Comment saveReplay(Long userId, CommentReplayDto commentReplayDto);
 
     List<Comment> selectComment(Long postId);
+
     Comment updateCommentContent(Long userId, CommentUpdateDto commentUpdateDto);
 
-    void deleteComment(Long userId, Long commentId) throws Exception;
+    void deleteComment(Long userId, Long commentId) ;
 }

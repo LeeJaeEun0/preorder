@@ -14,6 +14,6 @@ public interface CommentDao {
     List<Comment> selectComment(Long postId);
     Comment updateCommentContent(Long userId, Long commentId, String content);
 
-    void deleteComment(Long userId, Long commentId) throws Exception;
+    void deleteComment(Long userId, Long commentId);
 
 }

@@ -7,7 +7,7 @@ import java.util.List;
 public interface FollowDao {
     Follow insertFollow(Follow follow);
 
-    void deleteFollow(Long userId, Long followingId) throws Exception;
+    void deleteFollow(Long userId, Long followingId) ;
 
     List<Follow> findFollower(Long followingId);
 

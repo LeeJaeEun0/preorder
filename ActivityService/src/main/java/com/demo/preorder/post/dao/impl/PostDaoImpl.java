@@ -1,5 +1,7 @@
 package com.demo.preorder.post.dao.impl;
 
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.repository.FollowRepository;
 import com.demo.preorder.post.dao.PostDao;
@@ -56,23 +58,26 @@ public class PostDaoImpl implements PostDao {
             if(post.getUserId().equals(userId)) {
                 post.setContents(contents);
                 return postRepository.save(post);
+            }else{
+                throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
             }
+        }else {
+            throw new CustomException(ErrorCode.INVALID_POST);
         }
-        return null;
     }
 
     @Override
-    public void deletePost(Long userId,Long postId) throws Exception {
+    public void deletePost(Long userId,Long postId){
         Optional<Post> deletepost = postRepository.findById(postId);
         if (deletepost.isPresent()) {
             Post post = deletepost.get();
 
             if(post.getUserId().equals(userId)) postRepository.delete(post);
             else{
-                throw new Exception();
+                throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
             }
         } else {
-            throw new Exception();
+            throw new CustomException(ErrorCode.INVALID_POST);
         }
     }
 }

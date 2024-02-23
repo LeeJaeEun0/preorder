@@ -3,6 +3,8 @@ package com.demo.preorder.comment.dao.impl;
 import com.demo.preorder.comment.dao.CommentDao;
 import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.repository.CommentRepository;
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.repository.FollowRepository;
 import com.demo.preorder.post.repository.PostRepository;
@@ -36,10 +38,11 @@ public class CommentDaoImpl implements CommentDao {
     public Comment selectedComment(Long commentId) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         if(optionalComment.isPresent()){
-            Comment comment = optionalComment.get();
-            return comment;
+            return optionalComment.get();
+        }else {
+            throw new CustomException(ErrorCode.INVALID_COMMENT);
         }
-        return null;
+
     }
 
     @Override
@@ -57,13 +60,16 @@ public class CommentDaoImpl implements CommentDao {
             if(comment.getUseId().equals(userId)){
                 comment.setContent(content);
                 return commentRepository.save(comment);
+            }else{
+                throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
             }
+        }else {
+            throw new CustomException(ErrorCode.INVALID_COMMENT);
         }
-        return null;
     }
 
     @Override
-    public void deleteComment(Long userId, Long commentId) throws Exception {
+    public void deleteComment(Long userId, Long commentId) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         if(optionalComment.isPresent()){
             Comment comment = optionalComment.get();
@@ -71,8 +77,10 @@ public class CommentDaoImpl implements CommentDao {
             if(comment.getUseId().equals(userId)){
                 commentRepository.delete(comment);
             }else{
-                throw new Exception();
+                throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
             }
+        }else{
+            throw new CustomException(ErrorCode.INVALID_COMMENT);
         }
     }
 }

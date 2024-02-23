@@ -10,6 +10,8 @@ import com.demo.preorder.comment.dto.CommentReplayDto;
 import com.demo.preorder.comment.dto.CommentUpdateDto;
 import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.service.CommentService;
+import com.demo.preorder.exception.CustomException;
+import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.post.dao.PostDao;
@@ -26,10 +28,7 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
    private final PostDao postDao;
 
-   //private final ActivityRestTemplateClient activityRestTemplateClient;
    private final NewsfeedServiceClient newsfeedServiceClient;
-
-   private final UserServiceClient userServiceClient;
 
    private final CommentDao commentDao;
 
@@ -39,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
     public Comment saveComment(Long userId,CommentDto commentDto) {
         Comment comment = new Comment();
         Post post = postDao.selectPost(commentDto.getPostId());
-        if(userId == null || post == null) return null;
+        if(post == null) throw new CustomException(ErrorCode.INVALID_POST);
         comment.setPostId(post);
         comment.setUseId(userId);
         comment.setContent(commentDto.getContent());
@@ -129,7 +128,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setCommentDepth(1);
 
         Comment parentComment = commentDao.selectedComment(commentReplayDto.getParentComment());
-        if(parentComment == null) return null;
+        if(parentComment == null) throw new CustomException(ErrorCode.NOT_EXISTS_PARENT_COMMENT);
         comment.setParentComment(parentComment);
         comment.setCommentGroup(parentComment.getCommentGroup());
         return commentDao.saveComment(comment);
@@ -146,7 +145,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Long userId, Long commentId) throws Exception {
+    public void deleteComment(Long userId, Long commentId) {
         commentDao.deleteComment(userId, commentId);
     }
 }

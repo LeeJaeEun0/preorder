@@ -9,7 +9,6 @@ import java.util.List;
 public interface GreatCommentDao {
     GreatComment saveGreatComment(Long userId, Long commentId);
 
-
     void deleteGreatComment(Long userId, Long greatPostId);
 
 }
