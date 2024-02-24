@@ -1,21 +1,6 @@
 version: '3'
 
 services:
-#  web:
-#    image: nginx:latest
-#    ports:
-#      - "80:80"
-#    container_name: nginx
-#    depends_on:
-#      - backend
-
-#  backend:
-#    image: openjdk:latest
-#    container_name: backend
-#    depends_on:
-#      - web
-#      - db
-
   db:
     image: mysql:8.0
     restart: unless-stopped
