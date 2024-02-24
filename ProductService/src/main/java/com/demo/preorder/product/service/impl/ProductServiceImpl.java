@@ -1,21 +1,20 @@
 package com.demo.preorder.product.service.impl;
 
+import com.demo.preorder.client.dto.OrderDto;
+import com.demo.preorder.client.dto.OrderResponseDto;
+import com.demo.preorder.client.dto.ProductStockDto;
+import com.demo.preorder.client.service.OrderServiceClient;
+import com.demo.preorder.client.service.StockServiceClient;
 import com.demo.preorder.exception.CustomException;
 import com.demo.preorder.exception.ErrorCode;
-import com.demo.preorder.product.client.dto.OrderDto;
-import com.demo.preorder.product.client.dto.OrderResponseDto;
-import com.demo.preorder.product.client.service.OrderServiceClient;
 import com.demo.preorder.product.dao.ProductDao;
-import com.demo.preorder.product.dao.ProductStockDao;
 import com.demo.preorder.product.dto.ProductDto;
 import com.demo.preorder.product.dto.ProductResponseDto;
-import com.demo.preorder.product.dto.ProductUpdateDto;
 import com.demo.preorder.product.entity.Product;
-import com.demo.preorder.product.entity.ProductStock;
 import com.demo.preorder.product.service.ProductService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +28,10 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductDao productDao;
 
-    private final ProductStockDao productStockDao;
+    private final StockServiceClient stockServiceClient;
 
     private final OrderServiceClient orderServiceClient;
 
-    @Transactional
     @Override
     public ProductResponseDto saveProduct(ProductDto productDto) {
         Product product = new Product();
@@ -43,12 +41,21 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct = productDao.saveProduct(product);
 
         if (savedProduct != null) {
-            ProductStock productStock = new ProductStock();
-            productStock.setProductId(savedProduct);
+            ProductStockDto productStock = new ProductStockDto();
+            productStock.setProductId(savedProduct.getId());
             productStock.setStock(productDto.getStock());
-            productStockDao.saveProductStock(productStock);
+
+            try {
+                // 외부 서비스 호출
+                ResponseEntity<Long> productStocks = stockServiceClient.saveProductStocks(productStock);
+                Long result = productStocks.getBody();
+                log.info("Info log: productStock - {} ", result);
+            } catch (Exception e) {
+                log.error("Error saving productStock {}", e.getMessage(), e);
+            }
+
         }
-        assert savedProduct != null;
+
         return new ProductResponseDto(savedProduct);
     }
 
@@ -63,10 +70,25 @@ public class ProductServiceImpl implements ProductService {
             orderDto.setCount(1L);
             orderDto.setTotalAmount(product.getPrice());
 
-            ProductStock savedProductStock = productStockDao.getProductById(productId);
-            if (savedProductStock != null && savedProductStock.getStock() > 0) {
-                ProductStock productStock = productStockDao.decrementCount(productId);
-                if (productStock.getStock() >= 0) {
+            Long productStock = 0L;
+            try {
+                // 외부 서비스 호출
+                ResponseEntity<Long> productStocks = stockServiceClient.getProductStock(productId);
+                productStock = productStocks.getBody();
+                log.info("Info log: productStock - {} ", productStock);
+            } catch (Exception e) {
+                log.error("Error saving productStock {}", e.getMessage(), e);
+            }
+            if (productStock > 0) {
+                try {
+                    // 외부 서비스 호출
+                    ResponseEntity<Long> productStocks = stockServiceClient.decrementProductStocks(productId);
+                    productStock = productStocks.getBody();
+                    log.info("Info log: productStock - {} ", productStock);
+                } catch (Exception e) {
+                    log.error("Error saving productStock {}", e.getMessage(), e);
+                }
+                if (productStock >= 0) {
                     try {
                         // 외부 서비스 호출
                         ResponseEntity<OrderResponseDto> responseDtoResponseEntity = orderServiceClient.saveOrder(orderDto);
@@ -100,17 +122,21 @@ public class ProductServiceImpl implements ProductService {
         return productResponseDtos;
     }
 
-    @Transactional
-    @Override
-    public ProductResponseDto changeProduct(Long productId, ProductUpdateDto productUpdateDto) {
-        productStockDao.updateProductStock(productId, productUpdateDto.getStock());
-        return new ProductResponseDto(productDao.changeProduct(productId, productUpdateDto.getTitle(), productUpdateDto.getContent(), productUpdateDto.getPrice()));
-    }
 
-    @Transactional
+
     @Override
     public void deleteProduct(Long productId) {
-        productStockDao.deleteProductStock(productId);
+        try {
+            // 외부 서비스 호출
+            ResponseEntity<Void> response = stockServiceClient.deleteProductStocks(productId);
+            if (response.getStatusCode() == HttpStatus.OK) {
+                log.info("Info log: delete stock");
+            } else {
+                log.error("Info log: fail delete stock");
+            }
+        } catch (Exception e) {
+            log.error("Error saving productStock {}", e.getMessage(), e);
+        }
         productDao.deleteProduct(productId);
     }
 }

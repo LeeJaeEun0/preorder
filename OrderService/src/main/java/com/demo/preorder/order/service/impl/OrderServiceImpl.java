@@ -1,9 +1,9 @@
 package com.demo.preorder.order.service.impl;
 
-import com.demo.preorder.order.client.dto.PaymentDto;
-import com.demo.preorder.order.client.dto.PaymentResponseDto;
-import com.demo.preorder.order.client.service.PaymentServiceClient;
-import com.demo.preorder.order.client.service.ProductServiceClient;
+import com.demo.preorder.client.dto.PaymentDto;
+import com.demo.preorder.client.dto.PaymentResponseDto;
+import com.demo.preorder.client.service.PaymentServiceClient;
+import com.demo.preorder.client.service.StockServiceClient;
 import com.demo.preorder.order.dao.OrderDao;
 import com.demo.preorder.order.dto.OrderDto;
 import com.demo.preorder.order.dto.OrderResponseDto;
@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderDao orderDao;
 
-    private final ProductServiceClient productServiceClient;
+    private final StockServiceClient stockServiceClient;
 
     private final PaymentServiceClient paymentServiceClient;
 
@@ -96,7 +96,7 @@ public class OrderServiceImpl implements OrderService {
                 if (saveOrder.getProductType().equals("product")) {
                     try {
                         // 외부 서비스 호출
-                        ResponseEntity<Long> productStocks = productServiceClient.incrementProductStocks(orderDto.getProductId());
+                        ResponseEntity<Long> productStocks = stockServiceClient.incrementProductStocks(orderDto.getProductId());
                         Long result = productStocks.getBody();
                         log.info("Info log: productStock - {} ", result);
                     } catch (Exception e) {
@@ -108,7 +108,7 @@ public class OrderServiceImpl implements OrderService {
                 } else if (saveOrder.getProductType().equals("preorderProduct")) {
                     try {
                         // 외부 서비스 호출
-                        ResponseEntity<Long> productStocks = productServiceClient.incrementPreorderProductStocks(orderDto.getProductId());
+                        ResponseEntity<Long> productStocks = stockServiceClient.incrementPreorderProductStocks(orderDto.getProductId());
                         Long result = productStocks.getBody();
                         log.info("Info log: productStock - {} ", result);
                     } catch (Exception e) {
@@ -189,7 +189,7 @@ public class OrderServiceImpl implements OrderService {
             if (saveOrder.getProductType().equals("product")) {
                 try {
                     // 외부 서비스 호출
-                    ResponseEntity<Long> productStocks = productServiceClient.incrementProductStocks(orderResponseDto.getProductId());
+                    ResponseEntity<Long> productStocks = stockServiceClient.incrementProductStocks(orderResponseDto.getProductId());
                     Long result = productStocks.getBody();
                     log.info("Info log: productStock - {} ", result);
                 } catch (Exception e) {
@@ -201,7 +201,7 @@ public class OrderServiceImpl implements OrderService {
             } else if (saveOrder.getProductType().equals("preorderProduct")) {
                 try {
                     // 외부 서비스 호출
-                    ResponseEntity<Long> productStocks = productServiceClient.incrementPreorderProductStocks(orderResponseDto.getProductId());
+                    ResponseEntity<Long> productStocks = stockServiceClient.incrementPreorderProductStocks(orderResponseDto.getProductId());
                     Long result = productStocks.getBody();
                     log.info("Info log: productStock - {} ", result);
                 } catch (Exception e) {

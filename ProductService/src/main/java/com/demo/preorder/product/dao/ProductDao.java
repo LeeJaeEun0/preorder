@@ -11,8 +11,6 @@ public interface ProductDao {
 
     List<Product> findAllProduct();
 
-    Product changeProduct(Long productId, String title, String content, Long price);
-
     void deleteProduct(Long productId);
 
 }

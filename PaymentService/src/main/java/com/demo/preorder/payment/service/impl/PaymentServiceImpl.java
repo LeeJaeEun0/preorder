@@ -1,6 +1,6 @@
 package com.demo.preorder.payment.service.impl;
 
-import com.demo.preorder.payment.client.service.ProductServiceClient;
+import com.demo.preorder.client.service.StockServiceClient;
 import com.demo.preorder.payment.dao.PaymentDao;
 import com.demo.preorder.payment.dto.PaymentDto;
 import com.demo.preorder.payment.dto.PaymentResponseDto;
@@ -20,7 +20,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentDao paymentDao;
 
-    private final ProductServiceClient productServiceClient;
+    private final StockServiceClient stockServiceClient;
 
     @Override
     public PaymentResponseDto savePayment(PaymentDto paymentDto) {
@@ -65,7 +65,7 @@ public class PaymentServiceImpl implements PaymentService {
                 if(savePayment.getProductType().equals("product")){
                     try {
                         // 외부 서비스 호출
-                        ResponseEntity<Long> productStocks = productServiceClient.incrementProductStocks(savePayment.getProductId());
+                        ResponseEntity<Long> productStocks = stockServiceClient.incrementProductStocks(savePayment.getProductId());
                         Long result = productStocks.getBody();
                         log.info("Info log: productStock - {} ", result);
                     } catch (Exception e) {
@@ -79,7 +79,7 @@ public class PaymentServiceImpl implements PaymentService {
                     log.info("{}",savePayment.getProductId());
                     try {
                         // 외부 서비스 호출
-                        ResponseEntity<Long> productStocks = productServiceClient.incrementPreorderProductStocks(savePayment.getProductId());
+                        ResponseEntity<Long> productStocks = stockServiceClient.incrementPreorderProductStocks(savePayment.getProductId());
                         Long result = productStocks.getBody();
                         log.info("Info log: productStock - {} ", result);
                     } catch (Exception e) {
@@ -126,7 +126,7 @@ public class PaymentServiceImpl implements PaymentService {
             if(savePayment.getProductType().equals("product")){
                 try {
                     // 외부 서비스 호출
-                    ResponseEntity<Long> productStocks = productServiceClient.incrementProductStocks(savePayment.getProductId());
+                    ResponseEntity<Long> productStocks = stockServiceClient.incrementProductStocks(savePayment.getProductId());
                     Long result = productStocks.getBody();
                     log.info("Info log: productStock - {} ", result);
                 } catch (Exception e) {
@@ -139,7 +139,7 @@ public class PaymentServiceImpl implements PaymentService {
             else if (savePayment.getProductType().equals("preorderProduct")) {
                 try {
                     // 외부 서비스 호출
-                    ResponseEntity<Long> productStocks = productServiceClient.incrementPreorderProductStocks(savePayment.getProductId());
+                    ResponseEntity<Long> productStocks = stockServiceClient.incrementPreorderProductStocks(savePayment.getProductId());
                     Long result = productStocks.getBody();
                     log.info("Info log: productStock - {} ", result);
                 } catch (Exception e) {

@@ -14,8 +14,6 @@ public interface PreorderProductDao {
 
     List<PreorderProduct> findAllPreorderProduct();
 
-    PreorderProduct changePreorderProduct(Long preorderProductId, String title, String content, Long price, LocalDateTime availableFrom);
-
     void deletePreorderProduct(Long preorderProductId);
 
 }

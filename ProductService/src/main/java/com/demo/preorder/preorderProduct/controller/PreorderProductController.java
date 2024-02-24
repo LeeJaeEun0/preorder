@@ -1,13 +1,9 @@
 package com.demo.preorder.preorderProduct.controller;
 
+import com.demo.preorder.client.dto.OrderResponseDto;
 import com.demo.preorder.preorderProduct.dto.PreorderProductDto;
 import com.demo.preorder.preorderProduct.dto.PreorderProductResponseDto;
-import com.demo.preorder.preorderProduct.dto.PreorderProductUpdateDto;
-import com.demo.preorder.preorderProduct.entity.PreorderProduct;
-import com.demo.preorder.preorderProduct.entity.PreorderProductStock;
 import com.demo.preorder.preorderProduct.service.PreorderProductService;
-import com.demo.preorder.preorderProduct.service.PreorderProductStockService;
-import com.demo.preorder.product.client.dto.OrderResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +15,6 @@ import java.util.List;
 @RequestMapping("/api/preorderProducts")
 @RequiredArgsConstructor
 public class PreorderProductController {
-
-    private final PreorderProductStockService preorderProductStockService;
 
     private final PreorderProductService preorderProductService;
 
@@ -63,17 +57,6 @@ public class PreorderProductController {
                 return ResponseEntity.status(HttpStatus.OK).body(preorderProduct);
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 조회에 실패했습니다.");
-            }
-        }
-
-        @PutMapping("/{preorderProductId}")
-        public ResponseEntity<?> changeProduct (@PathVariable("preorderProductId") Long
-        preorderProductId, @RequestBody PreorderProductUpdateDto preorderProductUpdateDto){
-            PreorderProductResponseDto preorderProduct = preorderProductService.changePreorderProduct(preorderProductId, preorderProductUpdateDto);
-            if (preorderProduct != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(preorderProduct);
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 수정에 실패했습니다.");
             }
         }
 

@@ -1,6 +1,6 @@
 package com.demo.preorder.product.service;
 
-import com.demo.preorder.product.client.dto.OrderResponseDto;
+import com.demo.preorder.client.dto.OrderResponseDto;
 import com.demo.preorder.product.dto.ProductDto;
 import com.demo.preorder.product.dto.ProductResponseDto;
 import com.demo.preorder.product.dto.ProductUpdateDto;
@@ -15,8 +15,6 @@ public interface ProductService {
     ProductResponseDto getProductById(Long productId);
 
     List<ProductResponseDto> findAllProduct();
-
-    ProductResponseDto changeProduct(Long productId,ProductUpdateDto productUpdateDto);
 
     void deleteProduct(Long productId);
 }
