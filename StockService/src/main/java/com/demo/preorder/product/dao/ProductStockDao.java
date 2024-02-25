@@ -11,8 +11,6 @@ public interface ProductStockDao {
 
     ProductStock decrementCount(Long productId);
 
-    void updateProductStock(Long productId, Long stock);
-
     void deleteProductStock(Long productId);
 
 }

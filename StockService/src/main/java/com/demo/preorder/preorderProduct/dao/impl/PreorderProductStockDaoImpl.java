@@ -55,18 +55,6 @@ public class PreorderProductStockDaoImpl implements PreorderProductStockDao {
     }
 
     @Override
-    public void updatePreorderProductStock(Long preorderProductId, Long stock) {
-        Optional<PreorderProductStock> optionalPreorderProductStock = preorderProductStockRepository.findByPreorderProductId(preorderProductId);
-        if (optionalPreorderProductStock.isPresent()) {
-            PreorderProductStock preorderProductStock = optionalPreorderProductStock.get();
-            preorderProductStock.setStock(stock);
-            preorderProductStockRepository.save(preorderProductStock);
-        } else {
-           throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT_STOCK);
-        }
-    }
-
-    @Override
     public void deletePreorderProductStock(Long preorderProductId) {
         Optional<PreorderProductStock> optionalPreorderProductStock = preorderProductStockRepository.findByPreorderProductId(preorderProductId);
         if (optionalPreorderProductStock.isPresent()) {

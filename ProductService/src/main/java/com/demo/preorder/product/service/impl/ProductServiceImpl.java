@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,8 +52,12 @@ public class ProductServiceImpl implements ProductService {
                 ResponseEntity<Long> productStocks = stockServiceClient.saveProductStocks(productStock);
                 Long result = productStocks.getBody();
                 log.info("Info log: productStock - {} ", result);
+            } catch (HttpClientErrorException | HttpServerErrorException e) {
+                log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", productStock.getProductId(), e.getMessage());
+                throw e;
             } catch (Exception e) {
-                log.error("Error saving productStock {}", e.getMessage(), e);
+                log.error("재고 저장 중 예외 발생, 상품 ID: {}, 오류 메시지: {}", productStock.getProductId(), e.getMessage(), e);
+                throw e;
             }
 
         }
@@ -76,8 +82,12 @@ public class ProductServiceImpl implements ProductService {
                 ResponseEntity<Long> productStocks = stockServiceClient.getProductStock(productId);
                 productStock = productStocks.getBody();
                 log.info("Info log: productStock - {} ", productStock);
+            }  catch (HttpClientErrorException | HttpServerErrorException e) {
+                log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage());
+                throw e;
             } catch (Exception e) {
-                log.error("Error saving productStock {}", e.getMessage(), e);
+                log.error("재고 저장 중 예외 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage(), e);
+                throw e;
             }
             if (productStock > 0) {
                 try {
@@ -85,8 +95,12 @@ public class ProductServiceImpl implements ProductService {
                     ResponseEntity<Long> productStocks = stockServiceClient.decrementProductStocks(productId);
                     productStock = productStocks.getBody();
                     log.info("Info log: productStock - {} ", productStock);
+                } catch (HttpClientErrorException | HttpServerErrorException e) {
+                    log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage());
+                    throw e;
                 } catch (Exception e) {
-                    log.error("Error saving productStock {}", e.getMessage(), e);
+                    log.error("재고 저장 중 예외 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage(), e);
+                    throw e;
                 }
                 if (productStock >= 0) {
                     try {
@@ -95,9 +109,12 @@ public class ProductServiceImpl implements ProductService {
                         OrderResponseDto result = responseDtoResponseEntity.getBody();
                         log.info("Info log: order - productId ={} result={}", result.getProductId(), result.getStatus());
                         return result;
+                    } catch (HttpClientErrorException | HttpServerErrorException e) {
+                        log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage());
+                        throw e;
                     } catch (Exception e) {
-                        log.error("Error order : {}", e.getMessage(), e);
-                        return null;
+                        log.error("재고 저장 중 예외 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage(), e);
+                        throw e;
                     }
                 }
             }
@@ -134,8 +151,12 @@ public class ProductServiceImpl implements ProductService {
             } else {
                 log.error("Info log: fail delete stock");
             }
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage());
+            throw e;
         } catch (Exception e) {
-            log.error("Error saving productStock {}", e.getMessage(), e);
+            log.error("재고 저장 중 예외 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage(), e);
+            throw e;
         }
         productDao.deleteProduct(productId);
     }

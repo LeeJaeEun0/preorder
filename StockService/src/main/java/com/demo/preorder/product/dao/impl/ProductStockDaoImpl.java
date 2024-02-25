@@ -54,18 +54,6 @@ public class ProductStockDaoImpl implements ProductStockDao {
     }
 
     @Override
-    public void updateProductStock(Long productId, Long stock) {
-        Optional<ProductStock> optionalProductStock = productStockRepository.findByProductId(productId);
-        if (optionalProductStock.isPresent()) {
-            ProductStock productStock = optionalProductStock.get();
-            productStock.setStock(stock);
-            productStockRepository.save(productStock);
-        } else {
-            throw new CustomException(ErrorCode.INVALID_PRODUCT);
-        }
-    }
-
-    @Override
     public void deleteProductStock(Long productId) {
         Optional<ProductStock> optionalProductStock = productStockRepository.findByProductId(productId);
         if (optionalProductStock.isPresent()) {

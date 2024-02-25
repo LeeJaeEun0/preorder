@@ -19,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,8 +56,12 @@ public class PreorderProductServiceImpl implements PreorderProductService {
                 ResponseEntity<Long> productStocks = stockServiceClient.savePreorderProductStocks(preorderProductStock);
                 Long result = productStocks.getBody();
                 log.info("Info log: productStock - {} ", result);
+            } catch (HttpClientErrorException | HttpServerErrorException e) {
+                log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", preorderProductStock.getPreorderProductId(), e.getMessage());
+                throw e;
             } catch (Exception e) {
-                log.error("Error saving productStock {}", e.getMessage(), e);
+                log.error("재고 저장 중 예외 발생, 상품 ID: {}, 오류 메시지: {}", preorderProductStock.getPreorderProductId(), e.getMessage(), e);
+                throw e;
             }
         }
 
@@ -82,8 +88,12 @@ public class PreorderProductServiceImpl implements PreorderProductService {
                     ResponseEntity<Long> productStocks = stockServiceClient.getPreorderProductStock(preorderProductId);
                     preorderProductStock = productStocks.getBody();
                     log.info("Info log: productStock - {} ", preorderProductStock);
+                }  catch (HttpClientErrorException | HttpServerErrorException e) {
+                    log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", preorderProductId, e.getMessage());
+                    throw e;
                 } catch (Exception e) {
-                    log.error("Error saving productStock {}", e.getMessage(), e);
+                    log.error("재고 저장 중 예외 발생, 상품 ID: {}, 오류 메시지: {}", preorderProductId, e.getMessage(), e);
+                    throw e;
                 }
                 log.info("preorderProductStock 체크 {}",preorderProductStock);
                 if (preorderProductStock> 0) {
@@ -92,8 +102,12 @@ public class PreorderProductServiceImpl implements PreorderProductService {
                         ResponseEntity<Long> productStocks = stockServiceClient.decrementPreorderProductStocks(preorderProductId);
                         preorderProductStock = productStocks.getBody();
                         log.info("Info log: productStock - {} ", preorderProductStock);
+                    } catch (HttpClientErrorException | HttpServerErrorException e) {
+                        log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", preorderProductId, e.getMessage());
+                        throw e;
                     } catch (Exception e) {
-                        log.error("Error saving productStock {}", e.getMessage(), e);
+                        log.error("재고 저장 중 예외 발생, 상품 ID: {}, 오류 메시지: {}", preorderProductId, e.getMessage(), e);
+                        throw e;
                     }
                     if (preorderProductStock >= 0) {
                         try {
@@ -102,10 +116,12 @@ public class PreorderProductServiceImpl implements PreorderProductService {
                             OrderResponseDto result = responseDtoResponseEntity.getBody();
                             log.info("Info log: order - preorderProductId ={} result={}", result.getProductId(), result.getStatus());
                             return result;
+                        } catch (HttpClientErrorException | HttpServerErrorException e) {
+                            log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", preorderProductId, e.getMessage());
+                            throw e;
                         } catch (Exception e) {
-                            // 오류 발생 시 처리
-                            log.error("Error order : {}", e.getMessage(), e);
-                            return null;
+                            log.error("재고 저장 중 예외 발생, 상품 ID: {}, 오류 메시지: {}", preorderProductId, e.getMessage(), e);
+                            throw e;
                         }
                     }
                     throw new CustomException(ErrorCode.NOT_EXISTS_PREORDER_PRODUCT_STOCK);
@@ -138,12 +154,17 @@ public class PreorderProductServiceImpl implements PreorderProductService {
             // 외부 서비스 호출
             ResponseEntity<Void> response = stockServiceClient.deletePreorderProductStocks(preorderProductId);
             if (response.getStatusCode() == HttpStatus.OK) {
-                log.info("Info log: delete stock");
+                log.info("성공적으로 재고를 삭제했습니다. 상품 ID: {}", preorderProductId);
             } else {
-                log.error("Info log: fail delete stock");
+                // 실패 로그에 상태 코드 추가
+                log.error("재고 삭제 실패. 상태 코드: {}, 상품 ID: {}", response.getStatusCode(), preorderProductId);
             }
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", preorderProductId, e.getMessage());
+            throw e;
         } catch (Exception e) {
-            log.error("Error saving productStock {}", e.getMessage(), e);
+            log.error("재고 저장 중 예외 발생, 상품 ID: {}, 오류 메시지: {}", preorderProductId, e.getMessage(), e);
+            throw e;
         }
         preorderProductDao.deletePreorderProduct(preorderProductId);
     }

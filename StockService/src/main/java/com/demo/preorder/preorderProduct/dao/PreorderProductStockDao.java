@@ -11,7 +11,5 @@ public interface PreorderProductStockDao {
 
     PreorderProductStock decrementCount(Long preorderProductId);
 
-    void updatePreorderProductStock(Long preorderProductId, Long stock);
-
     void deletePreorderProductStock(Long preorderProductId);
 }
