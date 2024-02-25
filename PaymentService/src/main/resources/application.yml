@@ -19,9 +19,9 @@ spring:
 
   jwt:
     secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
-product:
+stock:
   service:
-    url: http://localhost:8084
+    url: http://localhost:8087
 
 order:
   service:

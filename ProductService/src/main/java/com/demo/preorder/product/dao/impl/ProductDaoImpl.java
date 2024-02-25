@@ -34,18 +34,6 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Product changeProduct(Long productId, String title, String content, Long price) {
-        Optional<Product> optionalProduct= productRepository.findById(productId);
-        if (optionalProduct.isPresent()){
-            Product product = optionalProduct.get();
-            product.setTitle(title);
-            product.setContent(content);
-            product.setPrice(price);
-            return productRepository.save(product);
-        }else throw new CustomException(ErrorCode.INVALID_PRODUCT);
-    }
-
-    @Override
     public void deleteProduct(Long productId) {
         Optional<Product> optionalProduct= productRepository.findById(productId);
         if (optionalProduct.isPresent()){

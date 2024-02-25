@@ -74,17 +74,7 @@ spring:
         - id: ProductService
           uri: http://127.0.0.1:8084/
           predicates:
-            - Path=/api/preorderProductStocks/**
-
-        - id: ProductService
-          uri: http://127.0.0.1:8084/
-          predicates:
             - Path=/api/products/**
-
-        - id: ProductService
-          uri: http://127.0.0.1:8084/
-          predicates:
-            - Path=/api/productStocks/**
 
         - id: OrderService
           uri: http://127.0.0.1:8085/
@@ -95,3 +85,13 @@ spring:
           uri: http://127.0.0.1:8086/
           predicates:
             - Path=/api/payments/**
+
+        - id: StockService
+          uri: http://127.0.0.1:8087/
+          predicates:
+            - Path=/api/preorderProductStocks/**
+
+        - id: StockService
+          uri: http://127.0.0.1:8087/
+          predicates:
+            - Path=/api/productStocks/**

@@ -1,10 +1,10 @@
 package com.demo.preorder.product.controller;
 
-import com.demo.preorder.product.client.dto.OrderResponseDto;
+
+import com.demo.preorder.client.dto.OrderResponseDto;
 import com.demo.preorder.product.dto.ProductDto;
 import com.demo.preorder.product.dto.ProductResponseDto;
 import com.demo.preorder.product.dto.ProductUpdateDto;
-import com.demo.preorder.product.entity.Product;
 import com.demo.preorder.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -57,16 +57,6 @@ public class ProductController {
             return  ResponseEntity.status(HttpStatus.OK).body(product);
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 조회에 실패했습니다.");
-        }
-    }
-
-    @PutMapping("/{productId}")
-    public ResponseEntity<?> changeProduct(@PathVariable("productId") Long productId,@RequestBody ProductUpdateDto productUpdateDto){
-        ProductResponseDto product = productService.changeProduct(productId,productUpdateDto);
-        if(product != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(product);
-        }else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 수정에 실패했습니다.");
         }
     }
 
