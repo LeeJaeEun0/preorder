@@ -35,7 +35,7 @@ public class ProfileServiceImpl implements ProfileService {
             if (user == null) throw new CustomException(ErrorCode.INVALID_ID);
             profile.setUserId(user);
             profile.setGreeting(profileDto.getGreeting());
-            if(profileDto.getFile() == null) throw new CustomException(ErrorCode.NOT_EXISTS_PROFILE);
+            if (profileDto.getFile() == null) throw new CustomException(ErrorCode.NOT_EXISTS_PROFILE);
             profile.setImage(userId.toString() + profileDto.getFile().getOriginalFilename());
 
             // 파일 저장
@@ -55,21 +55,21 @@ public class ProfileServiceImpl implements ProfileService {
     public ProfileResponseDto updateProfile(Long userId, ProfileDto profileDto) throws IOException {
 
         try {
-            Profile profile = profileDao.findProfileByUserId(userId) ;
+            Profile profile = profileDao.findProfileByUserId(userId);
             String fileName = profile.getImage();
 
             deleteFile(fileName);
 
             User user = userDao.findUser(userId);
             if (user == null) throw new CustomException(ErrorCode.INVALID_ID);
-            if(profileDto.getFile() == null) throw new CustomException(ErrorCode.NOT_EXISTS_PROFILE);
+            if (profileDto.getFile() == null) throw new CustomException(ErrorCode.NOT_EXISTS_PROFILE);
 
 
             String uploadDir = "C:/path/to/upload/dir/";
-            Path path = Paths.get(uploadDir +userId.toString() + profileDto.getFile().getOriginalFilename());
+            Path path = Paths.get(uploadDir + userId.toString() + profileDto.getFile().getOriginalFilename());
             Files.copy(profileDto.getFile().getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             log.info("file upload");
-            return new ProfileResponseDto(profileDao.updateProfile(userId, userId.toString()+profileDto.getFile().getOriginalFilename(), profileDto.getGreeting()));
+            return new ProfileResponseDto(profileDao.updateProfile(userId, userId.toString() + profileDto.getFile().getOriginalFilename(), profileDto.getGreeting()));
         } catch (IOException e) {
             log.error("파일 업로드 및 저장 실패: {}", profileDto.getFile().getOriginalFilename(), e);
         }

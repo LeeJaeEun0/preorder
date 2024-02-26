@@ -20,7 +20,7 @@ import java.util.Set;
 @Builder
 public class User {
     @Id
-    @Column(name="user_id")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -34,7 +34,7 @@ public class User {
     private String refreshToken;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<UserRole> userRoles = new HashSet<>();
 
 
@@ -60,21 +60,21 @@ public class User {
     }
 
     @Builder
-    public User(String email, String password, String name){
+    public User(String email, String password, String name) {
         this.email = email;
         this.password = password;
         this.name = name;
     }
 
-    public void addRole(UserRole userRole){
+    public void addRole(UserRole userRole) {
         userRoles.add(userRole);
     }
 
-    public void updateRefreshToken(String refreshToken){
+    public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
 
-    public boolean verifyUser(UserLoginDto userLoginDto){
+    public boolean verifyUser(UserLoginDto userLoginDto) {
         return this.email.equals(userLoginDto.getUserEmail()) && this.password.equals(userLoginDto.getUserPassword());
     }
 

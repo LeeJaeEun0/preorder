@@ -12,7 +12,6 @@ public class JwtServiceImpl implements JwtService {
 
     private final JwtDao jwtDao;
 
-
     @Override
     public void logout(String accessToken) {
         jwtDao.logout(accessToken);

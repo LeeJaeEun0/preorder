@@ -28,19 +28,20 @@ public class UserServiceImpl implements UserService {
 
     private final EmailCertificationDao emailCertificationDao;
 
-    private  final EmailProvider emailProvider;
+    private final EmailProvider emailProvider;
+
     @Override
     public boolean checkEmail(EmailDto emailDTO) {
         log.info("info log : emailService");
         String email = emailDTO.getEmail();
         boolean isExistEmail = userDao.checkEmail(email);
-        if(isExistEmail) throw new CustomException(ErrorCode.EXISTS_EMAIL);
+        if (isExistEmail) throw new CustomException(ErrorCode.EXISTS_EMAIL);
 
         log.info("info log = {}", isExistEmail);
 
         String certificationNumber = emailProvider.getCertificationNumber();
         boolean isSucceed = emailProvider.sendCertificationMail(email, certificationNumber);
-        if(!isSucceed) throw new CustomException(ErrorCode.TRANSMISSION_FAILED);
+        if (!isSucceed) throw new CustomException(ErrorCode.TRANSMISSION_FAILED);
         log.info("info log = {}", isSucceed);
 
         EmailCertification emailCertification = new EmailCertification();
@@ -60,13 +61,13 @@ public class UserServiceImpl implements UserService {
     public Long findUserId(Map<String, String> httpHeaders) {
         String jwtToken = httpHeaders.get("authorization");
         String email = JwtUtils.initJwtPayload(jwtToken);
-        log.info("info log = {}",userDao.findUserId(email));
+        log.info("info log = {}", userDao.findUserId(email));
         return userDao.findUserId(email);
     }
 
     @Override
     public UserResponseDto changeUserProfile(Long userId, ProfileDto profileDto) {
-        return new UserResponseDto(userDao.updateUserProfile(userId,profileDto.getName()));
+        return new UserResponseDto(userDao.updateUserProfile(userId, profileDto.getName()));
     }
 
     @Override
@@ -75,7 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long userId){
+    public void deleteUser(Long userId) {
         userDao.deleteUser(userId);
     }
 }

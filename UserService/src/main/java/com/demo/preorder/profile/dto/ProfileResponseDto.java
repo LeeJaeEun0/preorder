@@ -9,7 +9,7 @@ public class ProfileResponseDto {
     private String greeting;
     private String image;
 
-    public ProfileResponseDto(Profile profile){
+    public ProfileResponseDto(Profile profile) {
         this.email = profile.getUserId().getEmail();
         this.greeting = profile.getGreeting();
         this.image = profile.getImage();

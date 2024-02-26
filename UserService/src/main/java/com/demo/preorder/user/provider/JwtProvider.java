@@ -42,7 +42,7 @@ public class JwtProvider {
                 .parseClaimsJws(token)
                 .getBody();
     }
-    
+
     public Date getExpireDateAccessToken() {
         long expireTimeMils = 1000 * 60 * 60;
         return new Date(System.currentTimeMillis() + expireTimeMils);

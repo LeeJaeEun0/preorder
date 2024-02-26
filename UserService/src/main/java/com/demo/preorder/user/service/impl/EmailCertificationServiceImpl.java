@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class EmailCertificationServiceImpl implements EmailCertificationService {
 
     private final EmailCertificationDao emailCertificationDao;
+
     @Override
     public boolean emailCertification(EmailCertificationDto emailCertificationDto) {
         return emailCertificationDao.emailCertification(emailCertificationDto.getEmail(), emailCertificationDto.getNumber());

@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -37,10 +38,10 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserResponseDto registerUser(UserRegisterDto userRegisterDto){
+    public UserResponseDto registerUser(UserRegisterDto userRegisterDto) {
 
         Optional<User> savedUser = userRepository.findByEmail(userRegisterDto.getUserEmail());
-        if(savedUser.isPresent()) {
+        if (savedUser.isPresent()) {
             throw new CustomException(ErrorCode.EXISTS_EMAIL);
         }
 
@@ -57,16 +58,16 @@ public class UserService {
                 .role(Role.USER)
                 .user(saveduser)
                 .build();
-        if(saveduser.getUserRoles() == null)
+        if (saveduser.getUserRoles() == null)
             saveduser.setUserRoles(new HashSet<>());
         saveduser.addRole(role);
         userRoleRepository.save(role);
         return new UserResponseDto(saveduser);
     }
 
-    public UserVerifyResponseDto verifyUser(UserLoginDto userLoginDto){
+    public UserVerifyResponseDto verifyUser(UserLoginDto userLoginDto) {
         Optional<User> optionalUser = userRepository.findByEmail(userLoginDto.getUserEmail());
-        if(optionalUser.isPresent()) {
+        if (optionalUser.isPresent()) {
             User user = optionalUser.get();
 
             if (!user.getPassword().equals(passwordEncoder.encrypt(userLoginDto.getUserEmail(), userLoginDto.getUserPassword())))
@@ -74,53 +75,53 @@ public class UserService {
             return UserVerifyResponseDto.builder()
                     .isValid(true)
                     .userRole(user.getUserRoles().stream().map(UserRole::getRole).collect(Collectors.toSet())).build();
-        }else{
+        } else {
             throw new CustomException(ErrorCode.INVALID_EMAIL);
         }
     }
 
-    public UserResponseDto findUserByEmail(String userEmail){
+    public UserResponseDto findUserByEmail(String userEmail) {
         Optional<User> optionalUser = userRepository.findByEmail(userEmail);
         User user = optionalUser.get();
         return new UserResponseDto(user);
     }
 
     @Transactional
-    public void updateRefreshToken(String userEmail,String refreshToken){
+    public void updateRefreshToken(String userEmail, String refreshToken) {
         Optional<User> optionalUser = userRepository.findByEmail(userEmail);
         User user = optionalUser.get();
-        if(user == null)
+        if (user == null)
             return;
         user.updateRefreshToken(refreshToken);
     }
 
     @Transactional
-    public Jwt refreshToken(String refreshToken){
-        try{
+    public Jwt refreshToken(String refreshToken) {
+        try {
             // 유효한 토큰 인지 검증
             jwtProvider.getClaims(refreshToken);
             User user = userRepository.findByRefreshToken(refreshToken);
-            if(user == null)
+            if (user == null)
                 return null;
 
             HashMap<String, Object> claims = new HashMap<>();
             AuthenticateUser authenticateUser = new AuthenticateUser(user.getEmail(),
                     user.getUserRoles().stream().map(UserRole::getRole).collect(Collectors.toSet()));
             String authenticateUserJson = objectMapper.writeValueAsString(authenticateUser);
-            claims.put(VerifyUserFilter.AUTHENTICATE_USER,authenticateUserJson);
+            claims.put(VerifyUserFilter.AUTHENTICATE_USER, authenticateUserJson);
             Jwt jwt = jwtProvider.createJwt(claims);
-            updateRefreshToken(user.getEmail(),jwt.getRefreshToken());
+            updateRefreshToken(user.getEmail(), jwt.getRefreshToken());
             return jwt;
-        } catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
     @Transactional
-    public boolean addUserRole(String email, Role role){
+    public boolean addUserRole(String email, Role role) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         User user = optionalUser.get();
-        if(user.getUserRoles().stream().anyMatch(userRole -> userRole.getRole().equals(role)))
+        if (user.getUserRoles().stream().anyMatch(userRole -> userRole.getRole().equals(role)))
             return false;
         UserRole userRole = UserRole.builder()
                 .user(user)
