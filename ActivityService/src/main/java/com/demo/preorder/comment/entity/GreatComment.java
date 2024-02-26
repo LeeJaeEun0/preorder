@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 public class GreatComment {
     @Id
-    @Column(name="great_comment_id")
+    @Column(name = "great_comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

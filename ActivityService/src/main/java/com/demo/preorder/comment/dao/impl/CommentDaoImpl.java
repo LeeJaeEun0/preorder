@@ -5,11 +5,9 @@ import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.repository.CommentRepository;
 import com.demo.preorder.exception.CustomException;
 import com.demo.preorder.exception.ErrorCode;
-import com.demo.preorder.follow.entity.Follow;
-import com.demo.preorder.follow.repository.FollowRepository;
-import com.demo.preorder.post.repository.PostRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -37,33 +35,32 @@ public class CommentDaoImpl implements CommentDao {
     @Override
     public Comment selectedComment(Long commentId) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
-        if(optionalComment.isPresent()){
+        if (optionalComment.isPresent()) {
             return optionalComment.get();
-        }else {
+        } else {
             throw new CustomException(ErrorCode.INVALID_COMMENT);
         }
 
     }
 
     @Override
-    public List<Comment> selectComment(Long postId) {
-
+    public List<Comment> getCommentById(Long postId) {
         return commentRepository.findByPostIdId(postId);
     }
 
     @Override
     public Comment updateCommentContent(Long userId, Long commentId, String content) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
-        if(optionalComment.isPresent()){
+        if (optionalComment.isPresent()) {
             Comment comment = optionalComment.get();
 
-            if(comment.getUseId().equals(userId)){
+            if (comment.getUseId().equals(userId)) {
                 comment.setContent(content);
                 return commentRepository.save(comment);
-            }else{
+            } else {
                 throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
             }
-        }else {
+        } else {
             throw new CustomException(ErrorCode.INVALID_COMMENT);
         }
     }
@@ -71,15 +68,15 @@ public class CommentDaoImpl implements CommentDao {
     @Override
     public void deleteComment(Long userId, Long commentId) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
-        if(optionalComment.isPresent()){
+        if (optionalComment.isPresent()) {
             Comment comment = optionalComment.get();
 
-            if(comment.getUseId().equals(userId)){
+            if (comment.getUseId().equals(userId)) {
                 commentRepository.delete(comment);
-            }else{
+            } else {
                 throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
             }
-        }else{
+        } else {
             throw new CustomException(ErrorCode.INVALID_COMMENT);
         }
     }

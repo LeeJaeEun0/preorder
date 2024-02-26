@@ -8,7 +8,7 @@ public class GreatCommentResponseDto {
     private Long userId;
     private Long commentId;
 
-    public GreatCommentResponseDto(GreatComment greatComment){
+    public GreatCommentResponseDto(GreatComment greatComment) {
         this.userId = greatComment.getUserId();
         this.commentId = greatComment.getCommentId().getId();
     }

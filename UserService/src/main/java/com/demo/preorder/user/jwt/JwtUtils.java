@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Map;
 
 public class JwtUtils {
-    public static String  initJwtPayload(String bearerJwt) {
+    public static String initJwtPayload(String bearerJwt) {
 
         bearerJwt = StringUtils.removeStart(bearerJwt, "Bearer ");
 

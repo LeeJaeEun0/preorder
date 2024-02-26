@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EmailCertification {
     @Id
-    @Column(name="user_id")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

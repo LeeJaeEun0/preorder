@@ -51,13 +51,17 @@ public class JwtAuthorizationFilter implements Filter {
             log.info("값 : {}",authenticateUser.getEmail());
             chain.doFilter(request, response);
         } catch (JsonParseException e){
-            throw new CustomException(ErrorCode.JSON_PARSE_EXCEPTION);
+            log.error("JsonParseException");
+            httpServletResponse.sendError(HttpStatus.BAD_REQUEST.value());
         } catch (SignatureException | MalformedJwtException | UnsupportedJwtException e){
-            throw new CustomException(ErrorCode.JWT_EXCEPTION);
+            log.error("JwtException");
+            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "인증 오류");
         } catch (ExpiredJwtException e){
-            throw new CustomException(ErrorCode.JWT_TOKEN_EXPIRED);
+            log.error("JwtTokenExpired");
+            httpServletResponse.sendError(HttpStatus.FORBIDDEN.value(), "토큰이 만료 되었습니다");
         } catch (AuthorizationException e){
-            throw new CustomException(ErrorCode.AUTHORIZATION_EXCEPTION);
+            log.error("AuthorizationException");
+            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "권한이 없습니다");
         }
     }
 

@@ -4,6 +4,7 @@ import com.demo.preorder.user.entity.EmailCertification;
 
 public interface EmailCertificationDao {
 
-    EmailCertification insertEmailCertification(EmailCertification emailCertification);
+    void insertEmailCertification(EmailCertification emailCertification);
+
     boolean emailCertification(String email, String number);
 }

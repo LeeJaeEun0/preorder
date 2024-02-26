@@ -17,10 +17,10 @@ public class JwtDaoImpl implements JwtDao {
     @Override
     public void logout(String accessToken) {
         Optional<Jwt> optionalJwt = jwtRepository.findByAccessToken(accessToken);
-        if(optionalJwt.isPresent()){
+        if (optionalJwt.isPresent()) {
             Jwt jwt = optionalJwt.get();
 
-            if(jwt.getAccessToken().equals(accessToken))
+            if (jwt.getAccessToken().equals(accessToken))
                 jwtRepository.delete(jwt);
         }
     }

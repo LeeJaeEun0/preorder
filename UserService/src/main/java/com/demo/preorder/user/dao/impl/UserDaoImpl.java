@@ -8,6 +8,7 @@ import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.util.Optional;
 
 @Component
@@ -21,9 +22,9 @@ public class UserDaoImpl implements UserDao {
     public User findUser(Long userId) {
 
         Optional<User> user = userRepository.findById(userId);
-        if(user.isPresent()){
+        if (user.isPresent()) {
             return user.get();
-        }else{
+        } else {
             throw new CustomException(ErrorCode.INVALID_ID);
         }
     }
@@ -37,16 +38,16 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Long findUserId(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             return user.getId();
-        }else {
+        } else {
             throw new CustomException(ErrorCode.INVALID_EMAIL);
         }
     }
 
     @Override
-    public Optional<User> selectUser(Long userId){
+    public Optional<User> selectUser(Long userId) {
         return userRepository.findById(userId);
     }
 
@@ -61,17 +62,18 @@ public class UserDaoImpl implements UserDao {
             throw new CustomException(ErrorCode.INVALID_ID);
         }
     }
+
     @Override
-    public User updateUserPassword(Long userId, String oldPassword,String newPassword)  {
+    public User updateUserPassword(Long userId, String oldPassword, String newPassword) {
         Optional<User> selectUser = userRepository.findById(userId);
         if (selectUser.isPresent()) {
 
             User user = selectUser.get();
             String password = user.getPassword();
 
-            if (password.equals(passwordEncoder.encrypt(user.getEmail(),oldPassword))){
-                user.setPassword(passwordEncoder.encrypt(user.getEmail(),newPassword));
-            }else{
+            if (password.equals(passwordEncoder.encrypt(user.getEmail(), oldPassword))) {
+                user.setPassword(passwordEncoder.encrypt(user.getEmail(), newPassword));
+            } else {
                 throw new CustomException(ErrorCode.INVALID_PASSWORD);
             }
 
@@ -80,6 +82,7 @@ public class UserDaoImpl implements UserDao {
             throw new CustomException(ErrorCode.INVALID_ID);
         }
     }
+
     @Override
     public void deleteUser(Long userId) {
         Optional<User> deleteUser = userRepository.findById(userId);

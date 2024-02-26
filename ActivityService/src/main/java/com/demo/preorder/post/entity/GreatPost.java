@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 public class GreatPost {
     @Id
-    @Column(name="great_post_id")
+    @Column(name = "great_post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

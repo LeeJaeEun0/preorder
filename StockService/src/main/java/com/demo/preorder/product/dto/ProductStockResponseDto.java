@@ -10,7 +10,7 @@ public class ProductStockResponseDto {
 
     private Long stock;
 
-    public ProductStockResponseDto(ProductStock productStock){
+    public ProductStockResponseDto(ProductStock productStock) {
         this.productId = productStock.getProductId();
         this.stock = productStock.getStock();
     }

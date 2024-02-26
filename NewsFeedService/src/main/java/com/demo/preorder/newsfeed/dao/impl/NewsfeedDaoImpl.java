@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class NewsfeedDaoImpl implements NewsfeedDao {
 
     private final NewsfeedRepository newsfeedRepository;
+
     @Override
     public Newsfeed saveNewsfeed(Newsfeed newsfeed) {
         return newsfeedRepository.save(newsfeed);

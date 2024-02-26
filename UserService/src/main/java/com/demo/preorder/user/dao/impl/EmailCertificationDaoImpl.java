@@ -19,8 +19,8 @@ public class EmailCertificationDaoImpl implements EmailCertificationDao {
     private final EmailCertificationRepository emailCertificationRepository;
 
     @Override
-    public EmailCertification insertEmailCertification(EmailCertification emailCertification) {
-        return emailCertificationRepository.save(emailCertification);
+    public void insertEmailCertification(EmailCertification emailCertification) {
+        emailCertificationRepository.save(emailCertification);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class EmailCertificationDaoImpl implements EmailCertificationDao {
             if (emailAddress.equals(email) && certificationNumber.equals(number))
                 return true;
             else throw new CustomException(ErrorCode.INVALID_NUMBER);
-        }else{
+        } else {
             throw new CustomException(ErrorCode.INVALID_EMAIL_AUTHENTICATION);
         }
     }

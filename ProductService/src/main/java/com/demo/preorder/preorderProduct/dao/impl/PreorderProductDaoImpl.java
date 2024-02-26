@@ -8,7 +8,6 @@ import com.demo.preorder.preorderProduct.repository.PreorderProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +40,6 @@ public class PreorderProductDaoImpl implements PreorderProductDao {
         if (optionalPreorderProduct.isPresent()) {
             PreorderProduct preorderProduct = optionalPreorderProduct.get();
             preorderProductRepository.delete(preorderProduct);
-        }else throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT);
+        } else throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT);
     }
 }

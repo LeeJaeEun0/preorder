@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PostService {
 
-    PostResponseDto savePost(Long userId,PostDto postDto);
+    PostResponseDto savePost(Long userId, PostDto postDto);
 
     PostResponseDto selectPost(Long postId);
 
@@ -17,7 +17,7 @@ public interface PostService {
 
     List<PostResponseDto> searchPost(SearchwordDto searchwordDto);
 
-    PostResponseDto changePost(Long userId, PostDto postDto);
+    PostResponseDto updatePost(Long userId, PostDto postDto);
 
-    void deletePost(Long UserId,Long postId) ;
+    void deletePost(Long UserId, Long postId);
 }

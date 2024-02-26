@@ -17,9 +17,9 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<?> getOrderById(@PathVariable("orderId") Long orderId){
+    public ResponseEntity<?> getOrderById(@PathVariable("orderId") Long orderId) {
         OrderResponseDto orderResponseDto = orderService.getOrderById(orderId);
-        if (orderResponseDto  != null) {
+        if (orderResponseDto != null) {
             return ResponseEntity.accepted().body(orderResponseDto);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("주문을 조회할 수 없습니다");
@@ -29,7 +29,7 @@ public class OrderController {
     @GetMapping("/success/{productId}")
     public ResponseEntity<?> findOrderSuccessById(@PathVariable("productId") Long productId, @RequestParam("productType") String productType) {
         List<OrderResponseDto> orderResponseDtoList = orderService.findOrderSuccessById(productId, productType);
-        if (orderResponseDtoList  != null) {
+        if (orderResponseDtoList != null) {
             return ResponseEntity.accepted().body(orderResponseDtoList);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("주문을 조회할 수 없습니다");
@@ -37,9 +37,9 @@ public class OrderController {
     }
 
     @GetMapping("/cancel/{productId}")
-    public ResponseEntity<?> findOrderCancelById(@PathVariable("productId") Long productId,@RequestParam("productType") String productType){
+    public ResponseEntity<?> findOrderCancelById(@PathVariable("productId") Long productId, @RequestParam("productType") String productType) {
         List<OrderResponseDto> orderResponseDtoList = orderService.findOrderCancelById(productId, productType);
-        if (orderResponseDtoList  != null) {
+        if (orderResponseDtoList != null) {
             return ResponseEntity.accepted().body(orderResponseDtoList);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("주문을 조회할 수 없습니다");
@@ -47,9 +47,9 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
-    public ResponseEntity<?> updateOrder(@PathVariable("orderId") Long orderId){
+    public ResponseEntity<?> updateOrder(@PathVariable("orderId") Long orderId) {
         OrderResponseDto orderResponseDto = orderService.updateOrder(orderId);
-        if (orderResponseDto  != null) {
+        if (orderResponseDto != null) {
             return ResponseEntity.accepted().body(orderResponseDto);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("주문을 수정할 수 없습니다");

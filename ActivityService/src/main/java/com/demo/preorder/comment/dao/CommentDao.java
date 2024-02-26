@@ -11,7 +11,8 @@ public interface CommentDao {
 
     Comment selectedComment(Long commentId);
 
-    List<Comment> selectComment(Long postId);
+    List<Comment> getCommentById(Long postId);
+
     Comment updateCommentContent(Long userId, Long commentId, String content);
 
     void deleteComment(Long userId, Long commentId);

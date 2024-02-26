@@ -1,18 +1,14 @@
 package com.demo.preorder.user.controller;
 
 import com.demo.preorder.user.dto.*;
-import com.demo.preorder.user.entity.User;
 import com.demo.preorder.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -22,8 +18,6 @@ public class UserController {
 
     @PostMapping("/email")
     public ResponseEntity<?> sendEmail(@RequestBody EmailDto emailDTO) {
-        log.info("info log: controller");
-        log.info("info log = {}", emailDTO.getEmail());
         boolean is_email = userService.checkEmail(emailDTO);
         if (is_email) {
             return ResponseEntity.status(HttpStatus.CREATED).body(emailDTO);
@@ -37,7 +31,7 @@ public class UserController {
                                            @RequestBody ProfileDto profileDto) {
         Map<String, String> httpHeader = httpHeaders;
         Long userId = userService.findUserId(httpHeader);
-        UserResponseDto user = userService.changeUserProfile(userId,profileDto);
+        UserResponseDto user = userService.changeUserProfile(userId, profileDto);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
@@ -45,7 +39,7 @@ public class UserController {
     public ResponseEntity<?> updatePassword(@RequestHeader Map<String, String> httpHeaders,
                                             @RequestBody PasswordDto passwordDto) {
         Long userId = userService.findUserId(httpHeaders);
-        UserResponseDto user = userService.changeUserPassword(userId,passwordDto);
+        UserResponseDto user = userService.changeUserPassword(userId, passwordDto);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
@@ -53,7 +47,7 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@RequestHeader Map<String, String> httpHeaders) {
         Long userId = userService.findUserId(httpHeaders);
         userService.deleteUser(userId);
-        return ResponseEntity.status(HttpStatus.OK).body("ok");
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

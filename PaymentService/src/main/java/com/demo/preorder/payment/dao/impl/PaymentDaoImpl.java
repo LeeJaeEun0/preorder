@@ -24,18 +24,18 @@ public class PaymentDaoImpl implements PaymentDao {
     @Override
     public Payment getPaymentById(Long paymentId) {
         Optional<Payment> optionalPayment = paymentRepository.findById(paymentId);
-        if(optionalPayment.isPresent()){
+        if (optionalPayment.isPresent()) {
             return optionalPayment.get();
-        }else throw new CustomException(ErrorCode.INVALID_PAYMENT);
+        } else throw new CustomException(ErrorCode.INVALID_PAYMENT);
     }
 
     @Override
     public Payment updatePayment(Long paymentId) {
         Optional<Payment> optionalPayment = paymentRepository.findById(paymentId);
-        if(optionalPayment.isPresent()){
+        if (optionalPayment.isPresent()) {
             Payment payment = optionalPayment.get();
             payment.setStatus("cancel");
             return paymentRepository.save(payment);
-        }else throw new CustomException(ErrorCode.INVALID_PAYMENT);
+        } else throw new CustomException(ErrorCode.INVALID_PAYMENT);
     }
 }

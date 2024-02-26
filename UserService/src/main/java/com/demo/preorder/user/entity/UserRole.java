@@ -19,7 +19,7 @@ public class UserRole {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Enumerated(value =EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     private Role role;
 
 //    @Builder

@@ -4,8 +4,6 @@ import com.demo.preorder.newsfeed.dto.NewsfeedDto;
 import com.demo.preorder.newsfeed.dto.NewsfeedMyNewsDto;
 import com.demo.preorder.newsfeed.dto.NewsfeedMyNewsResponseDto;
 import com.demo.preorder.newsfeed.dto.NewsfeedResponseDto;
-import com.demo.preorder.newsfeed.entity.Newsfeed;
-import com.demo.preorder.newsfeed.entity.NewsfeedMyNews;
 import com.demo.preorder.newsfeed.service.NewsfeedMyNewsService;
 import com.demo.preorder.newsfeed.service.NewsfeedService;
 import lombok.RequiredArgsConstructor;
@@ -26,21 +24,21 @@ public class InternalNewsfeedController {
     private final NewsfeedMyNewsService newsfeedMyNewsService;
 
     @PostMapping
-    public ResponseEntity<?> createNewsfeed(@RequestBody NewsfeedDto newsfeedDto){
+    public ResponseEntity<?> createNewsfeed(@RequestBody NewsfeedDto newsfeedDto) {
         NewsfeedResponseDto newsfeed = newsfeedService.saveNewsfeed(newsfeedDto);
-        if(newsfeed != null){
-            return  ResponseEntity.status(HttpStatus.CREATED).body(newsfeed);
-        }else {
+        if (newsfeed != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(newsfeed);
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("뉴스피드 작성에 실패했습니다.");
         }
     }
 
     @PostMapping("/myNews")
-    public ResponseEntity<?> createNewsfeedMyNews(@RequestBody NewsfeedMyNewsDto newsfeedMyNewsDto){
+    public ResponseEntity<?> createNewsfeedMyNews(@RequestBody NewsfeedMyNewsDto newsfeedMyNewsDto) {
         NewsfeedMyNewsResponseDto newsfeedMyNews = newsfeedMyNewsService.saveNewsfeedMyNew(newsfeedMyNewsDto);
-        if(newsfeedMyNews != null){
-            return  ResponseEntity.status(HttpStatus.CREATED).body(newsfeedMyNews);
-        }else {
+        if (newsfeedMyNews != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(newsfeedMyNews);
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("뉴스피드 작성에 실패했습니다.");
         }
     }

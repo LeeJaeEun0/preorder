@@ -17,9 +17,9 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @GetMapping("/{paymentId}")
-    public ResponseEntity<?> getPaymentById(@PathVariable("paymentId") Long paymentId){
+    public ResponseEntity<?> getPaymentById(@PathVariable("paymentId") Long paymentId) {
         PaymentResponseDto paymentResponseDto = paymentService.getPaymentById(paymentId);
-        if (paymentResponseDto  != null) {
+        if (paymentResponseDto != null) {
             return ResponseEntity.accepted().body(paymentResponseDto);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("결제 내용을 조회할 수 없습니다");
@@ -27,9 +27,9 @@ public class PaymentController {
     }
 
     @PutMapping("/{paymentId}")
-    public ResponseEntity<?> updatePayment(@PathVariable("paymentId") Long paymentId){
+    public ResponseEntity<?> updatePayment(@PathVariable("paymentId") Long paymentId) {
         PaymentResponseDto paymentResponseDto = paymentService.updatePayment(paymentId);
-        if (paymentResponseDto  != null) {
+        if (paymentResponseDto != null) {
             return ResponseEntity.accepted().body(paymentResponseDto);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("결제 내용을 수정할 수 없습니다");

@@ -22,41 +22,40 @@ public class InternalProductStockController {
         Long stock = ProductStock.getStock();
         if (stock != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(stock);
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("재고 생성에 실패했습니다.");
         }
     }
 
     @GetMapping
-    public ResponseEntity<?> getProductStockById(@RequestParam("productId") Long productId){
+    public ResponseEntity<?> getProductStockById(@RequestParam("productId") Long productId) {
         ProductStockResponseDto productStock = productStockService.getProductById(productId);
         Long stock = productStock.getStock();
         if (stock != null) {
-            return  ResponseEntity.status(HttpStatus.OK).body(stock);
-        }else {
+            return ResponseEntity.status(HttpStatus.OK).body(stock);
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("재고 조회 실패했습니다.");
         }
     }
 
     @PutMapping("/increment")
-    public ResponseEntity<?> incrementCount(@RequestParam("productId") Long productId){
+    public ResponseEntity<?> incrementCount(@RequestParam("productId") Long productId) {
         ProductStockResponseDto productStock = productStockService.incrementCount(productId);
         Long stock = productStock.getStock();
-        if(stock != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(stock);
-        }else {
+        if (stock != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(stock);
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("재고 증가에 실패했습니다.");
         }
     }
 
     @PutMapping("/decrement")
-    public ResponseEntity<?> decrementCount(@RequestParam("productId") Long productId){
+    public ResponseEntity<?> decrementCount(@RequestParam("productId") Long productId) {
         ProductStockResponseDto productStock = productStockService.decrementCount(productId);
         Long stock = productStock.getStock();
-        if(stock != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(stock);
-        }else {
+        if (stock != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(stock);
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("재고 감소에 실패했습니다.");
         }
     }

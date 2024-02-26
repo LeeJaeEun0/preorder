@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class PreorderProduct implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name="product_id")
+    @Column(name = "product_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

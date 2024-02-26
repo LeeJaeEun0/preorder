@@ -19,11 +19,11 @@ public class internalPaymentController {
     private final PaymentService paymentService;
 
     @PostMapping
-    public ResponseEntity<?> savePayment(@RequestBody PaymentDto paymentDto){
+    public ResponseEntity<?> savePayment(@RequestBody PaymentDto paymentDto) {
         PaymentResponseDto paymentResponseDto = paymentService.savePayment(paymentDto);
-        if(paymentResponseDto != null){
-            return  ResponseEntity.status(HttpStatus.CREATED).body(paymentResponseDto);
-        }else {
+        if (paymentResponseDto != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(paymentResponseDto);
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("결제 실패했습니다.");
         }
     }

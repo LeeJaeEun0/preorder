@@ -25,14 +25,14 @@ public class PostDaoImpl implements PostDao {
     @Override
     @Transactional
     public Post savePost(Post post) {
-        return  postRepository.save(post);
+        return postRepository.save(post);
 
     }
 
     @Override
     public Post selectPost(Long postId) {
         Optional<Post> findPost = postRepository.findById(postId);
-        if(findPost.isPresent()){
+        if (findPost.isPresent()) {
             Post post = findPost.get();
             return post;
         }
@@ -50,30 +50,30 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public Post changePost(Long userId,Long postId, String contents) {
+    public Post updatePost(Long userId, Long postId, String contents) {
         Optional<Post> findPost = postRepository.findById(postId);
-        if(findPost.isPresent()){
+        if (findPost.isPresent()) {
             Post post = findPost.get();
 
-            if(post.getUserId().equals(userId)) {
+            if (post.getUserId().equals(userId)) {
                 post.setContents(contents);
                 return postRepository.save(post);
-            }else{
+            } else {
                 throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
             }
-        }else {
+        } else {
             throw new CustomException(ErrorCode.INVALID_POST);
         }
     }
 
     @Override
-    public void deletePost(Long userId,Long postId){
+    public void deletePost(Long userId, Long postId) {
         Optional<Post> deletepost = postRepository.findById(postId);
         if (deletepost.isPresent()) {
             Post post = deletepost.get();
 
-            if(post.getUserId().equals(userId)) postRepository.delete(post);
-            else{
+            if (post.getUserId().equals(userId)) postRepository.delete(post);
+            else {
                 throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
             }
         } else {

@@ -15,7 +15,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class FollowDaoImpl implements FollowDao {
-   private final FollowRepository followRepository;
+    private final FollowRepository followRepository;
 
     @Override
     @Transactional
@@ -24,12 +24,12 @@ public class FollowDaoImpl implements FollowDao {
     }
 
     @Override
-    public void deleteFollow(Long userId, Long followingId){
+    public void deleteFollow(Long userId, Long followingId) {
         Optional<Follow> deleteFollow = followRepository.findFollow(userId, followingId);
-        if(deleteFollow.isPresent()){
+        if (deleteFollow.isPresent()) {
             Follow follow = deleteFollow.get();
             followRepository.delete(follow);
-        }else{
+        } else {
             throw new CustomException(ErrorCode.NOT_EXISTS_FOLLOW);
         }
     }

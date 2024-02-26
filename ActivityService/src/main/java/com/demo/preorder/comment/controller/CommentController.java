@@ -2,10 +2,8 @@ package com.demo.preorder.comment.controller;
 
 import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.comment.dto.*;
-import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/comments")
 @RequiredArgsConstructor
@@ -50,8 +47,8 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<?> selectComment(@RequestParam("postId")Long postId) {
-        List<CommentResponseDto> commentList = commentService.selectComment(postId);
+    public ResponseEntity<?> getCommentById(@RequestParam("postId") Long postId) {
+        List<CommentResponseDto> commentList = commentService.getCommentById(postId);
         if (commentList != null) {
             return ResponseEntity.status(HttpStatus.OK).body(commentList);
         } else {
@@ -64,9 +61,6 @@ public class CommentController {
                                                   @RequestBody CommentUpdateDto commentUpdateDto) {
         ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        log.info("info log = {}", userId);
-        log.info("info log = {}", commentUpdateDto.getCommentId());
-        log.info("info log = {}", commentUpdateDto.getContent());
         CommentResponseDto comment = commentService.updateCommentContent(userId, commentUpdateDto);
 
         if (comment != null) {
@@ -78,10 +72,10 @@ public class CommentController {
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<?> deleteComment(@RequestHeader Map<String, String> httpHeaders,
-                                           @PathVariable("commentId") Long commentId) throws Exception {
+                                           @PathVariable("commentId") Long commentId) {
         ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
         commentService.deleteComment(userId, commentId);
-        return ResponseEntity.status(HttpStatus.OK).body("ok");
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

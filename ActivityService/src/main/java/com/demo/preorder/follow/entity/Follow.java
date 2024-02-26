@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Follow {
     @Id
-    @Column(name="follow_id")
+    @Column(name = "follow_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

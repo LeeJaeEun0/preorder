@@ -1,6 +1,5 @@
 package com.demo.preorder.newsfeed.entity;
 
-import com.demo.preorder.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 public class NewsfeedMyNews {
     @Id
-    @Column(name="newsfeed_my_news_id")
+    @Column(name = "newsfeed_my_news_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

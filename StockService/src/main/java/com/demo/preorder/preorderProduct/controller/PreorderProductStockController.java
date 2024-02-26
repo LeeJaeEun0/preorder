@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PreorderProductStockController {
     private final PreorderProductStockService preorderProductStockService;
+
     @GetMapping("/{preorderProductId}")
-    public ResponseEntity<?> getProductStock(@PathVariable("preorderProductId") Long preorderProductId){
+    public ResponseEntity<?> getProductStock(@PathVariable("preorderProductId") Long preorderProductId) {
         PreorderProductStock preorderProductStock = preorderProductStockService.getPreorderProductById(preorderProductId);
-        if(preorderProductStock != null){
-            return  ResponseEntity.status(HttpStatus.OK).body(preorderProductStock);
-        }else {
+        if (preorderProductStock != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(preorderProductStock);
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("재고 조회 실패했습니다.");
         }
     }

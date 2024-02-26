@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Jwt {
     @Id
-    @Column(name="jwt_id")
+    @Column(name = "jwt_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -20,7 +20,7 @@ public class Jwt {
     private String refreshToken;
 
     @Builder
-    public Jwt(String accessToken, String refreshToken){
+    public Jwt(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }

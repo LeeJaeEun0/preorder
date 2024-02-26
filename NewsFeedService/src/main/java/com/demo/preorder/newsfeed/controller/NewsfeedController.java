@@ -3,8 +3,6 @@ package com.demo.preorder.newsfeed.controller;
 import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.newsfeed.dto.NewsfeedMyNewsResponseDto;
 import com.demo.preorder.newsfeed.dto.NewsfeedResponseDto;
-import com.demo.preorder.newsfeed.entity.Newsfeed;
-import com.demo.preorder.newsfeed.entity.NewsfeedMyNews;
 import com.demo.preorder.newsfeed.service.NewsfeedMyNewsService;
 import com.demo.preorder.newsfeed.service.NewsfeedService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +25,8 @@ public class NewsfeedController {
     private final UserServiceClient userServiceClient;
 
     @GetMapping
-    public ResponseEntity<?> selectNewsfeed(@RequestHeader Map<String, String> httpHeaders){
-        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+    public ResponseEntity<?> selectNewsfeed(@RequestHeader Map<String, String> httpHeaders) {
+        ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
         List<NewsfeedResponseDto> newsfeedList = newsfeedService.findNewsfeed(userId);
         if (newsfeedList != null) {
@@ -39,8 +37,8 @@ public class NewsfeedController {
     }
 
     @GetMapping("/mynews")
-    public ResponseEntity<?> selectNewsfeedMyNews(@RequestHeader Map<String, String> httpHeaders){
-        ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
+    public ResponseEntity<?> selectNewsfeedMyNews(@RequestHeader Map<String, String> httpHeaders) {
+        ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
         List<NewsfeedMyNewsResponseDto> newsfeedFollowedMeList = newsfeedMyNewsService.newsfeedMyNews(userId);
         if (newsfeedFollowedMeList != null) {

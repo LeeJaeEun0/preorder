@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
                 // 외부 서비스 호출
                 ResponseEntity<Long> productStocks = stockServiceClient.saveProductStocks(productStock);
                 Long result = productStocks.getBody();
-                log.info("Info log: productStock - {} ", result);
+                log.info("ProductServiceImpl - productStock = {} Timestamp = {}", result, LocalDateTime.now());
             } catch (HttpClientErrorException | HttpServerErrorException e) {
                 log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", productStock.getProductId(), e.getMessage());
                 throw e;
@@ -74,27 +75,27 @@ public class ProductServiceImpl implements ProductService {
             orderDto.setProductId(productId);
             orderDto.setProductType("product");
             orderDto.setCount(1L);
-            orderDto.setTotalAmount(product.getPrice());
 
             Long productStock = 0L;
             try {
                 // 외부 서비스 호출
                 ResponseEntity<Long> productStocks = stockServiceClient.getProductStock(productId);
                 productStock = productStocks.getBody();
-                log.info("Info log: productStock - {} ", productStock);
-            }  catch (HttpClientErrorException | HttpServerErrorException e) {
+                log.info("ProductServiceImpl -  productStock = {} Timestamp = {}", productStock, LocalDateTime.now());
+            } catch (HttpClientErrorException | HttpServerErrorException e) {
                 log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage());
                 throw e;
             } catch (Exception e) {
                 log.error("재고 저장 중 예외 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage(), e);
                 throw e;
             }
+            // 현재 재고량이 0보다 크면 전체제고량 -1을 하고 주문
             if (productStock > 0) {
                 try {
                     // 외부 서비스 호출
                     ResponseEntity<Long> productStocks = stockServiceClient.decrementProductStocks(productId);
                     productStock = productStocks.getBody();
-                    log.info("Info log: productStock - {} ", productStock);
+                    log.info("ProductServiceImpl -  productStock = {} ", productStock);
                 } catch (HttpClientErrorException | HttpServerErrorException e) {
                     log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage());
                     throw e;
@@ -107,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
                         // 외부 서비스 호출
                         ResponseEntity<OrderResponseDto> responseDtoResponseEntity = orderServiceClient.saveOrder(orderDto);
                         OrderResponseDto result = responseDtoResponseEntity.getBody();
-                        log.info("Info log: order - productId ={} result={}", result.getProductId(), result.getStatus());
+                        log.info("ProductServiceImpl - order - productId = {} result = {} Timestamp = {}", result.getProductId(), result.getStatus(), LocalDateTime.now());
                         return result;
                     } catch (HttpClientErrorException | HttpServerErrorException e) {
                         log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage());
@@ -118,8 +119,7 @@ public class ProductServiceImpl implements ProductService {
                     }
                 }
             }
-        }
-        else throw new CustomException(ErrorCode.INVALID_PRODUCT);
+        } else throw new CustomException(ErrorCode.INVALID_PRODUCT);
         return null;
     }
 
@@ -140,16 +140,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-
     @Override
     public void deleteProduct(Long productId) {
         try {
             // 외부 서비스 호출
             ResponseEntity<Void> response = stockServiceClient.deleteProductStocks(productId);
             if (response.getStatusCode() == HttpStatus.OK) {
-                log.info("Info log: delete stock");
+                log.info("ProductServiceImpl - productId = {} Timestamp = {}", productId, LocalDateTime.now());
             } else {
-                log.error("Info log: fail delete stock");
+                log.error("ProductServiceImpl - fail delete stock 상태 코드: {}, 상품 ID: {}", response.getStatusCode(), productId);
             }
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage());

@@ -1,7 +1,5 @@
 package com.demo.preorder.filter;
 
-import com.demo.preorder.exception.CustomException;
-import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.user.dto.UserLoginDto;
 import com.demo.preorder.user.dto.UserVerifyResponseDto;
 import com.demo.preorder.user.entity.AuthenticateUser;
@@ -22,6 +20,7 @@ import java.io.IOException;
 @Component
 public class VerifyUserFilter implements Filter {
     public static final String AUTHENTICATE_USER = "authenticateUser";
+
     private final ObjectMapper objectMapper;
 
     private final UserService userService;
@@ -34,14 +33,14 @@ public class VerifyUserFilter implements Filter {
                 UserLoginDto userLoginDto = objectMapper.readValue(request.getReader(), UserLoginDto.class);
                 UserVerifyResponseDto verifyResponse = userService.verifyUser(userLoginDto);
                 if (verifyResponse.isValid()) {
-                    request.setAttribute(AUTHENTICATE_USER, new AuthenticateUser(userLoginDto.getUserEmail(),verifyResponse.getUserRole()));
+                    request.setAttribute(AUTHENTICATE_USER, new AuthenticateUser(userLoginDto.getUserEmail(), verifyResponse.getUserRole()));
                 } else
                     throw new IllegalArgumentException();
                 chain.doFilter(request, response);
             } catch (Exception e) {
                 log.error("Fail User Verify");
                 HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-                httpServletResponse.sendError(HttpStatus.BAD_REQUEST.value(),e.getMessage());
+                httpServletResponse.sendError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
             }
         }
     }

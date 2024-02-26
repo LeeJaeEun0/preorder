@@ -25,28 +25,28 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public Order getOrderById(Long orderId) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
-        if(optionalOrder.isPresent()){
-            return  optionalOrder.get();
-        }else throw new CustomException(ErrorCode.INVALID_ORDER);
+        if (optionalOrder.isPresent()) {
+            return optionalOrder.get();
+        } else throw new CustomException(ErrorCode.INVALID_ORDER);
     }
 
     @Override
     public List<Order> findOrderSuccessById(Long productId, String productType) {
-        return orderRepository.findByProductIdAndProductTypeAndStatus(productId,productType,"success");
+        return orderRepository.findByProductIdAndProductTypeAndStatus(productId, productType, "success");
     }
 
     @Override
     public List<Order> findOrderCancelById(Long productId, String productType) {
-        return orderRepository.findByProductIdAndProductTypeAndStatus(productId,productType,"cancel");
+        return orderRepository.findByProductIdAndProductTypeAndStatus(productId, productType, "cancel");
     }
 
     @Override
     public Order updateOrder(Long orderId) {
-        Optional<Order> optionalOrder =orderRepository.findById(orderId);
-        if(optionalOrder.isPresent()) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
             order.setStatus("cancel");
             return orderRepository.save(order);
-        }else throw new CustomException(ErrorCode.INVALID_ORDER);
+        } else throw new CustomException(ErrorCode.INVALID_ORDER);
     }
 }

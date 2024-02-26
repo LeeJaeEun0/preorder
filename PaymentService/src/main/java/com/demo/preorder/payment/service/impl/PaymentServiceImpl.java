@@ -10,7 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @Slf4j
@@ -27,7 +30,7 @@ public class PaymentServiceImpl implements PaymentService {
         Random random = new Random();
         // 80%의 사람만 주문한다고 가정
         // 20%의 사람은 변심으로 주문을 취소한다고 가정
-        if (random.nextDouble() < 0.8 )  {
+        if (random.nextDouble() < 0.8) {
             Payment payment = new Payment();
             payment.setUserId(paymentDto.getUserId());
             payment.setOrderId(paymentDto.getOrderId());
@@ -37,14 +40,9 @@ public class PaymentServiceImpl implements PaymentService {
 
             Payment savePayment = paymentDao.savePayment(payment);
 
-            if (savePayment != null) {
-                PaymentResponseDto paymentResponseDto = new PaymentResponseDto();
-                paymentResponseDto.setUserId(savePayment.getUserId());
-                paymentResponseDto.setOrderId(savePayment.getOrderId());
-                paymentResponseDto.setStatus(savePayment.getStatus());
-                paymentResponseDto.setProductId(savePayment.getProductId());
-                return paymentResponseDto;
-            }
+
+            return new PaymentResponseDto(savePayment);
+
         } else {
 
             Payment payment = new Payment();
@@ -56,102 +54,83 @@ public class PaymentServiceImpl implements PaymentService {
 
             Payment savePayment = paymentDao.savePayment(payment);
 
-            if (savePayment != null) {
-                PaymentResponseDto paymentResponseDto = new PaymentResponseDto();
-                paymentResponseDto.setUserId(savePayment.getUserId());
-                paymentResponseDto.setOrderId(savePayment.getOrderId());
-                paymentResponseDto.setProductId(savePayment.getProductId());
-                paymentResponseDto.setStatus(savePayment.getStatus());
-                if(savePayment.getProductType().equals("product")){
-                    try {
-                        // 외부 서비스 호출
-                        ResponseEntity<Long> productStocks = stockServiceClient.incrementProductStocks(savePayment.getProductId());
-                        Long result = productStocks.getBody();
-                        log.info("Info log: productStock - {} ", result);
-                    } catch (Exception e) {
-                        // 오류 발생 시 처리
-                        log.error("Error saving productStock {}", e.getMessage(), e);
-                        // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
-                    }
 
-                }
-                else if (savePayment.getProductType().equals("preorderProduct")) {
-                    log.info("{}",savePayment.getProductId());
-                    try {
-                        // 외부 서비스 호출
-                        ResponseEntity<Long> productStocks = stockServiceClient.incrementPreorderProductStocks(savePayment.getProductId());
-                        Long result = productStocks.getBody();
-                        log.info("Info log: productStock - {} ", result);
-                    } catch (Exception e) {
-                        // 오류 발생 시 처리
-                        log.error("Error saving productStock {}", e.getMessage(), e);
-                        // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
-                    }
-
+            PaymentResponseDto paymentResponseDto = new PaymentResponseDto(savePayment);
+            if (savePayment.getProductType().equals("product")) {
+                try {
+                    // 외부 서비스 호출
+                    ResponseEntity<Long> productStocks = stockServiceClient.incrementProductStocks(savePayment.getProductId());
+                    Long result = productStocks.getBody();
+                    log.info("PaymentServiceImpl - productStock = {} Timestamp = {}", result, LocalDateTime.now());
+                } catch (Exception e) {
+                    // 오류 발생 시 처리
+                    log.error("Error saving productStock {}", e.getMessage(), e);
+                    // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
                 }
 
-                return paymentResponseDto;
+            } else if (savePayment.getProductType().equals("preorderProduct")) {
+                log.info("{}", savePayment.getProductId());
+                try {
+                    // 외부 서비스 호출
+                    ResponseEntity<Long> productStocks = stockServiceClient.incrementPreorderProductStocks(savePayment.getProductId());
+                    Long result = productStocks.getBody();
+                    log.info("PaymentServiceImpl - productStock = {} Timestamp = {}", result, LocalDateTime.now());
+                } catch (HttpClientErrorException | HttpServerErrorException e) {
+                    log.error("HTTP 오류 발생, 결제 ID: {}, 오류 메시지: {}", savePayment.getId(), e.getMessage());
+                    throw e;
+                } catch (Exception e) {
+                    log.error("결제 취소 중 예외 발생, 결제 ID: {}, 오류 메시지: {}", savePayment.getId(), e.getMessage(), e);
+                    throw e;
+                }
+
             }
+
+            return paymentResponseDto;
         }
-        return null;
+
 
     }
 
     @Override
     public PaymentResponseDto getPaymentById(Long paymentId) {
         Payment payment = paymentDao.getPaymentById(paymentId);
+        return new PaymentResponseDto(payment);
 
-        if(payment != null){
-            PaymentResponseDto paymentResponseDto = new PaymentResponseDto();
-            paymentResponseDto.setUserId(payment.getUserId());
-            paymentResponseDto.setOrderId(payment.getOrderId());
-            paymentResponseDto.setStatus(payment.getStatus());
-            paymentResponseDto.setProductId(payment.getProductId());
-            return paymentResponseDto;
-        }
-        return null;
     }
 
     @Override
     public PaymentResponseDto updatePayment(Long paymentId) {
         Payment savePayment = paymentDao.updatePayment(paymentId);
 
-        if(savePayment != null){
-            PaymentResponseDto paymentResponseDto = new PaymentResponseDto();
-            paymentResponseDto.setUserId(savePayment.getUserId());
-            paymentResponseDto.setOrderId(savePayment.getOrderId());
-            paymentResponseDto.setProductId(savePayment.getProductId());
-            paymentResponseDto.setStatus(savePayment.getStatus());
-            log.info("{}",paymentResponseDto.getProductId());
-            if(savePayment.getProductType().equals("product")){
-                try {
-                    // 외부 서비스 호출
-                    ResponseEntity<Long> productStocks = stockServiceClient.incrementProductStocks(savePayment.getProductId());
-                    Long result = productStocks.getBody();
-                    log.info("Info log: productStock - {} ", result);
-                } catch (Exception e) {
-                    // 오류 발생 시 처리
-                    log.error("Error saving productStock {}", e.getMessage(), e);
-                    // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
-                }
-
-            }
-            else if (savePayment.getProductType().equals("preorderProduct")) {
-                try {
-                    // 외부 서비스 호출
-                    ResponseEntity<Long> productStocks = stockServiceClient.incrementPreorderProductStocks(savePayment.getProductId());
-                    Long result = productStocks.getBody();
-                    log.info("Info log: productStock - {} ", result);
-                } catch (Exception e) {
-                    // 오류 발생 시 처리
-                    log.error("Error saving productStock {}", e.getMessage(), e);
-                    // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
-                }
-
+        PaymentResponseDto paymentResponseDto = new PaymentResponseDto(savePayment);
+        log.info("{}", paymentResponseDto.getProductId());
+        if (savePayment.getProductType().equals("product")) {
+            try {
+                // 외부 서비스 호출
+                ResponseEntity<Long> productStocks = stockServiceClient.incrementProductStocks(savePayment.getProductId());
+                Long result = productStocks.getBody();
+                log.info("PaymentServiceImpl - productStock = {} Timestamp = {}", result, LocalDateTime.now());
+            } catch (Exception e) {
+                // 오류 발생 시 처리
+                log.error("Error saving productStock {}", e.getMessage(), e);
+                // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
             }
 
-            return paymentResponseDto;
+        } else if (savePayment.getProductType().equals("preorderProduct")) {
+            try {
+                // 외부 서비스 호출
+                ResponseEntity<Long> productStocks = stockServiceClient.incrementPreorderProductStocks(savePayment.getProductId());
+                Long result = productStocks.getBody();
+                log.info("PaymentServiceImpl - productStock = {} Timestamp = {}", result, LocalDateTime.now());
+            } catch (HttpClientErrorException | HttpServerErrorException e) {
+                log.error("HTTP 오류 발생, 결제 ID: {}, 오류 메시지: {}", savePayment.getId(), e.getMessage());
+                throw e;
+            } catch (Exception e) {
+                log.error("결제 취소 중 예외 발생, 결제 ID: {}, 오류 메시지: {}", savePayment.getId(), e.getMessage(), e);
+                throw e;
+            }
         }
-        return null;
+
+        return paymentResponseDto;
     }
 }

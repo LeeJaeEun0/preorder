@@ -2,7 +2,6 @@ package com.demo.preorder.follow.service.impl;
 
 import com.demo.preorder.client.dto.NewsfeedClientDto;
 import com.demo.preorder.client.service.NewsfeedServiceClient;
-import com.demo.preorder.follow.dto.FollowDto;
 import com.demo.preorder.follow.dto.FollowResponseDto;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.dao.FollowDao;
@@ -12,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +27,7 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public FollowResponseDto saveFollow(Long userId, Long followingId) {
         Follow follow = new Follow();
-        if (followingId ==null)
+        if (followingId == null)
             return null;
 
         follow.setUserId(userId);
@@ -36,7 +36,7 @@ public class FollowServiceImpl implements FollowService {
 
         List<Follow> followList = followDao.findFollowing(saved.getUserId());
 
-        if (followList!= null) {
+        if (followList != null) {
 
             for (Follow follows : followList) {
                 NewsfeedClientDto newsfeedClientDto = new NewsfeedClientDto();
@@ -49,18 +49,17 @@ public class FollowServiceImpl implements FollowService {
                     // 외부 서비스 호출
                     ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
                     String result = stringResponseEntity.getBody();
-                    log.info("Info log: Following - userID={} result={}", follows.getUserId(), result);
+                    log.info("FollowServiceImpl - FollowingUserID = {} result = {} Timestamp = {}", follows.getUserId(), result, LocalDateTime.now());
                 } catch (Exception e) {
                     // 오류 발생 시 처리
-                    log.error("Error saving following for userID={}: {}", follows.getUserId(), e.getMessage(), e);
-                    // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+                    log.error("FollowServiceImpl - Error saving following for userID = {}: {}", follows.getUserId(), e.getMessage(), e);
                 }
             }
         }
 
         List<Follow> followList2 = followDao.findFollower(saved.getUserId());
 
-        if (followList!= null) {
+        if (followList != null) {
 
             for (Follow follows : followList2) {
                 NewsfeedClientDto newsfeedClientDto = new NewsfeedClientDto();
@@ -73,11 +72,10 @@ public class FollowServiceImpl implements FollowService {
                     // 외부 서비스 호출
                     ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
                     String result = stringResponseEntity.getBody();
-                    log.info("Info log: Follower - userID={} result={}", follows.getUserId(), result);
+                    log.info("FollowServiceImpl - FollowerUserID = {} result = {} Timestamp = {}", follows.getUserId(), result,LocalDateTime.now());
                 } catch (Exception e) {
                     // 오류 발생 시 처리
-                    log.error("Error saving follower for userID={}: {}", follows.getUserId(), e.getMessage(), e);
-                    // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+                    log.error("FollowServiceImpl - Error saving follower for userID = {}: {}", follows.getUserId(), e.getMessage(), e);
                 }
             }
         }
@@ -86,7 +84,7 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public void deleteFollow(Long userId,Long followingId){
+    public void deleteFollow(Long userId, Long followingId) {
         followDao.deleteFollow(userId, followingId);
     }
 

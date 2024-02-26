@@ -14,14 +14,15 @@ import java.util.Map;
 public class InternalUserController {
 
     private final UserService userService;
+
     // 받은 토큰에서 이메일 추출해 userId 리턴
     @GetMapping("/user")
-    public ResponseEntity<?> findUserId(@RequestHeader Map<String, String> httpHeaders){
+    public ResponseEntity<?> findUserId(@RequestHeader Map<String, String> httpHeaders) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findUserId(httpHeaders));
     }
 
     @GetMapping("/member")
-    public ResponseEntity<?> findUser(@RequestParam("userId") Long userId){
+    public ResponseEntity<?> findUser(@RequestParam("userId") Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUser(userId));
     }
 
