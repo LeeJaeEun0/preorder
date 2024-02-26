@@ -40,7 +40,7 @@ public class FollowController {
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
         followService.deleteFollow(userId,followingId);
-        return  null;
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
     @GetMapping("/follower")
     public ResponseEntity<?> findFollower(@RequestParam("followingId") Long followingId){

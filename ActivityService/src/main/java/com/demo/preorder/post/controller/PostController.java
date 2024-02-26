@@ -84,7 +84,7 @@ public class PostController {
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
         postService.deletePost(userId, postId);
-        return ResponseEntity.status(HttpStatus.OK).body("ok");
+        return ResponseEntity.status(HttpStatus.OK).build();
 
     }
 

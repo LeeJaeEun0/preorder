@@ -51,7 +51,7 @@ public class GreatPostController {
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
         greatPostService.deleteGreatPost(userId,postId);
-        return ResponseEntity.status(HttpStatus.OK).body("ok");
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

@@ -43,6 +43,6 @@ public class GreatCommentController {
         ResponseEntity<Long> responseEntity= userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
         greatCommentService.deleteGreatComment(userId,greatCommentId);;
-        return ResponseEntity.status(HttpStatus.OK).body("ok");
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

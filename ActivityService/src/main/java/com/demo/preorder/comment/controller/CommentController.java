@@ -82,6 +82,6 @@ public class CommentController {
         ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
         commentService.deleteComment(userId, commentId);
-        return ResponseEntity.status(HttpStatus.OK).body("ok");
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
