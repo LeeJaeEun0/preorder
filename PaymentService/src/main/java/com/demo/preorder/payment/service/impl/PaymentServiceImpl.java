@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @Slf4j
@@ -60,7 +61,7 @@ public class PaymentServiceImpl implements PaymentService {
                     // 외부 서비스 호출
                     ResponseEntity<Long> productStocks = stockServiceClient.incrementProductStocks(savePayment.getProductId());
                     Long result = productStocks.getBody();
-                    log.info("Info log: productStock - {} ", result);
+                    log.info("PaymentServiceImpl - productStock = {} Timestamp = {}", result, LocalDateTime.now());
                 } catch (Exception e) {
                     // 오류 발생 시 처리
                     log.error("Error saving productStock {}", e.getMessage(), e);
@@ -73,7 +74,7 @@ public class PaymentServiceImpl implements PaymentService {
                     // 외부 서비스 호출
                     ResponseEntity<Long> productStocks = stockServiceClient.incrementPreorderProductStocks(savePayment.getProductId());
                     Long result = productStocks.getBody();
-                    log.info("Info log: productStock - {} ", result);
+                    log.info("PaymentServiceImpl - productStock = {} Timestamp = {}", result, LocalDateTime.now());
                 } catch (HttpClientErrorException | HttpServerErrorException e) {
                     log.error("HTTP 오류 발생, 결제 ID: {}, 오류 메시지: {}", savePayment.getId(), e.getMessage());
                     throw e;
@@ -108,7 +109,7 @@ public class PaymentServiceImpl implements PaymentService {
                 // 외부 서비스 호출
                 ResponseEntity<Long> productStocks = stockServiceClient.incrementProductStocks(savePayment.getProductId());
                 Long result = productStocks.getBody();
-                log.info("Info log: productStock - {} ", result);
+                log.info("PaymentServiceImpl - productStock = {} Timestamp = {}", result, LocalDateTime.now());
             } catch (Exception e) {
                 // 오류 발생 시 처리
                 log.error("Error saving productStock {}", e.getMessage(), e);
@@ -120,7 +121,7 @@ public class PaymentServiceImpl implements PaymentService {
                 // 외부 서비스 호출
                 ResponseEntity<Long> productStocks = stockServiceClient.incrementPreorderProductStocks(savePayment.getProductId());
                 Long result = productStocks.getBody();
-                log.info("Info log: productStock - {} ", result);
+                log.info("PaymentServiceImpl - productStock = {} Timestamp = {}", result, LocalDateTime.now());
             } catch (HttpClientErrorException | HttpServerErrorException e) {
                 log.error("HTTP 오류 발생, 결제 ID: {}, 오류 메시지: {}", savePayment.getId(), e.getMessage());
                 throw e;
