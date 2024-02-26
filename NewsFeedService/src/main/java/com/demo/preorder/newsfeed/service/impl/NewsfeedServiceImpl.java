@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class NewsfeedServiceImpl implements NewsfeedService {
 
     private final NewsfeedDao newsfeedDao;
+
     @Override
     public NewsfeedResponseDto saveNewsfeed(NewsfeedDto newsfeedDto) {
 
