@@ -14,7 +14,7 @@ public class OrderResponseDto {
 
     private String status;
 
-    public OrderResponseDto(Order order){
+    public OrderResponseDto(Order order) {
         this.productId = order.getProductId();
         this.count = order.getCount();
         this.status = order.getStatus();
