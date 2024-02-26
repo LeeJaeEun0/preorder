@@ -53,7 +53,7 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@RequestHeader Map<String, String> httpHeaders) {
         Long userId = userService.findUserId(httpHeaders);
         userService.deleteUser(userId);
-        return ResponseEntity.status(HttpStatus.OK).body("ok");
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
