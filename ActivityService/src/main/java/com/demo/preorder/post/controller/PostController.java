@@ -6,7 +6,6 @@ import com.demo.preorder.post.dto.PostResponseDto;
 import com.demo.preorder.post.dto.SearchwordDto;
 import com.demo.preorder.post.service.PostService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
@@ -27,7 +25,6 @@ public class PostController {
     @PostMapping
     public ResponseEntity<?> savePost(@RequestHeader Map<String, String> httpHeaders,
                                       @RequestBody PostDto postDto) {
-        log.info("info log = {}", httpHeaders);
         ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
         PostResponseDto post = postService.savePost(userId, postDto);

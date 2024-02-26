@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/greatComments")
 @RequiredArgsConstructor
@@ -25,7 +24,6 @@ public class GreatCommentController {
                                            @PathVariable("commentId") Long commentId) {
         ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
-        log.info("id = {}", userId);
         GreatCommentResponseDto greatComment = greatCommentService.saveGreatComment(userId, commentId);
         if (greatComment != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(greatComment);

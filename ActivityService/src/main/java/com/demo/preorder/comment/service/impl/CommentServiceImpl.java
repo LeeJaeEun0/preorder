@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,11 +66,10 @@ public class CommentServiceImpl implements CommentService {
                     // 외부 서비스 호출
                     ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
                     String result = stringResponseEntity.getBody();
-                    log.info("Info log: Following - userID={} result={}", follows.getUserId(), result);
+                    log.info("CommentServiceImpl - followingUserID= {} result = {} Timestamp = {}", follows.getUserId(), result, LocalDateTime.now());
                 } catch (Exception e) {
                     // 오류 발생 시 처리
-                    log.error("Error saving following for userID={}: {}", follows.getUserId(), e.getMessage(), e);
-                    // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+                    log.error("CommentServiceImpl - Error saving following for userID= {}: {}", follows.getUserId(), e.getMessage(), e);
                 }
             }
         }
@@ -89,11 +89,10 @@ public class CommentServiceImpl implements CommentService {
                     // 외부 서비스 호출
                     ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeed(newsfeedClientDto);
                     String result = stringResponseEntity.getBody();
-                    log.info("Info log: Follower - userID={} result={}", follows.getUserId(), result);
+                    log.info("CommentServiceImpl - FollowerUserID = {} result = {} Timestamp = {}", follows.getUserId(), result,LocalDateTime.now());
                 } catch (Exception e) {
                     // 오류 발생 시 처리
-                    log.error("Error saving follower for userID={}: {}", follows.getUserId(), e.getMessage(), e);
-                    // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+                    log.error("CommentServiceImpl - Error saving follower for userID={}: {}", follows.getUserId(), e.getMessage(), e);
                 }
             }
         }
@@ -107,11 +106,10 @@ public class CommentServiceImpl implements CommentService {
             // 외부 서비스 호출
             ResponseEntity<String> stringResponseEntity = newsfeedServiceClient.saveNewsfeedMyNews(newsfeedMyNewsClientDto);
             String result = stringResponseEntity.getBody();
-            log.info("Info log: newsfeedMyNews - userID={} result={}", newsfeedMyNewsClientDto.getUserId(), result);
+            log.info("CommentServiceImpl - newsfeedMyNews - userID = {} result = {} Timestamp = {}", newsfeedMyNewsClientDto.getUserId(), result, LocalDateTime.now());
         } catch (Exception e) {
             // 오류 발생 시 처리
-            log.error("Error saving follower for userID={}: {}", newsfeedMyNewsClientDto.getUserId(), e.getMessage(), e);
-            // 필요한 경우, 여기서 추가적인 오류 처리 로직을 구현할 수 있습니다.
+            log.error("CommentServiceImpl - Error saving follower for userID={}: {}", newsfeedMyNewsClientDto.getUserId(), e.getMessage(), e);
         }
 
 
