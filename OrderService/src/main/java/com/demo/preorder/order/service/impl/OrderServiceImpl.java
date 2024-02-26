@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -60,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
                     // 외부 서비스 호출
                     ResponseEntity<PaymentResponseDto> productStocks = paymentServiceClient.savePayment(paymentDto);
                     PaymentResponseDto result = productStocks.getBody();
-                    log.info("Info log: payment - {} ", result);
+                    log.info("OderServiceImpl -  payment = {} Timestamp = {}", result, LocalDateTime.now());
                 } catch (HttpClientErrorException | HttpServerErrorException e) {
                     log.error("HTTP 오류 발생, 주문 ID: {}, 오류 메시지: {}", saveOrder.getId(), e.getMessage());
                     throw e;
@@ -91,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
                         // 외부 서비스 호출
                         ResponseEntity<Long> productStocks = stockServiceClient.incrementProductStocks(orderDto.getProductId());
                         Long result = productStocks.getBody();
-                        log.info("Info log: productStock - {} ", result);
+                        log.info("OderServiceImpl - productStock = {} Timestamp = {}", result, LocalDateTime.now());
                     } catch (HttpClientErrorException | HttpServerErrorException e) {
                         log.error("HTTP 오류 발생, 주문취소 ID: {}, 오류 메시지: {}", saveOrder.getId(), e.getMessage());
                         throw e;
@@ -105,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
                         // 외부 서비스 호출
                         ResponseEntity<Long> productStocks = stockServiceClient.incrementPreorderProductStocks(orderDto.getProductId());
                         Long result = productStocks.getBody();
-                        log.info("Info log: productStock - {} ", result);
+                        log.info("OderServiceImpl - productStock = {} Timestamp = {}", result, LocalDateTime.now());
                     } catch (HttpClientErrorException | HttpServerErrorException e) {
                         log.error("HTTP 오류 발생, 주문 취소 ID: {}, 오류 메시지: {}", saveOrder.getId(), e.getMessage());
                         throw e;
@@ -159,7 +160,7 @@ public class OrderServiceImpl implements OrderService {
                 // 외부 서비스 호출
                 ResponseEntity<Long> productStocks = stockServiceClient.incrementProductStocks(orderResponseDto.getProductId());
                 Long result = productStocks.getBody();
-                log.info("Info log: productStock - {} ", result);
+                log.info("OderServiceImpl - productStock = {} Timestamp = {}", result, LocalDateTime.now());
             } catch (HttpClientErrorException | HttpServerErrorException e) {
                 log.error("HTTP 오류 발생, 주문 취소 ID: {}, 오류 메시지: {}", saveOrder.getId(), e.getMessage());
                 throw e;
@@ -173,7 +174,7 @@ public class OrderServiceImpl implements OrderService {
                 // 외부 서비스 호출
                 ResponseEntity<Long> productStocks = stockServiceClient.incrementPreorderProductStocks(orderResponseDto.getProductId());
                 Long result = productStocks.getBody();
-                log.info("Info log: productStock - {} ", result);
+                log.info("OderServiceImpl - productStock = {} Timestamp = {}", result, LocalDateTime.now());
             } catch (HttpClientErrorException | HttpServerErrorException e) {
                 log.error("HTTP 오류 발생, 주문 취소 ID: {}, 오류 메시지: {}", saveOrder.getId(), e.getMessage());
                 throw e;
