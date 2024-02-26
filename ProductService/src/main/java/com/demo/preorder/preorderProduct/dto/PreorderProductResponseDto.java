@@ -1,7 +1,6 @@
 package com.demo.preorder.preorderProduct.dto;
 
 import com.demo.preorder.preorderProduct.entity.PreorderProduct;
-import com.demo.preorder.product.entity.Product;
 import lombok.Getter;
 
 @Getter

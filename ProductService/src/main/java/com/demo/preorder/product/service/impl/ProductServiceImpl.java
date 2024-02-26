@@ -81,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
                 ResponseEntity<Long> productStocks = stockServiceClient.getProductStock(productId);
                 productStock = productStocks.getBody();
                 log.info("Info log: productStock - {} ", productStock);
-            }  catch (HttpClientErrorException | HttpServerErrorException e) {
+            } catch (HttpClientErrorException | HttpServerErrorException e) {
                 log.error("HTTP 오류 발생, 상품 ID: {}, 오류 메시지: {}", productId, e.getMessage());
                 throw e;
             } catch (Exception e) {
@@ -117,8 +117,7 @@ public class ProductServiceImpl implements ProductService {
                     }
                 }
             }
-        }
-        else throw new CustomException(ErrorCode.INVALID_PRODUCT);
+        } else throw new CustomException(ErrorCode.INVALID_PRODUCT);
         return null;
     }
 
@@ -137,7 +136,6 @@ public class ProductServiceImpl implements ProductService {
 
         return productResponseDtos;
     }
-
 
 
     @Override

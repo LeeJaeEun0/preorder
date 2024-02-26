@@ -16,6 +16,7 @@ import java.util.Optional;
 public class ProductDaoImpl implements ProductDao {
 
     private final ProductRepository productRepository;
+
     @Override
     public Product saveProduct(Product product) {
         return productRepository.save(product);
@@ -23,7 +24,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Product getProductById(Long productId) {
-        Optional<Product> optionalProduct =productRepository.findById(productId);
+        Optional<Product> optionalProduct = productRepository.findById(productId);
         if (optionalProduct.isPresent()) return optionalProduct.get();
         else throw new CustomException(ErrorCode.INVALID_PRODUCT);
     }
@@ -35,10 +36,10 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void deleteProduct(Long productId) {
-        Optional<Product> optionalProduct= productRepository.findById(productId);
-        if (optionalProduct.isPresent()){
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
             productRepository.delete(product);
-        }else throw new CustomException(ErrorCode.INVALID_PRODUCT);
+        } else throw new CustomException(ErrorCode.INVALID_PRODUCT);
     }
 }

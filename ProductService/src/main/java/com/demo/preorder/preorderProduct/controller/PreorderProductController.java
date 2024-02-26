@@ -40,29 +40,29 @@ public class PreorderProductController {
         }
     }
 
-        @GetMapping
-        public ResponseEntity<?> findProductAll () {
-            List<PreorderProductResponseDto> preorderProductList = preorderProductService.findAllPreorderProduct();
-            if (preorderProductList != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(preorderProductList);
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 조회에 실패했습니다.");
-            }
-        }
-
-        @GetMapping("/{preorderProductId}")
-        public ResponseEntity<?> getProductById (@PathVariable("preorderProductId") Long preorderProductId){
-            PreorderProductResponseDto preorderProduct = preorderProductService.getPreorderProductById(preorderProductId);
-            if (preorderProduct != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(preorderProduct);
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 조회에 실패했습니다.");
-            }
-        }
-
-        @DeleteMapping("/{preorderProductId}")
-        public ResponseEntity<?> deleteProduct (@PathVariable("preorderProductId") Long preorderProductId){
-            preorderProductService.deletePreorderProduct(preorderProductId);
-            return ResponseEntity.status(HttpStatus.OK).body("ok");
+    @GetMapping
+    public ResponseEntity<?> findProductAll() {
+        List<PreorderProductResponseDto> preorderProductList = preorderProductService.findAllPreorderProduct();
+        if (preorderProductList != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(preorderProductList);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 조회에 실패했습니다.");
         }
     }
+
+    @GetMapping("/{preorderProductId}")
+    public ResponseEntity<?> getProductById(@PathVariable("preorderProductId") Long preorderProductId) {
+        PreorderProductResponseDto preorderProduct = preorderProductService.getPreorderProductById(preorderProductId);
+        if (preorderProduct != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(preorderProduct);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("판매글 조회에 실패했습니다.");
+        }
+    }
+
+    @DeleteMapping("/{preorderProductId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable("preorderProductId") Long preorderProductId) {
+        preorderProductService.deletePreorderProduct(preorderProductId);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
+    }
+}

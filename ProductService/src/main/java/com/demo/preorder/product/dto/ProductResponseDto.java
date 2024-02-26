@@ -12,7 +12,7 @@ public class ProductResponseDto {
 
     private Long price;
 
-    public ProductResponseDto(Product product){
+    public ProductResponseDto(Product product) {
         this.title = product.getTitle();
         this.content = product.getContent();
         this.price = product.getPrice();

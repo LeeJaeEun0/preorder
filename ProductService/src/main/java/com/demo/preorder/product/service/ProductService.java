@@ -3,7 +3,6 @@ package com.demo.preorder.product.service;
 import com.demo.preorder.client.dto.OrderResponseDto;
 import com.demo.preorder.product.dto.ProductDto;
 import com.demo.preorder.product.dto.ProductResponseDto;
-import com.demo.preorder.product.dto.ProductUpdateDto;
 
 import java.util.List;
 
