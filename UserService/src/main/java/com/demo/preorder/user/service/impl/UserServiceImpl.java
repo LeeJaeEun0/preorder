@@ -7,7 +7,6 @@ import com.demo.preorder.user.dto.PasswordDto;
 import com.demo.preorder.user.dto.ProfileDto;
 import com.demo.preorder.user.dto.UserResponseDto;
 import com.demo.preorder.user.entity.EmailCertification;
-import com.demo.preorder.user.entity.User;
 import com.demo.preorder.exception.CustomException;
 import com.demo.preorder.exception.ErrorCode;
 import com.demo.preorder.user.jwt.JwtUtils;
@@ -17,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Slf4j
@@ -32,17 +32,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkEmail(EmailDto emailDTO) {
-        log.info("info log : emailService");
+        log.info("info log : UserServiceImpl");
         String email = emailDTO.getEmail();
         boolean isExistEmail = userDao.checkEmail(email);
         if (isExistEmail) throw new CustomException(ErrorCode.EXISTS_EMAIL);
 
-        log.info("info log = {}", isExistEmail);
+        log.info("UserServiceImpl - isExistEmail= {} , Timestamp: {}", isExistEmail, LocalDateTime.now());
 
         String certificationNumber = emailProvider.getCertificationNumber();
         boolean isSucceed = emailProvider.sendCertificationMail(email, certificationNumber);
         if (!isSucceed) throw new CustomException(ErrorCode.TRANSMISSION_FAILED);
-        log.info("info log = {}", isSucceed);
+        log.info("UserServiceImpl - isSucceed = {}, Timestamp: {}", isSucceed,LocalDateTime.now());
 
         EmailCertification emailCertification = new EmailCertification();
         emailCertification.setEmail(emailDTO.getEmail());
@@ -61,7 +61,6 @@ public class UserServiceImpl implements UserService {
     public Long findUserId(Map<String, String> httpHeaders) {
         String jwtToken = httpHeaders.get("authorization");
         String email = JwtUtils.initJwtPayload(jwtToken);
-        log.info("info log = {}", userDao.findUserId(email));
         return userDao.findUserId(email);
     }
 
