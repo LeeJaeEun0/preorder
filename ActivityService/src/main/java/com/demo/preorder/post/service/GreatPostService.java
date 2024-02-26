@@ -1,7 +1,5 @@
 package com.demo.preorder.post.service;
 
-import com.demo.preorder.post.dao.GreatPostDao;
-import com.demo.preorder.post.dto.GreatPostDto;
 import com.demo.preorder.post.dto.GreatPostResponseDto;
 import com.demo.preorder.post.entity.GreatPost;
 

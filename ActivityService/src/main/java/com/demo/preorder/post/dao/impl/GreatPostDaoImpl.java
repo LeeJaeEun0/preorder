@@ -27,7 +27,7 @@ public class GreatPostDaoImpl implements GreatPostDao {
     public GreatPost saveGreatPost(Long userId, Long postId) {
         GreatPost greatPost = new GreatPost();
         Optional<Post> optionalPost = postRepository.findById(postId);
-        if(optionalPost.isEmpty()) throw new CustomException(ErrorCode.INVALID_GREAT_POST);
+        if (optionalPost.isEmpty()) throw new CustomException(ErrorCode.INVALID_GREAT_POST);
         Post post = optionalPost.get();
 
         greatPost.setUserId(userId);
@@ -39,13 +39,13 @@ public class GreatPostDaoImpl implements GreatPostDao {
     @Override
     public void deleteGreatPost(Long userId, Long greatPostId) {
         Optional<GreatPost> optionalGreatPost = greatPostRepository.findById(greatPostId);
-        if(optionalGreatPost.isPresent()){
+        if (optionalGreatPost.isPresent()) {
             GreatPost greatPost = optionalGreatPost.get();
-            if(greatPost.getUserId().equals(userId))
+            if (greatPost.getUserId().equals(userId))
                 greatPostRepository.delete(greatPost);
             else
                 throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
-        }else{
+        } else {
             throw new CustomException(ErrorCode.NOT_EXISTS_GREAT_POST);
         }
 

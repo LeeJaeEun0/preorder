@@ -10,7 +10,6 @@ import com.demo.preorder.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -26,7 +25,7 @@ public class GreatCommentDaoImpl implements GreatCommentDao {
         GreatComment greatComment = new GreatComment();
 
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
-        if(optionalComment.isEmpty()) throw new CustomException(ErrorCode.INVALID_COMMENT);
+        if (optionalComment.isEmpty()) throw new CustomException(ErrorCode.INVALID_COMMENT);
         Comment comment = optionalComment.get();
 
         greatComment.setUserId(userId);
@@ -39,13 +38,13 @@ public class GreatCommentDaoImpl implements GreatCommentDao {
     @Override
     public void deleteGreatComment(Long userId, Long greatCommentId) {
         Optional<GreatComment> optionalGreatComment = greatCommentRepository.findById(greatCommentId);
-        if(optionalGreatComment.isPresent()){
+        if (optionalGreatComment.isPresent()) {
             GreatComment greatComment = optionalGreatComment.get();
-            if(greatComment.getUserId().equals(userId))
+            if (greatComment.getUserId().equals(userId))
                 greatCommentRepository.delete(greatComment);
             else
                 throw new CustomException(ErrorCode.DO_NOT_MATCH_ID);
-        }else {
+        } else {
             throw new CustomException(ErrorCode.NOT_EXISTS_GREAT_COMMIT);
         }
     }

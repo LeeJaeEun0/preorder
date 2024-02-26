@@ -13,8 +13,8 @@ public interface PostDao {
 
     List<Post> searchPost(String searchWord);
 
-    Post changePost(Long userId,Long PostId, String contents);
+    Post updatePost(Long userId, Long PostId, String contents);
 
-    void deletePost(Long userID,Long postId);
+    void deletePost(Long userID, Long postId);
 
 }

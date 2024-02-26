@@ -6,7 +6,6 @@ import com.demo.preorder.client.service.NewsfeedServiceClient;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.post.dao.GreatPostDao;
-import com.demo.preorder.post.dto.GreatPostDto;
 import com.demo.preorder.post.dto.GreatPostResponseDto;
 import com.demo.preorder.post.entity.GreatPost;
 import com.demo.preorder.post.service.GreatPostService;
@@ -28,13 +27,14 @@ public class GreatPostServiceImpl implements GreatPostService {
     private final NewsfeedServiceClient newsfeedServiceClient;
 
     private final FollowDao followDao;
+
     @Override
     public GreatPostResponseDto saveGreatPost(Long userId, Long postId) {
         GreatPost saved = greatPostDao.saveGreatPost(userId, postId);
 
         List<Follow> followList = followDao.findFollowing(saved.getUserId());
 
-        if (followList!= null) {
+        if (followList != null) {
 
             for (Follow follows : followList) {
                 NewsfeedClientDto newsfeedClientDto = new NewsfeedClientDto();
@@ -58,7 +58,7 @@ public class GreatPostServiceImpl implements GreatPostService {
 
         List<Follow> followList2 = followDao.findFollower(saved.getUserId());
 
-        if (followList!= null) {
+        if (followList != null) {
 
             for (Follow follows : followList2) {
                 NewsfeedClientDto newsfeedClientDto = new NewsfeedClientDto();

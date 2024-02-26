@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Post {
     @Id
-    @Column(name="post_id")
+    @Column(name = "post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -46,7 +46,6 @@ public class Post {
     public void modifiedDate() {
         this.setLastmodifiedDate(LocalDateTime.now());
     }
-
 
 
 }

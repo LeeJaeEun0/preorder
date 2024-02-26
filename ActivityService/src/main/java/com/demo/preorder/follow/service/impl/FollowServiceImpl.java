@@ -2,7 +2,6 @@ package com.demo.preorder.follow.service.impl;
 
 import com.demo.preorder.client.dto.NewsfeedClientDto;
 import com.demo.preorder.client.service.NewsfeedServiceClient;
-import com.demo.preorder.follow.dto.FollowDto;
 import com.demo.preorder.follow.dto.FollowResponseDto;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.follow.dao.FollowDao;
@@ -27,7 +26,7 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public FollowResponseDto saveFollow(Long userId, Long followingId) {
         Follow follow = new Follow();
-        if (followingId ==null)
+        if (followingId == null)
             return null;
 
         follow.setUserId(userId);
@@ -36,7 +35,7 @@ public class FollowServiceImpl implements FollowService {
 
         List<Follow> followList = followDao.findFollowing(saved.getUserId());
 
-        if (followList!= null) {
+        if (followList != null) {
 
             for (Follow follows : followList) {
                 NewsfeedClientDto newsfeedClientDto = new NewsfeedClientDto();
@@ -60,7 +59,7 @@ public class FollowServiceImpl implements FollowService {
 
         List<Follow> followList2 = followDao.findFollower(saved.getUserId());
 
-        if (followList!= null) {
+        if (followList != null) {
 
             for (Follow follows : followList2) {
                 NewsfeedClientDto newsfeedClientDto = new NewsfeedClientDto();
@@ -86,7 +85,7 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public void deleteFollow(Long userId,Long followingId){
+    public void deleteFollow(Long userId, Long followingId) {
         followDao.deleteFollow(userId, followingId);
     }
 

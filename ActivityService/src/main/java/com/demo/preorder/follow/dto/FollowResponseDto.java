@@ -8,7 +8,7 @@ public class FollowResponseDto {
     private Long userId;
     private Long followingId;
 
-    public FollowResponseDto(Follow follow){
+    public FollowResponseDto(Follow follow) {
         this.userId = follow.getUserId();
         this.followingId = follow.getFollowingId();
     }

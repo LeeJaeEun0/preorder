@@ -2,7 +2,6 @@ package com.demo.preorder.comment.controller;
 
 import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.comment.dto.*;
-import com.demo.preorder.comment.entity.Comment;
 import com.demo.preorder.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,8 +49,8 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<?> selectComment(@RequestParam("postId")Long postId) {
-        List<CommentResponseDto> commentList = commentService.selectComment(postId);
+    public ResponseEntity<?> getCommentById(@RequestParam("postId") Long postId) {
+        List<CommentResponseDto> commentList = commentService.getCommentById(postId);
         if (commentList != null) {
             return ResponseEntity.status(HttpStatus.OK).body(commentList);
         } else {

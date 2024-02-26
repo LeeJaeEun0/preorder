@@ -2,7 +2,6 @@ package com.demo.preorder.post.service.impl;
 
 import com.demo.preorder.client.dto.NewsfeedClientDto;
 import com.demo.preorder.client.service.NewsfeedServiceClient;
-import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.follow.dao.FollowDao;
 import com.demo.preorder.follow.entity.Follow;
 import com.demo.preorder.post.dao.PostDao;
@@ -27,8 +26,6 @@ public class PostServiceImpl implements PostService {
 
     private final NewsfeedServiceClient newsfeedServiceClient;
 
-    private final UserServiceClient userServiceClient;
-
     private final FollowDao followDao;
 
     @Override
@@ -40,7 +37,7 @@ public class PostServiceImpl implements PostService {
 
         List<Follow> followList = followDao.findFollowing(saved.getUserId());
 
-        if (followList!= null) {
+        if (followList != null) {
 
             for (Follow follows : followList) {
                 NewsfeedClientDto newsfeedClientDto = new NewsfeedClientDto();
@@ -64,7 +61,7 @@ public class PostServiceImpl implements PostService {
 
         List<Follow> followList2 = followDao.findFollower(saved.getUserId());
 
-        if (followList!= null) {
+        if (followList != null) {
 
             for (Follow follows : followList2) {
                 NewsfeedClientDto newsfeedClientDto = new NewsfeedClientDto();
@@ -116,12 +113,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponseDto changePost(Long userId,PostDto postDto) {
-        return new PostResponseDto(postDao.changePost(userId, postDto.getPostId(),postDto.getContents()));
+    public PostResponseDto updatePost(Long userId, PostDto postDto) {
+        return new PostResponseDto(postDao.updatePost(userId, postDto.getPostId(), postDto.getContents()));
     }
 
     @Override
-    public void deletePost(Long userId,Long postId) {
-        postDao.deletePost(userId,postId);
+    public void deletePost(Long userId, Long postId) {
+        postDao.deletePost(userId, postId);
     }
 }

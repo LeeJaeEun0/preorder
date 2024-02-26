@@ -3,7 +3,6 @@ package com.demo.preorder.comment.service.impl;
 import com.demo.preorder.client.dto.NewsfeedClientDto;
 import com.demo.preorder.client.dto.NewsfeedMyNewsClientDto;
 import com.demo.preorder.client.service.NewsfeedServiceClient;
-import com.demo.preorder.client.service.UserServiceClient;
 import com.demo.preorder.comment.dao.CommentDao;
 import com.demo.preorder.comment.dto.CommentDto;
 import com.demo.preorder.comment.dto.CommentReplayDto;
@@ -138,8 +137,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentResponseDto> selectComment(Long postId) {
-        List<Comment> comments = commentDao.selectComment(postId);
+    public List<CommentResponseDto> getCommentById(Long postId) {
+        List<Comment> comments = commentDao.getCommentById(postId);
 
         List<CommentResponseDto> commentResponseDtos = comments.stream()
                 .map(CommentResponseDto::new)
