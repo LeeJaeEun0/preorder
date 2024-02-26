@@ -20,14 +20,13 @@ public class InternalPreorderProductStockController {
         Long stock = preorderProductStock.getStock();
         if (stock != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(stock);
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("재고 생성에 실패했습니다.");
         }
     }
 
     @GetMapping
-    public ResponseEntity<?> getProductStock(@RequestParam("preorderProductId") Long preorderProductId) {
+    public ResponseEntity<?> getProductStockById(@RequestParam("preorderProductId") Long preorderProductId) {
         PreorderProductStock preorderProductStock = preorderProductStockService.getPreorderProductById(preorderProductId);
         Long stock = preorderProductStock.getStock();
         return ResponseEntity.status(HttpStatus.OK).body(stock);

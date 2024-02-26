@@ -37,7 +37,7 @@ public class ProductStockDaoImpl implements ProductStockDao {
             ProductStock productStock = optionalProductStock.get();
             productStock.setStock(productStock.getStock() + 1);
             return productStockRepository.save(productStock);
-        }else throw new CustomException(ErrorCode.INVALID_PRODUCT);
+        } else throw new CustomException(ErrorCode.INVALID_PRODUCT);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ProductStockDaoImpl implements ProductStockDao {
                 productStock.setStock(productStock.getStock() - 1);
                 return productStockRepository.save(productStock);
             } else throw new CustomException(ErrorCode.NOT_EXISTS_PRODUCT_STOCK);
-        }else throw new CustomException(ErrorCode.INVALID_PRODUCT);
+        } else throw new CustomException(ErrorCode.INVALID_PRODUCT);
 
     }
 

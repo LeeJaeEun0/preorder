@@ -5,6 +5,7 @@ import com.demo.preorder.product.dto.ProductStockResponseDto;
 
 public interface ProductStockService {
     ProductStockResponseDto saveProduct(ProductStockDto productStockDto);
+
     ProductStockResponseDto getProductById(Long productId);
 
     ProductStockResponseDto incrementCount(Long productId);

@@ -39,7 +39,7 @@ public class PreorderProductStockDaoImpl implements PreorderProductStockDao {
             PreorderProductStock preorderProductStock = optionalPreorderProductStock.get();
             preorderProductStock.setStock(preorderProductStock.getStock() + 1);
             return preorderProductStockRepository.save(preorderProductStock);
-        }else throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT_STOCK);
+        } else throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT_STOCK);
     }
 
     @Override
@@ -50,8 +50,8 @@ public class PreorderProductStockDaoImpl implements PreorderProductStockDao {
             if (preorderProductStock.getStock() - 1 >= 0) {
                 preorderProductStock.setStock(preorderProductStock.getStock() - 1);
                 return preorderProductStockRepository.save(preorderProductStock);
-            }else throw new CustomException(ErrorCode.NOT_EXISTS_PREORDER_PRODUCT_STOCK);
-        }else throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT_STOCK);
+            } else throw new CustomException(ErrorCode.NOT_EXISTS_PREORDER_PRODUCT_STOCK);
+        } else throw new CustomException(ErrorCode.INVALID_PREORDER_PRODUCT_STOCK);
     }
 
     @Override

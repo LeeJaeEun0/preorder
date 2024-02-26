@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class PreorderProductStock implements Serializable { // Serializable 인터페이스를 구현합니다.
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name="preorder_product_stock_id")
+    @Column(name = "preorder_product_stock_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
