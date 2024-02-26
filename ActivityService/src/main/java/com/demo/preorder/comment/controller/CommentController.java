@@ -77,7 +77,7 @@ public class CommentController {
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<?> deleteComment(@RequestHeader Map<String, String> httpHeaders,
-                                           @PathVariable("commentId") Long commentId) throws Exception {
+                                           @PathVariable("commentId") Long commentId) {
         ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();
         commentService.deleteComment(userId, commentId);
