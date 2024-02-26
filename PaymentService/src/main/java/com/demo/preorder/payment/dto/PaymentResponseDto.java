@@ -1,6 +1,5 @@
 package com.demo.preorder.payment.dto;
 
-;
 import com.demo.preorder.payment.entity.Payment;
 import lombok.Getter;
 import lombok.Setter;
