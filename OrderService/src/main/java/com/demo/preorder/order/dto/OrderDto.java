@@ -14,5 +14,4 @@ public class OrderDto {
 
     private Long count;
 
-    private Long totalAmount;
 }

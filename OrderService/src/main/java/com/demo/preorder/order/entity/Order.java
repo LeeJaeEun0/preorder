@@ -30,8 +30,6 @@ public class Order {
 
     private Long count;
 
-    private Long totalAmount;
-
     private String status;
 
     @CreatedDate

@@ -1,5 +1,6 @@
 package com.demo.preorder.order.dto;
 
+import com.demo.preorder.order.entity.Order;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,11 @@ public class OrderResponseDto {
 
     private Long count;
 
-    private Long totalAmount;
-
     private String status;
+
+    public OrderResponseDto(Order order){
+        this.productId = order.getProductId();
+        this.count = order.getCount();
+        this.status = order.getStatus();
+    }
 }

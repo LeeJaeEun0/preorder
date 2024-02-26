@@ -11,7 +11,5 @@ public class OrderResponseDto {
 
     private Long count;
 
-    private Long totalAmount;
-
     private String status;
 }

@@ -74,7 +74,6 @@ public class ProductServiceImpl implements ProductService {
             orderDto.setProductId(productId);
             orderDto.setProductType("product");
             orderDto.setCount(1L);
-            orderDto.setTotalAmount(product.getPrice());
 
             Long productStock = 0L;
             try {
