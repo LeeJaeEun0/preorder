@@ -1,4 +1,5 @@
 package com.demo.preorder.payment.dto;
+
 ;
 import com.demo.preorder.payment.entity.Payment;
 import lombok.Getter;
@@ -17,8 +18,7 @@ public class PaymentResponseDto {
     private String status;
 
 
-
-    public PaymentResponseDto(Payment payment){
+    public PaymentResponseDto(Payment payment) {
         this.userId = payment.getUserId();
         this.orderId = payment.getOrderId();
         this.productId = payment.getProductId();
