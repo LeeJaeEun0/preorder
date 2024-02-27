@@ -16,7 +16,7 @@ def send_http_request(base_url, request_number, preorder_product_id):
 
 def main():
     num_requests = 10000  # 동시에 보낼 요청의 수 설정
-    base_url = "http://localhost:8084/api/preorderProducts"  # 기본 URL 설정
+    base_url = "http://localhost:8083/api/preorderProducts"  # 기본 URL 설정
     preorder_product_id =random.choice(list(range(1, 11)))  # preorderProductId 설정
 
     with ThreadPoolExecutor(max_workers=100) as executor:
