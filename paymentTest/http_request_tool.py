@@ -15,11 +15,11 @@ def send_http_request(base_url, request_number, preorder_product_id):
         print(f"Error sending POST request to {url}: {e}")
 
 def main():
-    num_requests = 30  # 동시에 보낼 요청의 수 설정
+    num_requests = 10000  # 동시에 보낼 요청의 수 설정
     base_url = "http://localhost:8084/api/preorderProducts"  # 기본 URL 설정
     preorder_product_id =random.choice(list(range(1, 11)))  # preorderProductId 설정
 
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ThreadPoolExecutor(max_workers=100) as executor:
         # 각 요청에 대해 'userId'를 경로 변수로 포함하여 POST 요청을 보냄
         tasks = [executor.submit(send_http_request, base_url, i, preorder_product_id) for i in range(1, num_requests + 1)]
 
