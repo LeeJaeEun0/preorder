@@ -33,7 +33,7 @@ public class InternalNewsfeedController {
         }
     }
 
-    @PostMapping("/myNews")
+    @PostMapping("/my-news")
     public ResponseEntity<?> createNewsfeedMyNews(@RequestBody NewsfeedMyNewsDto newsfeedMyNewsDto) {
         NewsfeedMyNewsResponseDto newsfeedMyNews = newsfeedMyNewsService.saveNewsfeedMyNew(newsfeedMyNewsDto);
         if (newsfeedMyNews != null) {

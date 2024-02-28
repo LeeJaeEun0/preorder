@@ -13,6 +13,6 @@ public interface NewsfeedServiceClient {
     @PostMapping("/api/internal/newsfeeds")
     ResponseEntity<String> saveNewsfeed(NewsfeedClientDto newsfeedClientDto);
 
-    @PostMapping("/api/internal/newsfeeds/myNews")
+    @PostMapping("/api/internal/newsfeeds/my-news")
     ResponseEntity<String> saveNewsfeedMyNews(NewsfeedMyNewsClientDto newsfeedMyNewsClientDto);
 }
