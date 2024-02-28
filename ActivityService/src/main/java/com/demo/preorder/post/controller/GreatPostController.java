@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/greatPosts")
+@RequestMapping("/api/great-posts")
 @RequiredArgsConstructor
 public class GreatPostController {
 
