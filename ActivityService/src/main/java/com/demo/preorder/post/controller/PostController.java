@@ -36,8 +36,8 @@ public class PostController {
         }
     }
 
-    @GetMapping("/selectPost")
-    public ResponseEntity<?> selectPost(@RequestParam Long postId) {
+    @GetMapping("/{postId}")
+    public ResponseEntity<?> selectPost(@PathVariable("postId") Long postId) {
         PostResponseDto post = postService.selectPost(postId);
         if (post != null) {
             return ResponseEntity.status(HttpStatus.OK).body(post);
@@ -46,14 +46,14 @@ public class PostController {
         }
     }
 
-    @GetMapping("/listPost")
+    @GetMapping
     public ResponseEntity<?> listPost() {
         List<PostResponseDto> postList = postService.listPost();
         return ResponseEntity.status(HttpStatus.OK).body(postList);
 
     }
 
-    @GetMapping("/searchPost")
+    @GetMapping("/search")
     public ResponseEntity<?> searchPost(@RequestBody SearchwordDto searchwordDto) {
         List<PostResponseDto> postList = postService.searchPost(searchwordDto);
         return ResponseEntity.status(HttpStatus.OK).body(postList);
