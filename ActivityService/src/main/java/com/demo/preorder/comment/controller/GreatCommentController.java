@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/greatComments")
+@RequestMapping("/api/great-comments")
 @RequiredArgsConstructor
 public class GreatCommentController {
     private final GreatCommentService greatCommentService;

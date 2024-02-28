@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/internal/productStocks")
+@RequestMapping("/api/internal/product-stocks")
 @RequiredArgsConstructor
 public class InternalProductStockController {
 

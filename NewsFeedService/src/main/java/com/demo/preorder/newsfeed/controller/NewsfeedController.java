@@ -36,7 +36,7 @@ public class NewsfeedController {
         }
     }
 
-    @GetMapping("/mynews")
+    @GetMapping("/my-news")
     public ResponseEntity<?> selectNewsfeedMyNews(@RequestHeader Map<String, String> httpHeaders) {
         ResponseEntity<Long> responseEntity = userServiceClient.findUserId(httpHeaders);
         Long userId = responseEntity.getBody();

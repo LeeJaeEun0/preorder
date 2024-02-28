@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @ComponentScan
 @FeignClient(name = "StockService", url = "${stock.service.url}")
 public interface StockServiceClient {
-    @PutMapping("/api/internal/preorderProductStocks/increment")
+    @PutMapping("/api/internal/preorder-product-stocks/increment")
     ResponseEntity<Long> incrementPreorderProductStocks(@RequestParam Long preorderProductId);
 
-    @PutMapping("/api/internal/productStocks/increment")
+    @PutMapping("/api/internal/product-stocks/increment")
     ResponseEntity<Long> incrementProductStocks(@RequestParam Long productId);
 }
