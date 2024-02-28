@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/internal/preorderProductStocks")
+@RequestMapping("/api/internal/preorder-product-stocks")
 @RequiredArgsConstructor
 public class InternalPreorderProductStockController {
     private final PreorderProductStockService preorderProductStockService;
