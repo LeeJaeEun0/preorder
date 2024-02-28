@@ -20,7 +20,7 @@ public class WebConfig {
                 FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new VerifyUserFilter(mapper, userService));
         filterRegistrationBean.setOrder(1);
-        filterRegistrationBean.addUrlPatterns("/user/login");
+        filterRegistrationBean.addUrlPatterns("/users/login");
         return filterRegistrationBean;
     }
 
@@ -30,7 +30,7 @@ public class WebConfig {
                 FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new JwtFilter(provider, mapper, userService));
         filterRegistrationBean.setOrder(2);
-        filterRegistrationBean.addUrlPatterns("/user/login");
+        filterRegistrationBean.addUrlPatterns("/users/login");
         return filterRegistrationBean;
     }
 
