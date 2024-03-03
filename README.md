@@ -53,7 +53,7 @@
 | PaymentService  | 8086 | 결제 정보 저장 |
 |  StockService   | 8087 | 재고 정보 저장 |
 
-## 3. 프로젝트 사용 기술
+## 4. 프로젝트 사용 기술
 
 ![Java Badge](https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white)
 ![Spring Boot Badge](https://img.shields.io/badge/spring_boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
