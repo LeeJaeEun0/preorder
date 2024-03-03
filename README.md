@@ -64,6 +64,7 @@
 ![Git Badge](https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white)
 
 java: 17<br>
+springBoot: 3.2.2<br>
 mysql: 8.0
 
 
